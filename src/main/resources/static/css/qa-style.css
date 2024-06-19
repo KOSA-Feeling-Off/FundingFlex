@@ -1,0 +1,158 @@
+/* qa-style.css */
+
+/* 공통 스타일 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 20px; /* 변경: 패딩을 추가하여 여백 조정 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* 변경: 상단 정렬 */
+    min-height: 100vh;
+}
+
+h1 {
+    color: #333;
+    margin: 10px 0; /* 변경: 마진 조정 */
+}
+
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #0066cc;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: bold;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+/* 채팅 상자 스타일 */
+#chat-box {
+    width: 100%;
+    max-width: 600px;
+    height: 500px; /* 변경: 높이 증가 */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #fff;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 10px 15px; /* 변경: 패딩 증가 */
+    border-radius: 15px; /* 변경: 더 둥글게 */
+    background-color: #f1f1f1;
+    max-width: 75%; /* 변경: 더 넓게 */
+    align-self: flex-start;
+    position: relative;
+}
+
+.message.me {
+    background-color: #d1eaff;
+    align-self: flex-end;
+}
+
+.message .timestamp {
+    font-size: 0.8em;
+    color: gray;
+    position: absolute;
+    bottom: -20px; /* 변경: 위치 조정 */
+    right: 10px;
+}
+
+.message.me .timestamp {
+    right: 10px;
+}
+
+#waiting-message {
+    color: red;
+    font-size: 1.2em;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 채팅 입력 필드 스타일 */
+#chat-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 10px;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 15px; /* 변경: 패딩 증가 */
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+#chat-input:focus {
+    border-color: #66afe9;
+}
+
+button {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 15px 20px; /* 변경: 패딩 증가 */
+    cursor: pointer;
+    border-radius: 5px; /* 변경: 둥근 버튼 */
+    margin-top: 10px; /* 변경: 버튼 간 간격 */
+    font-size: 1em; /* 변경: 폰트 크기 증가 */
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* 문의하기 페이지 스타일 */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px 0;
+}
+
+label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+input[type="text"],
+textarea {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    font-size: 1em;
+}
+
+input[type="text"]:focus,
+textarea:focus {
+    border-color: #66afe9;
+}
+
+textarea {
+    height: 200px; /* 변경: 높이 증가 */
+    resize: vertical;
+}
