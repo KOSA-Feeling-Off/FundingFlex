@@ -8,4 +8,4 @@
 4. Wallet_fundingflex 파일을 FundingFlex 폴더 내부에 복사
 5. .metadata 파일을 프로젝트 외부 폴더(FeelingOff 내부)에 복사
 6. application-db.properties 파일을 FundingFlex\src\main\resources에 복사
-[Test] 프로젝트를 열고 톰캣 실행 후 url - localhost/test/start 입력
+7. Test - 프로젝트를 열고 톰캣 실행 후 localhost/test/start 확인
