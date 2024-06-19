@@ -4,3 +4,111 @@
 # 스프링 부트 애플리케이션 설정
 application-db.properties
 application.yml
+
+#########################
+##초기 커밋 이후##
+# Eclipse / STS 프로젝트 관련
+/.classpath
+/.project
+/.settings/
+/bin/
+/target/
+/.idea/
+/*.iml
+/.vscode/
+
+# Mac OS 관련
+.DS_Store
+
+# Windows 관련
+Thumbs.db
+ehthumbs.db
+
+# 로컬 환경 설정 파일
+*.log
+*.swp
+*.swo
+*~
+*.orig
+
+# 빌드 결과물
+/dist
+/build
+
+# Maven의 로컬 저장소
+.mvn/wrapper/maven-wrapper.jar
+!/.mvn/wrapper/maven-wrapper.properties
+
+# Gradle의 로컬 저장소
+.gradle
+/build
+!gradle-wrapper.jar
+
+# STS 작업 폴더
+.springBeans
+
+# IntelliJ IDEA 관련
+.idea
+*.iws
+*.iml
+*.ipr
+
+# IDE 구성 파일
+*.launch
+*.sublime-project
+*.sublime-workspace
+
+# 기타 환경 설정 파일
+*.env
+
+# Heroku 관련
+/.heroku
+
+# Spring Boot 관련
+/target/
+
+# 스프링 부트 실행 로그
+logging/
+
+# 민감한 정보를 포함한 로컬 설정 파일
+local-*.properties
+local-*.yml
+
+# 추가 가능 항목들
+# Linux 관련
+*~
+
+# 추가적인 IntelliJ IDEA 파일
+*.iws
+*.iml
+*.ipr
+
+# Node.js 관련 (필요 시)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# 파이썬 가상 환경 (필요 시)
+venv/
+__pycache__/
+*.py[cod]
+
+# 로그 파일
+*.log
+
+# 테스트 리포트
+/test-output/
+*.rpt
+
+# 추가적인 편집기 및 IDE 파일
+/.vscode/
+*.code-workspace
+
+# Windows 관련
+Thumbs.db
+Desktop.ini
+
+# 기타 빌드 도구 관련
+.cargo/
+*.rs.bk
+*.rs.bkp
