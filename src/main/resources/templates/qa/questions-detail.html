@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 상세 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+</head>
+<body>
+    <h1>문의 상세 내역</h1>
+    <div id="content">
+        <h2 th:text="${question.title}">질문 제목</h2>
+        <p><strong>내용:</strong> <span th:text="${question.content}">질문 내용</span></p>
+        <p><strong>답변:</strong> <span th:text="${question.reply}">질문 답변</span></p>
+        <a href="/qa/myquestions?userId=1">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 -->
+    </div>
+</body>
+</html>

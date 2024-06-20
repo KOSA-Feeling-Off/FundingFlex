@@ -1,4 +1,4 @@
-package com.fundingflex.qa;
+package com.fundingflex.qa.chat;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

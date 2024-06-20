@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>자주 문의한 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-container input, .search-container select, .search-container button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>문의</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+
+    <div id="content">
+        <h2>자주 문의한 내역</h2>
+        <h3>Fqa 목록</h3>
+        <ul>
+            <!-- Fqa 리스트 -->
+            <li th:each="fqa : ${fqas}">
+                <a th:href="@{/qa/fqa/detail/{id}(id=${fqa.fqaId})}" th:text="${fqa.title}">질문 제목</a>
+            </li>
+        </ul>
+    </div>
+    
+        <!-- 검색 기능 -->
+    <div class="search-container">
+        <form th:action="@{/qa/fqa/search}" method="get">
+            <select name="searchType">
+                <option value="title">제목</option>
+                <option value="content">내용</option>
+                <option value="titleContent">제목+내용</option>
+            </select>
+            <input type="text" name="keyword" placeholder="검색어 입력" required>
+            <button type="submit">검색</button>
+        </form>
+    </div>
+
+    <!-- "FQA 등록하기" 버튼 게시판 아래에 추가 -->
+    <div id="add-button-container">
+        <a href="/qa/fqa/add" class="add-button">FQA 등록하기</a>
+    </div>
+</body>
+</html>
