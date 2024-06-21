@@ -1,0 +1,187 @@
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>실시간 문의</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        #chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .timestamp {
+            float: right;
+            font-size: 0.8em;
+            color: gray;
+        }
+        #waiting-message {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>실시간 문의</h1>
+    <div id="waiting-message">상담원을 기다리고 있습니다...</div>
+    <div id="chat-box" style="display: none;"></div>
+    <form id="chat-form" style="display: none;">
+        <input type="text" id="chat-input" placeholder="메시지 입력" required>
+        <button type="submit">전송</button>
+    </form>
+    <button id="request-chat">상담하기</button>
+    <script>
+        const socket = new WebSocket('ws://localhost/ws/chat');
+        const requestChatButton = document.getElementById('request-chat');
+        const chatForm = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const waitingMessage = document.getElementById('waiting-message');
+
+        socket.onopen = function() {
+            console.log('WebSocket 연결 성공');
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket 오류:', error);
+        };
+
+        socket.onmessage = function(event) {
+            if (event.data === "CONNECTED") {
+                waitingMessage.style.display = "none";
+                chatBox.style.display = "block";
+                chatForm.style.display = "block";
+                requestChatButton.style.display = "none";
+            } else if (event.data === "WAITING") {
+                waitingMessage.style.display = "block";
+            } else {
+                const time = new Date().toLocaleTimeString();
+                chatBox.innerHTML += `
+                    <div class="message">
+                        <strong>상대방:</strong> ${event.data}
+                        <span class="timestamp">${time}</span>
+                    </div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        };
+
+        chatForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = chatInput.value;
+            const time = new Date().toLocaleTimeString();
+            chatBox.innerHTML += `
+                <div class="message">
+                    <strong>나:</strong> ${message}
+                    <span class="timestamp">${time}</span>
+                </div>`;
+            socket.send(message);
+            chatInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        requestChatButton.addEventListener('click', function() {
+            socket.send("REQUEST_CHAT");
+            requestChatButton.disabled = true;
+        });
+    </script>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>실시간 문의</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        #chat-box {
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .timestamp {
+            float: right;
+            font-size: 0.8em;
+            color: gray;
+        }
+        #waiting-message {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>실시간 문의</h1>
+    <div id="waiting-message">상담원을 기다리고 있습니다...</div>
+    <div id="chat-box" style="display: none;"></div>
+    <form id="chat-form" style="display: none;">
+        <input type="text" id="chat-input" placeholder="메시지 입력" required>
+        <button type="submit">전송</button>
+    </form>
+    <button id="request-chat">상담하기</button>
+    <script>
+        const socket = new WebSocket('ws://192.168.230.13/ws/chat');
+        const requestChatButton = document.getElementById('request-chat');
+        const chatForm = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+        const chatInput = document.getElementById('chat-input');
+        const waitingMessage = document.getElementById('waiting-message');
+
+        socket.onopen = function() {
+            console.log('WebSocket 연결 성공');
+        };
+
+        socket.onerror = function(error) {
+            console.error('WebSocket 오류:', error);
+        };
+
+        socket.onmessage = function(event) {
+            if (event.data === "CONNECTED") {
+                waitingMessage.style.display = "none";
+                chatBox.style.display = "block";
+                chatForm.style.display = "block";
+                requestChatButton.style.display = "none";
+            } else if (event.data === "WAITING") {
+                waitingMessage.style.display = "block";
+            } else {
+                const time = new Date().toLocaleTimeString();
+                chatBox.innerHTML += `
+                    <div class="message">
+                        <strong>상대방:</strong> ${event.data}
+                        <span class="timestamp">${time}</span>
+                    </div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        };
+
+        chatForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const message = chatInput.value;
+            const time = new Date().toLocaleTimeString();
+            chatBox.innerHTML += `
+                <div class="message">
+                    <strong>나:</strong> ${message}
+                    <span class="timestamp">${time}</span>
+                </div>`;
+            socket.send(message);
+            chatInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        requestChatButton.addEventListener('click', function() {
+            socket.send("REQUEST_CHAT");
+            requestChatButton.disabled = true;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>자주 문의한 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+</head>
+<body>
+    <h1>문의</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+<div id="content">
+    <p>
+        <strong>제목: </strong> 
+        <span th:text="${fqa.title}">질문 제목</span>
+    </p>
+    <p>
+        <strong>내용: </strong> 
+        <span th:text="${fqa.content}">질문 내용</span>
+    </p>
+    <p>
+        <strong>답변: </strong> 
+        <span th:text="${fqa.reply}">질문 답변</span>
+    </p>
+    <a href="/qa/fqa">목록으로 돌아가기</a>
+</div>
+</body>
+</html>

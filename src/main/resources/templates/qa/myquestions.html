@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내가 문의한 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+</head>
+<body>
+    <h1>문의</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    <div id="content">
+        <h2>내가 문의한 내역</h2>
+        <ul>
+            <!-- 문의 내역 리스트 -->
+            <li th:each="question : ${questionsPage.content}">
+                <a th:href="@{/qa/detail/{id}(id=${question.id})}" th:text="${question.title}">질문 제목</a>
+            </li>
+        </ul>
+        
+        <!-- Pagination -->
+        <div>
+            <a th:href="@{/qa/myquestions(page=${currentPage - 1}, size=${questionsPage.size})}" 
+               th:if="${questionsPage.hasPrevious()}">이전</a>
+            <span th:text="${currentPage + 1}">페이지</span> / <span th:text="${totalPages}">총 페이지</span>
+            <a th:href="@{/qa/myquestions(page=${currentPage + 1}, size=${questionsPage.size})}" 
+               th:if="${questionsPage.hasNext()}">다음</a>
+        </div>
+    </div>
+</body>
+</html>
