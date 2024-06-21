@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>펀딩 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            width: 100%;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .funding-item {
+            background-color: #f4f4f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            width: calc(25% - 20px); /* 4 items per row */
+            box-sizing: border-box;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+        .funding-item:hover {
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        .funding-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .funding-details {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .funding-images {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+        .funding-images img {
+            width: 100%;
+            height: auto;
+            display: none;
+        }
+        .funding-images img.active {
+            display: block;
+        }
+        .funding-images .prev,
+        .funding-images .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 16px;
+            margin-top: -22px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            transition: 0.6s ease;
+            border-radius: 0 3px 3px 0;
+            user-select: none;
+        }
+        .funding-images .next {
+            right: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .funding-images .prev:hover,
+        .funding-images .next:hover {
+            background-color: rgba(0,0,0,0.8);
+        }
+        .funding-progress {
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+            position: relative;
+            height: 20px;
+        }
+        .funding-progress-bar {
+            height: 100%;
+            background-color: #28a745;
+            width: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .funding-progress-text {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 20px;
+            font-size: 12px;
+            color: #fff;
+            z-index: 1;
+        }
+    </style>
+    <script>
+        async function fetchFundings() {
+            try {
+                const response = await fetch('/api/fundings/list');
+                if (response.ok) {
+                    const fundingsList = await response.json();
+                    displayFundings(fundingsList);
+                } else {
+                    alert('펀딩 목록을 가져오는 중 오류가 발생했습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('펀딩 목록을 가져오는 중 오류가 발생했습니다.');
+            }
+        }
+
+        function displayFundings(fundingsList) {
+            const fundingsContainer = document.getElementById('fundingsContainer');
+            fundingsContainer.innerHTML = '';
+
+            fundingsList.forEach(funding => {
+                const fundingItem = document.createElement('a');
+                fundingItem.className = 'funding-item';
+                fundingItem.href = `/fundingJoin?fundingsId=${funding.fundingsId}`;
+
+                const title = document.createElement('div');
+                title.className = 'funding-title';
+                title.textContent = funding.title;
+
+                const details = document.createElement('div');
+                details.className = 'funding-details';
+                details.innerHTML = `
+                    목표 금액: ${funding.goalAmount}원<br>
+                    좋아요 수: ${funding.likeCount}개<br>
+                    내용: ${funding.content}
+                `;
+
+                const imagesContainer = document.createElement('div');
+                imagesContainer.className = 'funding-images';
+
+                funding.imageUrls.forEach((imageUrl, index) => {
+                    const imgElement = document.createElement('img');
+                    imgElement.src = imageUrl;
+                    if (index === 0) {
+                        imgElement.classList.add('active');
+                    }
+                    imagesContainer.appendChild(imgElement);
+                });
+
+                const prevButton = document.createElement('a');
+                prevButton.className = 'prev';
+                prevButton.textContent = '❮';
+                prevButton.onclick = function () {
+                    showSlides(imagesContainer, -1);
+                };
+
+                const nextButton = document.createElement('a');
+                nextButton.className = 'next';
+                nextButton.textContent = '❯';
+                nextButton.onclick = function () {
+                    showSlides(imagesContainer, 1);
+                };
+
+                imagesContainer.appendChild(prevButton);
+                imagesContainer.appendChild(nextButton);
+
+                const progressContainer = document.createElement('div');
+                progressContainer.className = 'funding-progress';
+
+                const progressBar = document.createElement('div');
+                progressBar.className = 'funding-progress-bar';
+                const progressPercent = (funding.currentAmount / funding.goalAmount) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+
+                const progressText = document.createElement('div');
+                progressText.className = 'funding-progress-text';
+                progressText.textContent = `${Math.round(progressPercent)}%`;
+
+                progressContainer.appendChild(progressBar);
+                progressContainer.appendChild(progressText);
+
+                fundingItem.appendChild(title);
+                fundingItem.appendChild(details);
+                fundingItem.appendChild(imagesContainer);
+                fundingItem.appendChild(progressContainer);
+                fundingsContainer.appendChild(fundingItem);
+            });
+        }
+
+        function showSlides(container, n) {
+            const slides = container.querySelectorAll('img');
+            let currentIndex = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
+            slides[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + n + slides.length) % slides.length;
+            slides[currentIndex].classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchFundings);
+    </script>
+</head>
+<body>
+    <h1>펀딩 목록</h1>
+    <div id="fundingsContainer" class="container">
+        <!-- 펀딩 항목이 여기에 표시됩니다. -->
+    </div>
+</body>
+</html>

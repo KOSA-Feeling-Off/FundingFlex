@@ -7,18 +7,22 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fundingflex.category.service.CategoriesService;
 import com.fundingflex.common.enums.DeleteFlagEnum;
+import com.fundingflex.dto.FundingsDTO;
 import com.fundingflex.funding.domain.dto.dto.FundingsDto;
 import com.fundingflex.funding.domain.dto.dto.FundingsInfoDto;
 import com.fundingflex.funding.domain.dto.enums.FundingsStatusEnum;
 import com.fundingflex.funding.domain.dto.form.FundingsForm;
+import com.fundingflex.funding.domain.entity.FundingJoin;
 import com.fundingflex.funding.domain.entity.Fundings;
 import com.fundingflex.funding.domain.entity.Images;
+import com.fundingflex.funding.repository.FundingJoinRepository;
 import com.fundingflex.funding.repository.FundingsRepository;
 import com.fundingflex.funding.repository.ImagesRepository;
 
@@ -33,6 +37,7 @@ public class FundingsService {
 	private final FundingsRepository fundingsRepository;
 	private final ImagesRepository imagesRepository;
 	private final CategoriesService categoriesService;
+	private final FundingJoinRepository fundingJoinRepository;
 	
 	
 	
@@ -118,6 +123,35 @@ public class FundingsService {
 	public Fundings findById(Long fundingId) {
 		return fundingsRepository.findById(fundingId)
 				.orElseThrow(() -> new EntityNotFoundException("펀딩 데이터가 존재하지 않습니다."));
+	}
+	
+	
+	// 펀딩 리스트 조회
+	@Transactional
+	public List<FundingsDTO> getAllFundings() {
+	    List<Fundings> fundingsList = fundingsRepository.findAll();
+	    
+	    return fundingsList.stream().map(funding -> {
+	    	
+	        FundingsDTO dto = new FundingsDTO();
+	        dto.setFundingsId(funding.getFundingsId());
+	        dto.setTitle(funding.getTitle());
+	        dto.setContent(funding.getContent());
+//	        dto.setStatusFlag(funding.getStatusFlag()); // 추가된 부분
+	        dto.setLikeCount(funding.getLikeCount());
+	        dto.setGoalAmount(funding.getGoalAmount());
+	        
+	        int currentAmount = fundingJoinRepository.findByFundingsId(funding.getFundingsId())
+	            .stream().mapToInt(FundingJoin::getFundingAmount).sum();
+	        dto.setCurrentAmount(currentAmount);
+	        
+	        List<String> imageUrls = funding.getImageList().stream()
+	            .map(Images::getImageUrl).collect(Collectors.toList());
+	        dto.setImageUrls(imageUrls);
+	        
+	        return dto;
+	        
+	    }).collect(Collectors.toList());
 	}
 	
 }
