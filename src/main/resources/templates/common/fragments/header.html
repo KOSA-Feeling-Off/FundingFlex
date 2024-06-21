@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:fragment="headerFragment">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<title>Header</title>
+</head>
+<body>
+	<header>
+		<div class="container">
+			<div class="logo">
+				<a href="#"><img src="/img/fundingflex.png"
+					alt="FundingFlex Logo"></a>
+			</div>
+			<nav>
+				<ul class="nav-links">
+					<li><a href="#">모니터</a></li>
+					<li><a href="#">키보드</a></li>
+					<li><a href="#">마우스</a></li>
+					<li><a href="#">프린터</a></li>
+				</ul>
+			</nav>
+			<div class="search">
+				<input type="text" placeholder="Search">
+				<button type="submit">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+						fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path
+							d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+                </svg>
+				</button>
+			</div>
+			<div class="auth-buttons">
+				<button class="login-btn">로그인</button>
+				<button class="signup-btn">회원 생성</button>
+			</div>
+		</div>
+	</header>
+</body>
+</html>
