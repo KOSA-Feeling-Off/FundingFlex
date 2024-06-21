@@ -31,6 +31,7 @@ public class FundingsService {
 	        dto.setFundingsId(funding.getFundings_id());
 	        dto.setTitle(funding.getTitle());
 	        dto.setContent(funding.getContent());
+	        dto.setStatusFlag(funding.getStatusFlag()); // 추가된 부분
 	        dto.setLikeCount(funding.getLikeCount());
 	        dto.setGoalAmount(funding.getGoalAmount());
 	        

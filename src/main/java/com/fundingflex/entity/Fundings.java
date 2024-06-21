@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,11 +43,12 @@ public class Fundings {
 	@Column(length = 1000)
 	private String content; // 내용
 
-	/*
-	 * @Column
-	 * 
-	 * @Enumerated(EnumType.ORDINAL) private FundingsStatus statusFlag; // 펀딩 진행 상태
-	 */
+
+	@Column
+	
+	@Enumerated(EnumType.ORDINAL) 
+	private FundingsStatus statusFlag; // 펀딩 진행 상태
+	 
 
 	private int likeCount = 0; // 좋아요 수
 
