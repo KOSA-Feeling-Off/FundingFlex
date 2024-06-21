@@ -17,6 +17,8 @@ public class ChatDTO {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatId;
+	
+	private Long chatNumber;
     
     @Column(columnDefinition = "NVARCHAR2(255)")
     private String content;
@@ -78,5 +80,13 @@ public class ChatDTO {
 
 	public void setIsAdmin(String isAdmin) {
 		this.isAdmin = isAdmin;
+	}
+
+	public Long getChatNumber() {
+		return chatNumber;
+	}
+
+	public void setChatNumber(Long chatNumber) {
+		this.chatNumber = chatNumber;
 	}
 }
