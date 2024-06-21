@@ -38,7 +38,7 @@ public class MembersDTO {
     @Column(name = "password", nullable = false, length = 255)
     private String password;
 
-    @Column(name = "profile_url", nullable = false, length = 500)
+    @Column(name = "profile_url", nullable = true, length = 500)
     private String profileUrl;
 
     @Column(name = "created_at", nullable = false)
