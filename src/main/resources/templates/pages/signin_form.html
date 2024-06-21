@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{common/layouts/layout}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/bootstrap.min.css}">
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+<title>Login</title>
+</head>
+<body>
+	<div layout:fragment="content" class="container my-3">
+		<div class="my-3 border-bottom">
+			<div>
+				<h4>로그인</h4>
+			</div>
+		</div>
+		<form th:action="@{/api/signin}" th:object="${memberLoginForm}"
+			method="post">
+			<div th:replace="@{/common/error/form_errors} :: formErrorsFragment"></div>
+			<div class="mb-3">
+				<label for="email" class="form-label">사용자EMAIL</label> <input type="text"
+				th:field="*{email}" class="form-control">
+			</div>
+			<div class="mb-3">
+				<label for="password" class="form-label">비밀번호</label> <input
+					type="password" th:field="*{password}" class="form-control">
+			</div>
+			<button type="submit" class="btn btn-primary">로그인</button>
+		</form>
+	</div>
+</body>
+</html>
