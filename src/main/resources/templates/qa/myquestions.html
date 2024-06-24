@@ -1,3 +1,4 @@
+<!--
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,13 +17,13 @@
     <div id="content">
         <h2>내가 문의한 내역</h2>
         <ul>
-            <!-- 문의 내역 리스트 -->
+            <!-- 문의 내역 리스트 ->
             <li th:each="question : ${questionsPage.content}">
                 <a th:href="@{/qa/detail/{id}(id=${question.id})}" th:text="${question.title}">질문 제목</a>
             </li>
         </ul>
         
-        <!-- Pagination -->
+        <!-- Pagination ->
         <div>
             <a th:href="@{/qa/myquestions(page=${currentPage - 1}, size=${questionsPage.size})}" 
                th:if="${questionsPage.hasPrevious()}">이전</a>
@@ -33,3 +34,110 @@
     </div>
 </body>
 </html>
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내가 문의한 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        #content {
+            width: 60%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .number-column {
+            width: 12.5%;
+        }
+        .title-column {
+            width: 52.5%;
+        }
+        .date-column {
+            width: 17.5%;
+        }
+        .status-column {
+            width: 17.5%;
+        }
+        .pagination {
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>문의</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    <div id="content">
+        <h2>내가 문의한 내역</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">번호</th>
+                    <th class="title-column">제목</th>
+                    <th class="date-column">등록일</th>
+                    <th class="status-column">상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="question, iterStat : ${questionsPage.content}">
+                    <td th:text="${questionsPage.getTotalElements - (questionsPage.number * questionsPage.size) - iterStat.index}"></td>
+                    <td class="title-column"><a th:href="@{/qa/detail/{id}(id=${question.id})}" th:text="${question.title}">질문 제목</a></td>
+                    <td th:text="${#dates.format(question.createdAt, 'yyyy-MM-dd')}" class="date-column">등록일</td>
+                    <td th:text="${question.isReply == 'Y' ? '답변 완료' : '답변 대기'}" class="status-column"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="pagination">
+            <a th:href="@{/qa/myquestions(page=${currentPage - 1}, size=${questionsPage.size})}" 
+               th:if="${questionsPage.hasPrevious()}">이전</a>
+            <span th:text="${currentPage + 1}">페이지</span> / <span th:text="${totalPages}">총 페이지</span>
+            <a th:href="@{/qa/myquestions(page=${currentPage + 1}, size=${questionsPage.size})}" 
+               th:if="${questionsPage.hasNext()}">다음</a>
+        </div>
+    </div>
+</body>
+</html>
+

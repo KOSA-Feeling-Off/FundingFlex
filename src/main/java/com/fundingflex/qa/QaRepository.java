@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface QaRepository extends JpaRepository<QaDTO, Long>{
 
 	Page<QaDTO> findByMembersUserId(Long membersUserId, Pageable pageable);
-	 Page<QaDTO> findByAdminUserIdOrMembersUserId(Long adminUserId, Long membersUserId, Pageable pageable);
+	Page<QaDTO> findByMembersUserIdOrderByCounsulIdDesc(Long membersUserId, Pageable pageable);
 }

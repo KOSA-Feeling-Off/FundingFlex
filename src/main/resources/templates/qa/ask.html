@@ -1,3 +1,4 @@
+<!-- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +21,78 @@
             <input type="text" id="title" name="title" required><br>
             <label for="content">내용:</label>
             <textarea id="content" name="content" required></textarea><br>
+            <button type="submit">제출</button>
+        </form>
+    </div>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 하기</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        #title {
+            width: 80%;
+            margin: 0 auto;
+        }
+        #content {
+            width: 80%;
+            margin: 0 auto;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label, input, textarea, button {
+            margin: 10px 0;
+        }
+        button {
+            align-self: center;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>문의</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    <div id="content">
+        <h2>문의 하기</h2>
+        <form action="/qa/ask" method="post">
+            <label for="title">제목:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="content">내용:</label>
+            <textarea id="content" name="content" required></textarea>
             <button type="submit">제출</button>
         </form>
     </div>

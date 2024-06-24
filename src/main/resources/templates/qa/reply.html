@@ -1,24 +1,3 @@
-<!-- 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>문의 상세 내역</title>
-    <link rel="stylesheet" href="/css/qa-style.css">
-</head>
-<body>
-    <h1>문의 상세 내역</h1>
-    <div id="content">
-        <h2 th:text="${question.title}">질문 제목</h2>
-        <p><strong>내용:</strong> <span th:text="${question.content}">질문 내용</span></p>
-        <p><strong>답변:</strong> <span th:text="${question.reply}">질문 답변</span></p>
-        <a href="/qa/myquestions?userId=1">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 ->
-    </div>
-</body>
-</html>
--->
-
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -95,6 +74,38 @@
         .back-link a:hover {
             text-decoration: underline;
         }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        .submit-button {
+            text-align: center;
+        }
+        .submit-button button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-button button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -126,18 +137,24 @@
         <div class="question-content">
             <p th:text="${question.content}">질문 내용</p>
         </div>
-        <div class="question-reply" th:classappend="${question.isReply == 'Y' ? 'visible' : ''}">
+        <div class="question-reply" th:classappend="${question.isReply == 'N' ? 'visible' : ''}">
             <strong>답변:</strong>
             <p th:text="${question.reply}">질문 답변</p>
         </div>
         
-		<div class="back-link" th:if="${question.isReply == 'N'}">
-    		<a th:href="@{/qa/reply/{id}(id=${question.id})}" class="answer-button">답변 하기</a>
-		</div>
-        
         <div class="back-link">
             <a th:href="@{/qa/myquestions?userId=1}">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 -->
         </div>
+
+        <!-- 답변 작성 폼 추가 -->
+        <h2>답변 작성</h2>
+        <form th:action="@{/qa/reply/{id}(id=${question.id})}" method="post">
+        	<label for="content">답변 내용:</label>
+        	<textarea id="content" name="content" required></textarea>
+        	<div class="submit-button">
+            	<button type="submit">답변 제출</button>
+       		</div>
+        </form>
     </div>
 </body>
 </html>

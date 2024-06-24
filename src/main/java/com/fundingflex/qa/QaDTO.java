@@ -1,6 +1,9 @@
 package com.fundingflex.qa;
 
 import java.util.Date;
+
+import com.fundingflex.common.enums.Enums;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +33,7 @@ public class QaDTO {
     private Date createdAt;
 
     @Column(columnDefinition = "CHAR(1) DEFAULT 'N'")
-    private String isDeleted;
+    private String isReply;
 
     @Column(nullable = false)
     private Long membersUserId;
@@ -46,77 +49,77 @@ public class QaDTO {
         if (createdAt == null) {
             createdAt = new Date();
         }
-        if (isDeleted == null) {
-            isDeleted = "N";
+        if (isReply == null) {
+        	isReply = Enums.Delete.N.name();
         }
         if (reply == null) {
             reply = " ";
         }
         // adminUserId는 명시적으로 기본값을 설정하지 않아도 됨
     }
-	
-    public Long getId() {
-        return counsulId;
-    }
 
-    public void setCounsulId(Long counsulId) {
-        this.counsulId = counsulId;
-    }
+	public Long getId() {
+		return counsulId;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public void setId(Long counsulId) {
+		this.counsulId = counsulId;
+	}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getContent() {
-        return content;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+	public String getContent() {
+		return content;
+	}
 
-    public String getReply() {
-        return reply;
-    }
+	public void setContent(String content) {
+		this.content = content;
+	}
 
-    public void setReply(String reply) {
-        this.reply = reply;
-    }
+	public String getReply() {
+		return reply;
+	}
 
-    public Date getCreatedAt() {
-        return createdAt;
-    }
+	public void setReply(String reply) {
+		this.reply = reply;
+	}
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
+	public Date getCreatedAt() {
+		return createdAt;
+	}
 
-    public String getIsDeleted() {
-        return isDeleted;
-    }
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
 
-    public void setIsDeleted(String isDeleted) {
-        this.isDeleted = isDeleted;
-    }
+	public String getIsReply() {
+		return isReply;
+	}
 
-    public Long getMembersUserId() {
-        return membersUserId;
-    }
+	public void setIsReply(String isReply) {
+		this.isReply = isReply;
+	}
 
-    public void setMembersUserId(Long membersUserId) {
-        this.membersUserId = membersUserId;
-    }
+	public Long getMembersUserId() {
+		return membersUserId;
+	}
 
-    public Long getAdminUserId() {
-        return adminUserId;
-    }
+	public void setMembersUserId(Long membersUserId) {
+		this.membersUserId = membersUserId;
+	}
 
-    public void setAdminUserId(Long adminUserId) {
-        this.adminUserId = adminUserId;
-    }
-    
+	public Long getAdminUserId() {
+		return adminUserId;
+	}
+
+	public void setAdminUserId(Long adminUserId) {
+		this.adminUserId = adminUserId;
+	}
+
 }
