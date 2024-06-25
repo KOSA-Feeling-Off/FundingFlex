@@ -2,6 +2,7 @@ package com.fundingflex.funding.controller;
 
 import com.fundingflex.funding.domain.dto.dto.ResponseFundingInfoDto;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,66 +33,63 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class FundingsController {
 
-	
-	private final FundingsService fundingsService;
-	private final CategoriesService categoriesService;
-	
-	
-	// 펀딩 개설
-	@GetMapping
-	public String showFundingForm(Model model) {
-		
-		List<CategoriesDto> categoryList = categoriesService.selectAllCategories();
-		
-		model.addAttribute("fundingsForm", new FundingsForm());
-		model.addAttribute("categoryList", categoryList);
-		
-		return "funding/funding-form";
-	}
+    private final FundingsService fundingsService;
+    private final CategoriesService categoriesService;
+    
+    // 펀딩 개설
+    // 기존 펀딩 개설 폼 매핑 수정 (기존의 GET /api/fundings)
+    @GetMapping("/form")
+    public String showFundingForm(Model model) {
+        List<CategoriesDto> categoryList = categoriesService.selectAllCategories();
+        
+        model.addAttribute("fundingsForm", new FundingsForm());
+        model.addAttribute("categoryList", categoryList);
+        
+        return "funding/funding-form";
+    }
+    
+    // 펀딩 목록 화면 조회
+    @GetMapping("/list-view")
+    public String getFundingsPage() {
+        return "fundings.html"; // static 폴더 내의 HTML 파일 이름
+    }
 
-	
-	// 개설 펀딩 저장
-	@PostMapping
-	public String createFunding(@Validated @ModelAttribute("fundingsForm") FundingsForm fundingsForm,
-			@RequestParam("images") MultipartFile[] images, BindingResult bindingResult) {
+    // 개설 펀딩 저장
+    @PostMapping
+    public String createFunding(@ModelAttribute("fundingsForm") FundingsForm fundingsForm,
+            @RequestParam("images") MultipartFile[] images, Model model) {
+        
+        FundingsDto fundingsDto = fundingsService.saveFundings(fundingsForm, images);
+        
+        return "redirect:/api/fundings/" + fundingsDto.getCategoryId()
+                    + "/details/" + fundingsDto.getFundingsId();
+    }
+    
+    // 펀딩 상세 조회
+    @GetMapping("/{category-id}/details/{funding-id}")
+    public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
+            @PathVariable(name = "funding-id") Long fundingId, Model model) {
+        
+        FundingsInfoDto fundingsInfo = fundingsService.selectFundinsInfo(categoryId, fundingId);
+        model.addAttribute("fundingsInfo", fundingsInfo);
+        return "funding/funding-details";
+    }
 
-		if(bindingResult.hasErrors()) {
-			return "funding/funding-form";
-		}
-		
-		FundingsDto fundingsDto = fundingsService.saveFundings(fundingsForm, images);
-		
-		return "redirect:/api/fundings/" + fundingsDto.getCategoryId()
-					+ "/details/" + fundingsDto.getFundingsId();
-	}
-	
-	
-	// 펀딩 상세 조회
-	@GetMapping("/{category-id}/details/{funding-id}")
-	public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
-			@PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
-
-		ResponseFundingInfoDto responseFundingInfoDto =
-			fundingsService.selectFundinsInfo(categoryId, fundingId);
-
-	    model.addAttribute("responseFundingInfo", responseFundingInfoDto);
-
-	    return "funding/funding-details";
-	}
-	
-	
-	// 펀딩 목록 화면 조회
-	@GetMapping("/list-view")
-	public String getFundingsPage() {
-		return "fundings.html"; // static 폴더 내의 HTML 파일 이름
-	}
-	
-	
-	// 펀딩 목록 ajax
-	@GetMapping("/list")
-	@ResponseBody
-	public ResponseEntity<List<FundingsDTO>> getAllFundings() {
-	    List<FundingsDTO> fundingsList = fundingsService.getAllFundings();
-	    return ResponseEntity.ok(fundingsList);
-	}
+    // 펀딩 목록 ajax
+    @GetMapping("/list")
+    @ResponseBody
+    public ResponseEntity<List<FundingsDTO>> getAllFundings() {
+        List<FundingsDTO> fundingsList = fundingsService.getAllFundings();
+        return ResponseEntity.ok(fundingsList);
+    }
+    
+    // 좋아요 처리
+    @PostMapping("/like/{fundingsId}")
+    @ResponseBody
+    public ResponseEntity<?> likeFunding(@PathVariable("fundingsId") Long fundingsId) {
+        boolean liked = fundingsService.likeFunding(fundingsId);
+        return ResponseEntity.ok(Map.of("liked", liked));
+    }
+    
+    
 }

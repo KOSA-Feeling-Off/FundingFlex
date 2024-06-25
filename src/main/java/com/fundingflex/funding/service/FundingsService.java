@@ -11,7 +11,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -48,7 +50,8 @@ public class FundingsService {
 	private final CategoriesMapper categoriesRepository;
 	private final FundingJoinRepository fundingJoinRepository;
 	
-	
+	// 사용자별 좋아요 상태를 저장하기 위한 Set (실제 서비스에서는 데이터베이스를 사용)
+    private final Set<String> userLikes = new HashSet<>();
 	
 	// 이미지 파일 경로
 	private final Path fundingImgPath = Paths.get("src/main/resources/static/images/fundings");
@@ -170,7 +173,7 @@ public class FundingsService {
 	        dto.setFundingsId(funding.getFundingsId());
 	        dto.setTitle(funding.getTitle());
 	        dto.setContent(funding.getContent());
-//	        dto.setStatusFlag(funding.getStatusFlag()); // 추가된 부분
+	        dto.setStatusFlag(funding.getStatusFlag()); // 추가된 부분
 	        dto.setLikeCount(funding.getLikeCount());
 	        dto.setGoalAmount(funding.getGoalAmount());
 	        
@@ -186,5 +189,27 @@ public class FundingsService {
 	        
 	    }).collect(Collectors.toList());
 	}
+	
+	// 좋아요 기능
+	public boolean likeFunding(Long fundingsId) {
+        // 예시 사용자 ID (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함)
+        String userId = "exampleUserId";
+        String userFundingsKey = userId + "-" + fundingsId;
+        
+        if (userLikes.contains(userFundingsKey)) {
+            return false; // 이미 좋아요를 누른 경우
+        }
+
+        userLikes.add(userFundingsKey);
+
+        Fundings fundings = fundingsRepository.findById(fundingsId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid fundingsId"));
+        
+        fundings.setLikeCount(fundings.getLikeCount() + 1);
+        fundingsRepository.save(fundings);
+        return true;
+    }
+	
+	
 	
 }

@@ -101,6 +101,4 @@ public class Fundings {
 	@Column(columnDefinition = "CHAR(1)")
 	@Enumerated(EnumType.STRING)
 	private DeleteFlagEnum isDeleted;		// 삭제 여부
-
-
 }

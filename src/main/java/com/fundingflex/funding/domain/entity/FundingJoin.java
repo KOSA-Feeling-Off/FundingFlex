@@ -26,34 +26,34 @@ public class FundingJoin {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long fundingJoinId;
+	private Long fundingJoinId;	    	// 펀딩 참여 아이디
 
 	@Column
-	private Long fundingsId;
+	private Long fundingsId;			// 펀딩 아이디
 
 	@Column
-	private Long userId;
+	private Long userId;				// 유저 아이디
 
 	@Column
-	private int fundingAmount;
+	private int fundingAmount;			// 펀딩 금액
 
 	@Column
-	private char nameUndisclosed;
+	private char nameUndisclosed;		// 이름 비공개
 
 	@Column
-	private char amountUndisclosed;
+	private char amountUndisclosed;		// 금액 비공개
 
 	@CreatedDate
-	private LocalDateTime createdAt;
+	private LocalDateTime createdAt;	// 생성일
 
 	@CreatedBy
-	private String createdBy;
+	private String createdBy;			// 생성자
 
 	@LastModifiedDate
-	private LocalDateTime updatedAt;
+	private LocalDateTime updatedAt;	// 수정일
 
 	@LastModifiedBy
-	private String updatedBy;
+	private String updatedBy;			// 수정자
 
-	private char isDeleted;
+	private char isDeleted;				// 삭제 여부
 }

@@ -10,7 +10,7 @@ public class FundingsDTO {
     private Long fundingsId;
     private String title;
     private String content;
-    private FundingsStatusEnum statusFlag; // 추가된 부분
+    private FundingsStatusEnum statusFlag; 
     private int likeCount;
     private int goalAmount;
     private int currentAmount;
