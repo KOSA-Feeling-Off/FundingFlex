@@ -37,7 +37,6 @@ public class FundingsController {
     private final CategoriesService categoriesService;
     
     // 펀딩 개설
-    // 기존 펀딩 개설 폼 매핑 수정 (기존의 GET /api/fundings)
     @GetMapping("/form")
     public String showFundingForm(Model model) {
         List<CategoriesDto> categoryList = categoriesService.selectAllCategories();
@@ -48,12 +47,6 @@ public class FundingsController {
         return "funding/funding-form";
     }
     
-    // 펀딩 목록 화면 조회
-    @GetMapping("/list-view")
-    public String getFundingsPage() {
-        return "fundings.html"; // static 폴더 내의 HTML 파일 이름
-    }
-
     // 개설 펀딩 저장
     @PostMapping
     public String createFunding(@ModelAttribute("fundingsForm") FundingsForm fundingsForm,
@@ -65,13 +58,20 @@ public class FundingsController {
                     + "/details/" + fundingsDto.getFundingsId();
     }
     
+    // 펀딩 목록 화면 조회
+    @GetMapping("/list-view")
+    public String getFundingsPage() {
+        return "fundings.html"; // static 폴더 내의 HTML 파일 이름
+    }
+
+    
     // 펀딩 상세 조회
     @GetMapping("/{category-id}/details/{funding-id}")
     public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
-            @PathVariable(name = "funding-id") Long fundingId, Model model) {
+            @PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
         
-        FundingsInfoDto fundingsInfo = fundingsService.selectFundinsInfo(categoryId, fundingId);
-        model.addAttribute("fundingsInfo", fundingsInfo);
+    	ResponseFundingInfoDto fundingsInfo = fundingsService.selectFundinsInfo(categoryId, fundingId);
+        model.addAttribute("responseFundingInfo", fundingsInfo);
         return "funding/funding-details";
     }
 

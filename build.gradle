@@ -45,11 +45,8 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	
-	// Log4JDBC 종속성 추가
-	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
-	
 	//오라클 클라우드 연결을 위한 의존성 추가 (종현이 클라우드)
-	//runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
 	//implementation 'com.oracle.database.security:osdt_cert'
 	//implementation 'com.oracle.database.security:oraclepki'
 	//implementation 'com.oracle.database.security:osdt_core'
@@ -62,9 +59,12 @@ dependencies {
 	//swagger
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 	
+	//웹 소켓
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	
-	
-	
+	// Log4JDBC 종속성 추가 - 개인 dbms 하려고
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+	implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
 	
 }
 

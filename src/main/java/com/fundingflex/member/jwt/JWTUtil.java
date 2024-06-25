@@ -2,10 +2,13 @@ package com.fundingflex.member.jwt;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import io.jsonwebtoken.Jwts;
 
 @Component
