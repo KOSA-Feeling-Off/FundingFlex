@@ -1,3 +1,4 @@
+<!-- 
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -26,14 +27,14 @@
         <h2>자주 문의한 내역</h2>
         <h3>Fqa 목록</h3>
         <ul>
-            <!-- Fqa 리스트 -->
+            <!-- Fqa 리스트 ->
             <li th:each="fqa : ${fqas}">
                 <a th:href="@{/qa/fqa/detail/{id}(id=${fqa.fqaId})}" th:text="${fqa.title}">질문 제목</a>
             </li>
         </ul>
     </div>
     
-        <!-- 검색 기능 -->
+        <!-- 검색 기능 ->
     <div class="search-container">
         <form th:action="@{/qa/fqa/search}" method="get">
             <select name="searchType">
@@ -46,9 +47,159 @@
         </form>
     </div>
 
-    <!-- "FQA 등록하기" 버튼 게시판 아래에 추가 -->
+    <!-- "FQA 등록하기" 버튼 게시판 아래에 추가 ->
     <div id="add-button-container">
         <a href="/qa/fqa/add" class="add-button">FQA 등록하기</a>
     </div>
 </body>
 </html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{common/layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css"
+	th:href="@{/css/bootstrap.min.css}">
+    <title>자주 문의한 내역</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1, h2, h3 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        #content {
+            width: 60%;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .number-column {
+            width: 10%;
+        }
+        .title-column {
+            width: 72%;
+        }
+        .date-column {
+            width: 18%;
+        }
+        .search-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .search-container form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+        }
+        .search-container select {
+            margin-right: 10px;
+            flex: 0.5;
+        }
+        .search-container input {
+            margin-right: 10px;
+            flex: 7;
+        }
+        .search-container button {
+            margin-left: 10px;
+            flex: 0.3;
+        }
+        #add-button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .add-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .add-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content">
+    <h1>문의</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+
+    <div id="content">
+        <h2>자주 문의한 내역</h2>
+        <h3>Fqa 목록</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th class="number-column">번호</th>
+                    <th class="title-column">제목</th>
+                    <th class="date-column">등록일</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="fqa, iterStat : ${fqas}">
+                    <td th:text="${fqas.size() - iterStat.index}"></td>
+                    <td class="title-column"><a th:href="@{/qa/fqa/detail/{id}(id=${fqa.fqaId})}" th:text="${fqa.title}">질문 제목</a></td>
+                	<td th:text="${#dates.format(fqa.createdAt, 'yyyy-MM-dd')}" class="date-column">등록일</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="search-container">
+            <form th:action="@{/qa/fqa/search}" method="get">
+                <select name="searchType">
+                    <option value="title">제목</option>
+                    <option value="content">내용</option>
+                    <option value="titleContent">제목+내용</option>
+                </select>
+                <input type="text" name="keyword" placeholder="검색어 입력" required>
+                <button type="submit">검색</button>
+            </form>
+        </div>
+
+        <!-- "FQA 등록하기" 버튼 -->
+        <div id="add-button-container">
+            <a href="/qa/fqa/add" class="add-button">FQA 등록하기</a>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
+

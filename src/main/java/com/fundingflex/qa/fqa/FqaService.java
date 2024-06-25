@@ -31,12 +31,14 @@ public class FqaService {
                              .orElseThrow(() -> new RuntimeException("Fqa not found with id: " + id));
     }
 
-	public void create(String title, String content, String reply) {
+	public void create(Long adminId, String title, String content, String reply) {
         FqaDTO fqaDTO = new FqaDTO();
         fqaDTO.setTitle(title);
         fqaDTO.setContent(content);
         fqaDTO.setReply(reply);
-
+        fqaDTO.setAdminUserId(adminId);
+        fqaDTO.setCreatedAt(new Date());
+        
         this.fqaRepository.save(fqaDTO);
 		
 	}
