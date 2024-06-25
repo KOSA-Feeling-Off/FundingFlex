@@ -33,7 +33,9 @@ public class FqaController {
         if (bindingResult.hasErrors()) {
             return "qa/add";
         }
-        this.fqaService.create(fqaForm.getTitle(), fqaForm.getContent(), fqaForm.getReply());
+        //임시
+		Long testAdminId = 0L;
+        this.fqaService.create(testAdminId, fqaForm.getTitle(), fqaForm.getContent(), fqaForm.getReply());
         return "redirect:/qa/fqa";
     }
 

@@ -2,6 +2,8 @@ package com.fundingflex.qa.chat;
 
 import java.util.Date;
 
+import com.fundingflex.common.enums.Enums;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +40,7 @@ public class ChatDTO {
             createdAt = new Date();
         }
         if (isAdmin == null) {
-        	isAdmin = "N";
+        	isAdmin = Enums.Admin.N.name();
         }
     }
 
