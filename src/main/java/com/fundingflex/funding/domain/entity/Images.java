@@ -1,5 +1,7 @@
 package com.fundingflex.funding.domain.entity;
 
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -41,13 +43,15 @@ public class Images {
 	private int seq;						// 이미지 순서
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "fundings_id")
+    @JoinColumn(name = "fundins_id")
     private Fundings fundings;				// 펀딩
 	
 	
 	@CreatedDate
-	private LocalDateTime createdAt;		// 생성일지
-	
-	
+	private LocalDateTime createdAt;		// 생성일시
+
+
+	@Enumerated(EnumType.STRING)
+	@Column(name = "is_deleted", columnDefinition = "CHAR(1)")
 	private DeleteFlagEnum isDeleted;		// 삭제여부
 }

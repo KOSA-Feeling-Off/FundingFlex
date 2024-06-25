@@ -1,3 +1,5 @@
+<!-- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,5 +30,136 @@
     </p>
     <a href="/qa/fqa">목록으로 돌아가기</a>
 </div>
+</body>
+</html>
+
+-->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 상세 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+</head>
+<body>
+    <h1>문의 상세 내역</h1>
+    <div id="content">
+        <h2 th:text="${question.title}">질문 제목</h2>
+        <p><strong>내용:</strong> <span th:text="${question.content}">질문 내용</span></p>
+        <p><strong>답변:</strong> <span th:text="${question.reply}">질문 답변</span></p>
+        <a href="/qa/myquestions?userId=1">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 ->
+    </div>
+</body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자주 문의한 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        #content {
+            width: 60%;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .fqa-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .fqa-header .title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .fqa-header .meta {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .fqa-header .meta div {
+            flex: 1;
+            border-right: 1px solid #ddd;
+            padding: 5px;
+        }
+        .fqa-header .meta div:last-child {
+            border-right: none;
+        }
+        .fqa-content, .fqa-reply {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>자주 문의한 내역</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    <div id="content">
+        <div class="fqa-header">
+            <div class="title" th:text="${fqa.title}">질문 제목</div>
+            <div class="meta">
+                <div>
+                    <strong>등록자명:</strong>
+                    <span th:text="${fqa.adminUserId}">등록자명</span>
+                </div>
+                <div>
+                    <strong>등록일:</strong>
+                    <span th:text="${#dates.format(fqa.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-06-24</span>
+                </div>
+            </div>
+        </div>
+        <div class="fqa-content">
+            <p th:text="${fqa.content}">질문 내용</p>
+        </div>
+        <div class="fqa-reply">
+            <strong>답변:</strong>
+            <p th:text="${fqa.reply}">질문 답변</p>
+        </div>
+        <div class="back-link">
+            <a th:href="@{/qa/fqa}">목록으로 돌아가기</a>
+        </div>
+    </div>
 </body>
 </html>

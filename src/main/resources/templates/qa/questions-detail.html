@@ -1,17 +1,270 @@
+<!-- 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>문의 상세 내역</title>
     <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        #content {
+            width: 60%;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .question-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .question-header .title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .question-header .meta {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .question-header .meta div {
+            flex: 1;
+            border-right: 1px solid #ddd;
+            padding: 5px;
+        }
+        .question-header .meta div:last-child {
+            border-right: none;
+        }
+        .question-content, .question-reply {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .question-reply {
+            display: none; /* 기본적으로 숨김 */
+        }
+        .question-reply.visible {
+            display: block; /* visible 클래스가 추가되면 보이게 함 */
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <h1>문의 상세 내역</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
     <div id="content">
-        <h2 th:text="${question.title}">질문 제목</h2>
-        <p><strong>내용:</strong> <span th:text="${question.content}">질문 내용</span></p>
-        <p><strong>답변:</strong> <span th:text="${question.reply}">질문 답변</span></p>
-        <a href="/qa/myquestions?userId=1">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 -->
+        <div class="question-header">
+            <div class="title" th:text="${question.title}">질문 제목</div>
+            <div class="meta">
+                <div>
+                    <strong>등록자명:</strong>
+                    <span th:text="${question.membersUserId}">등록자명</span>
+                </div>
+                <div>
+                    <strong>등록일:</strong>
+                    <span th:text="${#dates.format(question.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-06-24</span>
+                </div>
+                <div>
+                    <strong>답변 상태:</strong>
+                    <span th:text="${question.isReply == 'Y' ? '답변 완료' : '답변 대기'}">답변 상태</span>
+                </div>
+            </div>
+        </div>
+        <div class="question-content">
+            <p th:text="${question.content}">질문 내용</p>
+        </div>
+        <div class="question-reply" th:classappend="${question.isReply == 'Y' ? 'visible' : ''}">
+            <strong>답변:</strong>
+            <p th:text="${question.reply}">질문 답변</p>
+        </div>
+        
+		<div class="back-link" th:if="${question.isReply == 'N'}">
+    		<a th:href="@{/qa/reply/{id}(id=${question.counsulId})}" class="answer-button">답변 하기</a>
+		</div>
+        
+        <div class="back-link">
+            <a th:href="@{/qa/myquestions?userId=1}">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 ->
+        </div>
+    </div>
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>문의 상세 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        nav {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        #content {
+            width: 60%;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+        .question-header {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .question-header .title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+        }
+        .question-header .meta {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .question-header .meta div {
+            flex: 1;
+            border-right: 1px solid #ddd;
+            padding: 5px;
+        }
+        .question-header .meta div:last-child {
+            border-right: none;
+        }
+        .question-content, .question-reply {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .question-reply {
+            display: none; /* 기본적으로 숨김 */
+        }
+        .question-reply.visible {
+            display: block; /* visible 클래스가 추가되면 보이게 함 */
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .back-link a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        .image-gallery {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .image-gallery img {
+            max-width: 200px;
+            margin: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        /* 이미지 갤러리와 질문 답변 사이의 구분선 */
+		.image-gallery + .question-reply {
+    		border-top: 1px solid #ddd;
+    		margin-top: 20px;
+    		padding-top: 20px;
+		}
+    </style>
+</head>
+<body>
+    <h1>문의 상세 내역</h1>
+    <nav>
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    <div id="content">
+        <div class="question-header">
+            <div class="title" th:text="${question.title}">질문 제목</div>
+            <div class="meta">
+                <div>
+                    <strong>등록자명:</strong>
+                    <span th:text="${question.membersUserId}">등록자명</span>
+                </div>
+                <div>
+                    <strong>등록일:</strong>
+                    <span th:text="${#dates.format(question.createdAt, 'yyyy-MM-dd HH:mm:ss')}">2024-06-24</span>
+                </div>
+                <div>
+                    <strong>답변 상태:</strong>
+                    <span th:text="${question.isReply == 'Y' ? '답변 완료' : '답변 대기'}">답변 상태</span>
+                </div>
+            </div>
+        </div>
+        <div class="question-content">
+            <p th:text="${question.content}">질문 내용</p>
+        </div>
+        
+        <div class="image-gallery">
+            <div th:each="image : ${question.images}">
+                <img th:src="@{/images/qa/{imageUrl}(imageUrl=${image.qaImageUrl})}" alt="Image"/>
+            </div>
+        </div>
+
+        <div class="question-reply" th:classappend="${question.isReply == 'Y' ? 'visible' : ''}">
+            <strong>답변:</strong>
+            <p th:text="${question.reply}">질문 답변</p>
+        </div>
+
+        <div class="back-link" th:if="${question.isReply == 'N'}">
+            <a th:href="@{/qa/reply/{id}(id=${question.counsulId})}" class="answer-button">답변 하기</a>
+        </div>
+
+        <div class="back-link">
+            <a th:href="@{/qa/myquestions?userId=1}">목록으로 돌아가기</a> <!-- userId는 실제 로그인한 유저 ID를 사용 -->
+        </div>
     </div>
 </body>
 </html>

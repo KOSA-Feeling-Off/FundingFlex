@@ -1,5 +1,7 @@
 package com.fundingflex.qa.fqa;
 
+import java.util.Date;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,10 +26,31 @@ public class FqaDTO {
     @Column(columnDefinition = "NVARCHAR2(255) DEFAULT ' '")
     private String reply;
 
+    @Column(nullable = false)
+    private Date createdAt;
+    
+    @Column(columnDefinition = "NUMBER DEFAULT NULL")
+    private Long adminUserId;
 
     // Getters and setters...
 
-    public Long getFqaId() {
+    public Date getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Long getAdminUserId() {
+		return adminUserId;
+	}
+
+	public void setAdminUserId(Long adminUserId) {
+		this.adminUserId = adminUserId;
+	}
+
+	public Long getFqaId() {
         return fqaId;
     }
 

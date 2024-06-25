@@ -4,18 +4,99 @@ document.addEventListener('DOMContentLoaded', function () {
         var sortable = new Sortable(imageUploadContainer, {
             animation: 150,
             swap: true,
-            swapClass: 'highlight',  // CSS class to add when swapping
+            swapClass: 'highlight',
             onEnd: function (evt) {
                 updateImageSequence();
             }
         });
 
-        // Assign IDs to image upload containers for sortable functionality
+        
         var imageUploads = imageUploadContainer.getElementsByClassName('image-upload');
         for (var i = 0; i < imageUploads.length; i++) {
             imageUploads[i].id = 'image-upload-' + i;
         }
     }
+	
+	// 금액 천단위 표시
+    function formatNumberWithCommas(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
+    const goalAmountElement = document.querySelector('.goal-amount');
+    if (goalAmountElement) {
+        goalAmountElement.textContent = formatNumberWithCommas(goalAmountElement.textContent);
+    }
+
+    const collectedAmountElement = document.querySelector('.collected-amount');
+    if (collectedAmountElement) {
+        collectedAmountElement.textContent = formatNumberWithCommas(collectedAmountElement.textContent);
+    }
+	
+	// 애니메이션 효과를 위한 함수
+    function animateValue(element, start, end, duration, unit) {
+        let startTimestamp = null;
+		
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+			
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            const value = Math.floor(progress * (end - start) + start);
+            element.textContent = formatNumberWithCommas(value) + unit;
+			
+            if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+		
+        window.requestAnimationFrame(step);
+    }
+
+    function animateProgressBar(element, start, end, duration) {
+        let startTimestamp = null;
+		
+        const step = (timestamp) => {
+            if (!startTimestamp) startTimestamp = timestamp;
+			
+            const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+            element.style.width = (progress * (end - start) + start) + '%';
+            
+			if (progress < 1) {
+                window.requestAnimationFrame(step);
+            }
+        };
+		
+        window.requestAnimationFrame(step);
+    }
+
+    // 퍼센트 애니메이션
+    const progressBar = document.getElementById('bar-line');
+    const progressLabel = document.getElementById('progress-label');
+    const labelRaised = document.getElementById('percent-raised');
+
+    if (progressLabel) {
+        const percent = parseInt(progressLabel.textContent.replace('%', '').trim());
+        animateValue(progressLabel, 0, percent, 1000, '%');
+        animateProgressBar(progressBar, 0, percent, 500);
+    }
+
+    if (labelRaised) {
+        const percent = parseInt(labelRaised.textContent.replace('%', '').trim());
+        animateValue(labelRaised, 0, percent, 1000, '%');
+    }
+	
+
+    // 금액 애니메이션
+    if (collectedAmountElement) {
+        const collectedAmountValue = parseInt(collectedAmountElement.textContent.replace(/[^0-9]/g, ''));
+        animateValue(collectedAmountElement, 0, collectedAmountValue, 1000, ' 원 달성');
+    }
+	
+	
+	// 좋아요 버튼 클릭 이벤트
+	const heartButton = document.getElementById('heartButton');
+    heartButton.addEventListener('click', () => {
+        heartButton.classList.toggle('clicked');
+    });
 });
 
 
@@ -70,15 +151,23 @@ function validateForm() {
     fields.forEach(function(field) {
         var input = document.getElementById(field.id);
         var error = document.getElementById(field.errorId);
-        
-        if (input.value.trim() === '' || input.value === 0) {
+
+        console.log(input);
+        if (input.value.trim() === '' || input.value === "0") {
             error.textContent = field.errorMessage;
             error.style.display = 'block';
             isValid = false;
+
+            console.log(field.id);
         } else {
             error.style.display = 'none';
         }
     });
-
     return isValid;
+}
+
+// 이미지 선택 이벤트
+function changeMainImage(thumbnail) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = thumbnail.src;
 }
