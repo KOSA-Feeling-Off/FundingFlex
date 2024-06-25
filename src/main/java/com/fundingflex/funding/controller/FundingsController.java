@@ -59,6 +59,7 @@ public class FundingsController {
 	}
 	
 	
+	
 	// 펀딩 상세 조회
 	@GetMapping("/{category-id}/details/{funding-id}")
 	public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
