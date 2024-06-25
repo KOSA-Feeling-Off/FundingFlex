@@ -21,18 +21,18 @@ public class FundingConditions {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long fcId;
+	private Long fcId;						// 펀딩 상태 아이디
 
 	@Column(name = "fundings_id")
-	private Long fundingsId;
+	private Long fundingsId;				// 펀딩 아이디
 
 	@Column(name = "collected_amount")
-	private int collectedAmount;
+	private int collectedAmount;			// 누적 금액 총액
 
 	@Column(name = "percent")
-	private int percent;
+	private int percent;					// 누적 금액 백분율
 
 	@ManyToOne
 	@JoinColumn(name = "fundings_id", insertable = false, updatable = false)
-	private Fundings fundings;
+	private Fundings fundings;				
 }

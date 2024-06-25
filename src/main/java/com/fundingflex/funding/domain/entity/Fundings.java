@@ -90,6 +90,9 @@ public class Fundings {
 	
 	
 	private DeleteFlagEnum isDeleted;		// 삭제 여부
+
+
+
 	
 	
 }

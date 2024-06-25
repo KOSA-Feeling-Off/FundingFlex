@@ -1,18 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+    layout:decorate="~{common/layouts/layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>펀딩 목록</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
         }
         .container {
             background-color: #fff;
@@ -21,7 +16,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 1200px;
             width: 100%;
-            margin-bottom: 20px;
+            margin: 20px auto; /* Center the container */
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
@@ -30,8 +25,22 @@
             text-align: center;
             color: #333;
             margin-bottom: 20px;
+            width: 100%;
+        }
+        .filter-container {
+            display: flex;
+            justify-content: flex-start; /* Align to the left */
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        .filter-container select {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            font-size: 16px;
         }
         .funding-item {
+            position: relative;
             background-color: #f4f4f9;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -62,10 +71,12 @@
             overflow: hidden;
             border-radius: 8px;
             margin-bottom: 10px;
+            height: 200px; /* Fixed height */
         }
         .funding-images img {
             width: 100%;
-            height: auto;
+            height: 100%;
+            object-fit: cover;
             display: none;
         }
         .funding-images img.active {
@@ -85,6 +96,7 @@
             transition: 0.6s ease;
             border-radius: 0 3px 3px 0;
             user-select: none;
+            text-decoration-line: none;
         }
         .funding-images .next {
             right: 0;
@@ -119,11 +131,44 @@
             color: #fff;
             z-index: 1;
         }
+        .create-funding-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            position: absolute;
+            right: 50px; /* Move button to the left */
+            top: 20px;
+        }
+        .create-funding-btn:hover {
+            background-color: #0056b3;
+        }
+        .header {
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .like-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 24px;
+            color: #ddd;
+        }
+        .like-button.liked {
+            color: #ff0000;
+        }
     </style>
     <script>
-        async function fetchFundings() {
+        async function fetchFundings(sortBy = 'createdDate') {
             try {
-                const response = await fetch('/api/fundings/list');
+                const response = await fetch(`/api/fundings/list?sortBy=${sortBy}`);
                 if (response.ok) {
                     const fundingsList = await response.json();
                     displayFundings(fundingsList);
@@ -147,14 +192,14 @@
 
                 const title = document.createElement('div');
                 title.className = 'funding-title';
-                title.textContent = funding.title;
+                // 제목 길이 제한
+                title.textContent = funding.title.length > 20 ? funding.title.substring(0, 20) + '...' : funding.title;
 
                 const details = document.createElement('div');
                 details.className = 'funding-details';
                 details.innerHTML = `
                     목표 금액: ${funding.goalAmount}원<br>
-                    좋아요 수: ${funding.likeCount}개<br>
-                    내용: ${funding.content}
+                    좋아요 수: <span class="like-count">${funding.likeCount}</span>개
                 `;
 
                 const imagesContainer = document.createElement('div');
@@ -162,7 +207,7 @@
 
                 funding.imageUrls.forEach((imageUrl, index) => {
                     const imgElement = document.createElement('img');
-                    imgElement.src = imageUrl;
+                    imgElement.src = `/images/fundings/${imageUrl}`;
                     if (index === 0) {
                         imgElement.classList.add('active');
                     }
@@ -172,14 +217,16 @@
                 const prevButton = document.createElement('a');
                 prevButton.className = 'prev';
                 prevButton.textContent = '❮';
-                prevButton.onclick = function () {
+                prevButton.onclick = function (event) {
+                    event.preventDefault();
                     showSlides(imagesContainer, -1);
                 };
 
                 const nextButton = document.createElement('a');
                 nextButton.className = 'next';
                 nextButton.textContent = '❯';
-                nextButton.onclick = function () {
+                nextButton.onclick = function (event) {
+                    event.preventDefault();
                     showSlides(imagesContainer, 1);
                 };
 
@@ -201,10 +248,20 @@
                 progressContainer.appendChild(progressBar);
                 progressContainer.appendChild(progressText);
 
+                // Like button
+                const likeButton = document.createElement('div');
+                likeButton.className = 'like-button';
+                likeButton.innerHTML = '♥';
+                likeButton.onclick = function(event) {
+                    event.preventDefault();
+                    handleLike(funding.fundingsId, likeButton, details.querySelector('.like-count'));
+                };
+
                 fundingItem.appendChild(title);
                 fundingItem.appendChild(details);
                 fundingItem.appendChild(imagesContainer);
                 fundingItem.appendChild(progressContainer);
+                fundingItem.appendChild(likeButton);
                 fundingsContainer.appendChild(fundingItem);
             });
         }
@@ -217,13 +274,51 @@
             slides[currentIndex].classList.add('active');
         }
 
-        document.addEventListener('DOMContentLoaded', fetchFundings);
+        async function handleLike(fundingsId, likeButton, likeCountElement) {
+            try {
+                const response = await fetch(`/api/fundings/like/${fundingsId}`, {
+                    method: 'POST',
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.liked) {
+                        likeButton.classList.add('liked');
+                        likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1;
+                    } else {
+                        alert('이미 좋아요를 누르셨습니다.');
+                    }
+                } else {
+                    alert('좋아요 처리 중 오류가 발생했습니다.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('좋아요 처리 중 오류가 발생했습니다.');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => fetchFundings());
+
+        function handleFilterChange() {
+            const filter = document.getElementById('filter').value;
+            fetchFundings(filter);
+        }
     </script>
 </head>
 <body>
-    <h1>펀딩 목록</h1>
-    <div id="fundingsContainer" class="container">
-        <!-- 펀딩 항목이 여기에 표시됩니다. -->
+    <div layout:fragment="content">
+        <div class="header">
+            <h1>펀딩 목록</h1>
+            <a href="/api/fundings/form" class="create-funding-btn">펀딩 개설하기</a>
+        </div>
+        <div class="filter-container">
+            <select id="filter" onchange="handleFilterChange()">
+                <option value="createdDate">개설순</option>
+                <option value="likeCount">좋아요순</option>
+            </select>
+        </div>
+        <div id="fundingsContainer" class="container">
+            <!-- 펀딩 항목이 여기에 표시됩니다. -->
+        </div>
     </div>
 </body>
 </html>
