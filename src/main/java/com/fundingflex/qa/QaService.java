@@ -15,9 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fundingflex.common.enums.DeleteFlagEnum;
 import com.fundingflex.common.enums.Enums;
-import com.fundingflex.funding.domain.entity.Images;
+import com.fundingflex.qa.images.QaImagesDTO;
+import com.fundingflex.qa.images.QaImagesRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,9 +26,10 @@ import lombok.RequiredArgsConstructor;
 public class QaService {
 
 	private final QaRepository qaRepository;
+	private final QaImagesRepository qaImagesRepository;
 	
 	// 이미지 파일 경로
-	private final Path qaImgPath = Paths.get("src/main/resources/static/images/qa ");
+	private final Path qaImgPath = Paths.get("src/main/resources/static/images/qa");
 	
 	public void qaCreate(String title, String content, MultipartFile[] images) {
 
@@ -57,38 +58,48 @@ public class QaService {
         
 	    // 이미지 처리 및 Images 객체 생성
 	    int idx = 1;		// 파일 순서
-	    List<Images> imageList = new ArrayList<>();
+	    List<QaImagesDTO> imageList = new ArrayList<>();
 	    try {
 	        for (MultipartFile file : images) {
 	        	
 	            if (!file.isEmpty()) {
 	                String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-	                Files.copy(file.getInputStream(), this.fundingImgPath.resolve(fileName));
+	                Files.copy(file.getInputStream(), this.qaImgPath.resolve(fileName));
 
-	                Images newImage = Images.builder()
-	                        .imageUrl(fileName)
-	                        .fundings(newFundings)
-	                        .seq(idx++)
-	                        .isDeleted(DeleteFlagEnum.N)
-	                        .build();
+	                QaImagesDTO qaImagesDTO = new QaImagesDTO();
 
-	                imageList.add(newImage);
+	                qaImagesDTO.setConsultations(qaDTO);
+	                qaImagesDTO.setQaImageUrl(fileName);
+	                qaImagesDTO.setSeq(idx++);
+	                qaImagesDTO.setCreatedAt(new Date());
+	                
+	                imageList.add(qaImagesDTO);
 	            }
 	        }
 	        
 	    } catch (IOException ex) {
 	        throw new RuntimeException("이미지 처리 실패: " + ex.getMessage());
 	    }
+	    
+	    qaRepository.save(qaDTO);
+	    qaImagesRepository.saveAll(imageList);
 	}
 	
     public Page<QaDTO> getUserQuestions(Long userId, PageRequest pageRequest) {
         return qaRepository.findByMembersUserId(userId, pageRequest);
     }
 
-    public QaDTO getQuestionDetail(Long id) {
-        return qaRepository.findById(id).orElseThrow(() -> new RuntimeException("Question not found"));
-    }
+//    public QaDTO getQuestionDetail(Long id) {
+//        return qaRepository.findById(id).orElseThrow(() -> new RuntimeException("Question not found"));
+//    }
 
+    public QaDTO getQuestionDetail(Long id) {
+        QaDTO question = qaRepository.findById(id).orElseThrow(() -> new RuntimeException("Question not found"));
+        List<QaImagesDTO> images = qaImagesRepository.findByConsultations(question);
+        question.setImages(images); // QaDTO에 이미지 리스트를 추가하는 setter를 만들어야 함
+        return question;
+    }
+    
     public Page<QaDTO> findByMembersUserIdOrderByCounsulIdDesc(Long userId, Pageable pageable) {
         return qaRepository.findByMembersUserIdOrderByCounsulIdDesc(userId, pageable);
     }

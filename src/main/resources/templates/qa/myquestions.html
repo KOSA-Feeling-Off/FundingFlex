@@ -122,7 +122,7 @@
             <tbody>
                 <tr th:each="question, iterStat : ${questionsPage.content}">
                     <td th:text="${questionsPage.getTotalElements - (questionsPage.number * questionsPage.size) - iterStat.index}"></td>
-                    <td class="title-column"><a th:href="@{/qa/detail/{id}(id=${question.id})}" th:text="${question.title}">질문 제목</a></td>
+                    <td class="title-column"><a th:href="@{/qa/detail/{id}(id=${question.counsulId})}" th:text="${question.title}">질문 제목</a></td>
                     <td th:text="${#dates.format(question.createdAt, 'yyyy-MM-dd')}" class="date-column">등록일</td>
                     <td th:text="${question.isReply == 'Y' ? '답변 완료' : '답변 대기'}" class="status-column"></td>
                 </tr>

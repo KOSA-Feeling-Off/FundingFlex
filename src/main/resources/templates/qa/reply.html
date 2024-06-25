@@ -148,7 +148,7 @@
 
         <!-- 답변 작성 폼 추가 -->
         <h2>답변 작성</h2>
-        <form th:action="@{/qa/reply/{id}(id=${question.id})}" method="post">
+        <form th:action="@{/qa/reply/{id}(id=${question.counsulId})}" method="post">
         	<label for="content">답변 내용:</label>
         	<textarea id="content" name="content" required></textarea>
         	<div class="submit-button">
