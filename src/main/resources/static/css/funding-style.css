@@ -1,8 +1,15 @@
+/* funding-form */
+.content {
+    margin-top: 50px;  /* Header와의 거리 */
+    margin-bottom: 50px; /* Footer와의 거리 */
+}
+
 .image-upload-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     justify-items: center;
+    width: 100%;
 }
 
 .image-upload {
@@ -32,8 +39,153 @@
     display: none;
 }
 
-.image-upload img {
-    max-width: 100%;
-    max-height: 100%;
-    display: none;
+.textarea-large {
+    height: 200px; /* 원하는 높이로 조정 */
+}
+
+
+
+
+
+/* funding-detail */
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    justify-content: flex-start;
+    width: 1200px;
+}
+
+.col-lg-6 {
+    width: 50%;
+}
+
+.image-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.thumbnail-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 400px;
+}
+
+.thumbnail {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.project-thumb {
+	margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+.project-thumb img {
+    width: 430px;
+    height: 430px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.project-summery {
+    padding: 20px;
+}
+
+.project-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    margin-top: 25px;
+    margin-right: 150px;
+}
+
+.project-funding-info .info-box {
+    margin-bottom: 20px;
+}
+
+.project-funding-info .goal-amount {
+    font-size: 24px;
+    color: #333;
+}
+
+.percent-raised {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.project-raised .raised-label {
+    font-weight: bold;
+}
+
+.stats-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #e9ecef;
+    border-radius: 7px;
+    overflow: hidden;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.stats-bar .bar-line {
+    height: 100%;
+    background: linear-gradient(to right, #caf0f8, #90e0ef, #00b4d8, #0077b6);
+    border-radius: 7px;
+    transition: width 0.4s ease;
+}
+
+.btn {
+    background: #e74c3c;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #e74c3c;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.description-content {
+    text-align: center;
+}
+
+.content-wrapper {
+    margin-top: 70px;
+}
+
+.project-funding-title-likes {
+    display: flex;
+    align-items: center; /* 세로 정렬을 가운데로 맞춤 */
+    margin-bottom: 100px; /* 하단 여백 추가 */
+}
+
+.icon_heart_alt {
+    font-size: 24px; /* 하트 아이콘 크기 조정 */
+    cursor: pointer; /* 클릭 가능한 커서 표시 */
+}
+
+.icon_heart_alt::before {
+    content: '\e030'; /* 하트 아이콘의 컨텐츠 코드 */
+    color: gray; /* 기본 색상 */
+    font-family: 'ElegantIcons'; /* 아이콘 폰트 패밀리 */
+    transition: color 0.3s ease; /* 색상 변경 시 부드러운 전환 */
+}
+
+.icon_heart_alt.clicked::before {
+    color: red; /* 클릭 시 변경할 색상 */
 }

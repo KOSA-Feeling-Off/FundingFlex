@@ -1,11 +1,11 @@
 package com.fundingflex.funding.domain.dto.dto;
 
-import com.fundingflex.funding.domain.dto.enums.FundingsStatusEnum;
-
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 public class FundingsInfoDto {
 
@@ -15,7 +15,9 @@ public class FundingsInfoDto {
 	private String title;				// 펀딩 제목
 	private String content;				// 펀딩 내용
 	private int goalAmount;				// 펀딩 목표 금액
-	private FundingsStatusEnum statusFlag;	// 펀딩 진행 상태
+	private int statusFlag;				// 펀딩 진행 상태
+	private int collectedAmount;		// 펀딩 모금액
+	private int percent;				// 퍼센트
 	
 	// TODO: 사용자 받아와야함
 }

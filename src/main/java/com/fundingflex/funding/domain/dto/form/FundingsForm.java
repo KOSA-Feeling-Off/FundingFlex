@@ -1,7 +1,9 @@
 package com.fundingflex.funding.domain.dto.form;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,24 +15,21 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FundingsForm {
-	
-	@NotBlank
-	@NotEmpty
+
+	@NotNull(message = "카테고리를 선택하세요")
 	private Long categoryId;		// 카테고리 아이디
-	private String categoryName;	// 카테고리 명
 	
 	@NotBlank
-	@NotEmpty
+	@NotEmpty(message = "제목을 작성해주세요")
 	@Size(min = 3, max = 50)
 	private String title;			// 제목
 	
 	@NotBlank
-	@NotEmpty
+	@NotEmpty(message = "내용을 작성해주세요")
 	@Size(min = 3, max = 1000)
 	private String content;			// 내용
-	
-	@NotBlank
-	@NotEmpty
-	@Size(min = 1000)
+
+	@NotNull(message = "펀딩 목표 금액을 작성해주세요")
+	@Min(value = 1000, message = "최소 1000원입니다.")
 	private int goalAmount;			// 펀딩 목표 금액
 }

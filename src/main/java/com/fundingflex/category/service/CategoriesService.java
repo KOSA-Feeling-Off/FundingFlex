@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.fundingflex.category.domain.dto.dto.CategoriesDto;
-import com.fundingflex.mybatismapper.repository.CategoriesRepository;
+import com.fundingflex.mybatismapper.mapper.CategoriesMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoriesService {
 
-	private final CategoriesRepository categoriesRepository;
+	private final CategoriesMapper categoriesRepository;
 	
 	
 	// 카테고리 조회
@@ -22,8 +22,8 @@ public class CategoriesService {
 	}
 	
 	// 카테고리 조회
-//	public CategoriesDto selectCategoriesById(Long categoryId) {
-//		return categoriesRepository.selectAllCategories();
-//	}
+	public CategoriesDto selectCategoriesById(Long categoryId) {
+		return categoriesRepository.selectCategoryById(categoryId);
+	}
 
 }
