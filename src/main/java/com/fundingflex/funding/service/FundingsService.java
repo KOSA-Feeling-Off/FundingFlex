@@ -1,5 +1,11 @@
 package com.fundingflex.funding.service;
 
+import com.fundingflex.category.domain.dto.dto.CategoriesDto;
+import com.fundingflex.funding.domain.dto.dto.ResponseFundingInfoDto;
+import com.fundingflex.mybatismapper.mapper.CategoriesMapper;
+import com.fundingflex.mybatismapper.mapper.FundingsMapper;
+import groovy.util.logging.Log4j2;
+import groovy.util.logging.Slf4j;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -9,6 +15,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,8 +42,10 @@ import lombok.RequiredArgsConstructor;
 public class FundingsService {
 
 	private final FundingsRepository fundingsRepository;
+	private final FundingsMapper fundingsMapper;
 	private final ImagesRepository imagesRepository;
 	private final CategoriesService categoriesService;
+	private final CategoriesMapper categoriesRepository;
 	private final FundingJoinRepository fundingJoinRepository;
 	
 	
@@ -59,13 +68,15 @@ public class FundingsService {
 	            throw new RuntimeException("폴더 생성 실패: " + ex.getMessage());
 	        }
 	    }
-	    
+		
+		// 카테고리 정보
+		CategoriesDto categoriesDto =
+			categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
 	    
 	    // Fundings 객체 생성
 	    Fundings newFundings = Fundings.builder()
 	            .categoryId(fundingsForm.getCategoryId())
-//	            .categoryName(categoriesService.get)
-	            
+	            .categoryName(categoriesDto.getCategoryName())
 	            .title(fundingsForm.getTitle())
 	            .content(fundingsForm.getContent())
 	            .goalAmount(fundingsForm.getGoalAmount())
@@ -114,8 +125,30 @@ public class FundingsService {
 	}
 
 	
-	public FundingsInfoDto selectFundinsInfo(Long fundingId, Long categoryId) {
-		return null;
+	// 상세 정보 전체 조회
+	public ResponseFundingInfoDto selectFundinsInfo(Long categoryId, Long fundingId) throws Exception {
+
+		// fundingId, categoryId 확인
+		if(categoriesRepository.existsById(categoryId) <= 0) {
+			throw new NotFoundException("해당 카테고리가 존재하지 않습니다.");
+		}
+
+		if(!fundingsRepository.existsById(fundingId)) {
+			throw new NotFoundException("해당 펀딩이 존재하지 않습니다.");
+		}
+
+
+		// 이미지 조회
+		List<Images> imagesList = imagesRepository.findByFundings_FundingsIdOrderBySeqAsc(fundingId)
+			.orElseThrow(() -> new NotFoundException("이미지가 존재하지 않습니다."));
+
+		FundingsInfoDto fundingsInfoDto =
+			fundingsMapper.selectFundingInfo(categoryId, fundingId);
+
+		return ResponseFundingInfoDto.builder()
+			.fundingsInfoDto(fundingsInfoDto)
+			.imagesList(imagesList)
+			.build();
 	}
 	
 

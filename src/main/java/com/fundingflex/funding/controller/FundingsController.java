@@ -1,10 +1,13 @@
 package com.fundingflex.funding.controller;
 
+import com.fundingflex.funding.domain.dto.dto.ResponseFundingInfoDto;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,8 +52,12 @@ public class FundingsController {
 	
 	// 개설 펀딩 저장
 	@PostMapping
-	public String createFunding(@ModelAttribute("fundingsForm") FundingsForm fundingsForm,
-			@RequestParam("images") MultipartFile[] images, Model model) {
+	public String createFunding(@Validated @ModelAttribute("fundingsForm") FundingsForm fundingsForm,
+			@RequestParam("images") MultipartFile[] images, BindingResult bindingResult) {
+
+		if(bindingResult.hasErrors()) {
+			return "funding/funding-form";
+		}
 		
 		FundingsDto fundingsDto = fundingsService.saveFundings(fundingsForm, images);
 		
@@ -59,16 +66,15 @@ public class FundingsController {
 	}
 	
 	
-	
 	// 펀딩 상세 조회
 	@GetMapping("/{category-id}/details/{funding-id}")
 	public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
-			@PathVariable(name = "funding-id") Long fundingId, Model model) {
-		
-		FundingsInfoDto fundingsInfo = fundingsService.selectFundinsInfo(categoryId, fundingId);
+			@PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
 
-//	    model.addAttribute("fundingImages", fundings.getImageList());
-	    model.addAttribute("fundingsInfo", fundingsInfo);
+		ResponseFundingInfoDto responseFundingInfoDto =
+			fundingsService.selectFundinsInfo(categoryId, fundingId);
+
+	    model.addAttribute("responseFundingInfo", responseFundingInfoDto);
 
 	    return "funding/funding-details";
 	}
