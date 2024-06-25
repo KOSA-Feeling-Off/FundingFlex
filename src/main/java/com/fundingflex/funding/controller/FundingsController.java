@@ -37,7 +37,7 @@ public class FundingsController {
     private final CategoriesService categoriesService;
     
     // 펀딩 개설
-    @GetMapping("/form")
+    @GetMapping
     public String showFundingForm(Model model) {
         List<CategoriesDto> categoryList = categoriesService.selectAllCategories();
         
