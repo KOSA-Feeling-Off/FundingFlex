@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fundingflex.category.domain.dto.dto.CategoriesDto;
+import com.fundingflex.category.domain.dto.CategoriesDTO;
 import com.fundingflex.category.service.CategoriesService;
 import com.fundingflex.funding.domain.dto.FundingIdsDTO;
 import com.fundingflex.funding.domain.dto.FundingsDTO;
@@ -39,7 +39,7 @@ public class FundingsController {
     // 펀딩 개설
     @GetMapping
     public String showFundingForm(Model model) {
-        List<CategoriesDto> categoryList = categoriesService.selectAllCategories();
+        List<CategoriesDTO> categoryList = categoriesService.selectAllCategories();
         
         model.addAttribute("fundingsForm", new FundingsForm());
         model.addAttribute("categoryList", categoryList);

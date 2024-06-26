@@ -1,7 +1,5 @@
 package com.fundingflex.funding.service;
 
-import com.fundingflex.category.domain.dto.dto.CategoriesDto;
-
 import groovy.util.logging.Log4j2;
 import groovy.util.logging.Slf4j;
 import java.io.IOException;
@@ -19,6 +17,7 @@ import org.apache.ibatis.javassist.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fundingflex.category.domain.dto.CategoriesDTO;
 import com.fundingflex.category.service.CategoriesService;
 import com.fundingflex.common.enums.DeleteFlagEnum;
 import com.fundingflex.funding.domain.dto.FundingIdsDTO;
@@ -74,7 +73,7 @@ public class FundingsService {
        }
       
       // 카테고리 정보
-      CategoriesDto categoriesDto =
+      CategoriesDTO categoriesDto =
          categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
        
        // Fundings 객체 생성

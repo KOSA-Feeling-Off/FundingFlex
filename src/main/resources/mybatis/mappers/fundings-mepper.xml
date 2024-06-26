@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.fundingflex.mybatismapper.mapper.FundingsMapper">
+<mapper namespace="com.fundingflex.mybatis.mapper.funding.FundingsMapper">
 
   <!-- 펀딩 정보 조회 -->
-	<select id="selectFundingInfo" resultType="com.fundingflex.funding.domain.dto.dto.FundingsInfoDto">
+	<select id="selectFundingInfo" resultType="com.fundingflex.funding.domain.dto.FundingsInfoDTO">
         SELECT f.category_id        categoryId
              , f.category_name      categoryName
              , f.fundings_id        fundingsId

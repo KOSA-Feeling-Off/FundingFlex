@@ -1,17 +1,18 @@
 package com.fundingflex.mybatis.mapper.category;
 
-import com.fundingflex.category.domain.dto.dto.CategoriesDto;
 import java.util.List;
-import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import org.apache.ibatis.annotations.Mapper;
+
+import com.fundingflex.category.domain.dto.CategoriesDTO;
+
+
 @Mapper
 public interface CategoriesMapper {
 	
-	List<CategoriesDto> selectAllCategories();
+	List<CategoriesDTO> selectAllCategories();
 
-	CategoriesDto selectCategoryById(Long categoryId);
+	CategoriesDTO selectCategoryById(Long categoryId);
 
 	int existsById(Long categoryId);
 }
