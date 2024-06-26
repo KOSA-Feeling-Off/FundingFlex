@@ -1,8 +1,9 @@
 package com.fundingflex.funding.domain.entity;
 
 import com.fundingflex.common.enums.DeleteFlagEnum;
-import com.fundingflex.funding.domain.dto.enums.FundingsStatusEnum;
-import com.fundingflex.member.dto.MembersDTO;
+import com.fundingflex.funding.domain.enums.FundingsStatusEnum;
+import com.fundingflex.member.domain.dto.MembersDTO;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

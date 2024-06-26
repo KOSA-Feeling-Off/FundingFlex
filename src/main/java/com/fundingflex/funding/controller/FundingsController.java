@@ -1,6 +1,5 @@
 package com.fundingflex.funding.controller;
 
-import com.fundingflex.funding.domain.dto.dto.ResponseFundingInfoDto;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fundingflex.category.domain.dto.dto.CategoriesDto;
 import com.fundingflex.category.service.CategoriesService;
-import com.fundingflex.dto.FundingsDTO;
-import com.fundingflex.funding.domain.dto.dto.FundingsDto;
-import com.fundingflex.funding.domain.dto.dto.FundingsInfoDto;
-import com.fundingflex.funding.domain.dto.form.FundingsForm;
+import com.fundingflex.funding.domain.dto.FundingIdsDTO;
+import com.fundingflex.funding.domain.dto.FundingsDTO;
+import com.fundingflex.funding.domain.dto.FundingsInfoDTO;
+import com.fundingflex.funding.domain.dto.ResponseFundingInfoDTO;
+import com.fundingflex.funding.domain.form.FundingsForm;
 import com.fundingflex.funding.service.FundingsService;
 
 import lombok.RequiredArgsConstructor;
@@ -52,7 +52,7 @@ public class FundingsController {
     public String createFunding(@ModelAttribute("fundingsForm") FundingsForm fundingsForm,
             @RequestParam("images") MultipartFile[] images, Model model) {
         
-        FundingsDto fundingsDto = fundingsService.saveFundings(fundingsForm, images);
+        FundingIdsDTO fundingsDto = fundingsService.saveFundings(fundingsForm, images);
         
         return "redirect:/api/fundings/" + fundingsDto.getCategoryId()
                     + "/details/" + fundingsDto.getFundingsId();
@@ -70,7 +70,7 @@ public class FundingsController {
     public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
             @PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
         
-    	ResponseFundingInfoDto fundingsInfo = fundingsService.selectFundinsInfo(categoryId, fundingId);
+       ResponseFundingInfoDTO fundingsInfo = fundingsService.selectFundinsInfo(categoryId, fundingId);
         model.addAttribute("responseFundingInfo", fundingsInfo);
         return "funding/funding-details";
     }

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.fundingflex.category.domain.dto.dto.CategoriesDto;
-import com.fundingflex.mybatismapper.mapper.CategoriesMapper;
+import com.fundingflex.mybatis.mapper.category.CategoriesMapper;
 
 import lombok.RequiredArgsConstructor;
 

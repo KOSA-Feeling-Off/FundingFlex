@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.fundingflex.member.domain.entity.Members;
+import com.fundingflex.member.domain.form.MemberResisterForm;
 import com.fundingflex.member.repository.MembersRepository;
-import com.fundingflex.member.vaildation.MemberResisterForm;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

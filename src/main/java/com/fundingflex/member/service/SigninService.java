@@ -1,7 +1,8 @@
 package com.fundingflex.member.service;
 
-import com.fundingflex.member.jwt.JWTUtil;
-import com.fundingflex.member.vaildation.MemberLoginForm;
+import com.fundingflex.common.util.jwt.JWTUtil;
+import com.fundingflex.member.domain.form.MemberLoginForm;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

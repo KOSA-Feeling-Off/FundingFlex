@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fundingflex.member.domain.form.MemberLoginForm;
+import com.fundingflex.member.domain.form.MemberResisterForm;
 import com.fundingflex.member.service.SignupService;
-import com.fundingflex.member.vaildation.MemberLoginForm;
-import com.fundingflex.member.vaildation.MemberResisterForm;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;

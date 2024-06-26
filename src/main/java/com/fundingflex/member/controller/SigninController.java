@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fundingflex.member.domain.dto.AuthResponse;
+import com.fundingflex.member.domain.form.MemberLoginForm;
 import com.fundingflex.member.service.SigninService;
-import com.fundingflex.member.vaildation.MemberLoginForm;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;

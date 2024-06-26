@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fundingflex.dto.FundingRequestDTO;
-import com.fundingflex.dto.FundingResponseDTO;
+import com.fundingflex.funding.domain.dto.FundingRequestDTO;
+import com.fundingflex.funding.domain.dto.FundingResponseDTO;
 import com.fundingflex.funding.domain.entity.FundingConditions;
 import com.fundingflex.funding.service.FundingJoinService;
 

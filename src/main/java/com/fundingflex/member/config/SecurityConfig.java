@@ -11,9 +11,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fundingflex.member.jwt.JWTFilter;
-import com.fundingflex.member.jwt.JWTUtil;
-import com.fundingflex.member.jwt.LoginFilter;
+import com.fundingflex.common.util.jwt.JWTFilter;
+import com.fundingflex.common.util.jwt.JWTUtil;
+import com.fundingflex.common.util.jwt.LoginFilter;
 
 import lombok.RequiredArgsConstructor;
 
