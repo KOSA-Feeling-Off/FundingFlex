@@ -90,7 +90,7 @@ tr:nth-child(even) {
 
 /* questions-detail.html css */
 #my-qa-questions-detail-content{
-	background-color: #f2f2f2;
+	background-color: rgb(249, 249, 249);
 }
 
 .question-de-header {
@@ -196,4 +196,36 @@ tr:nth-child(even) {
 .my-qa-left-text span {
     margin-left: 5px; /* 날짜와 strong 사이의 여백을 생성 */
 	margin-right: 30px;
+}
+
+/* ask.html */
+
+#title {
+	width: 87%;
+	margin: auto;
+}
+
+#content {
+	width: 87%;
+	margin: auto;
+}
+
+.my-qa-ask-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.my-qa-ask-form-title{
+	padding-left:50px;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-top: 30px;
+}
+
+.my-qa-ask-btn {
+	align-self: center;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	margin-top: 20px;
 }
