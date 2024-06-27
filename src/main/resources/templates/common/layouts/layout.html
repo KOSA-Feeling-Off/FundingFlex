@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,7 +21,8 @@
 	<!-- 템플릿 안에 삽입될 내용 끝 -->
 	
 	<!-- footer -->
-  <footer th:replace="~{@{common/fragments/footer} :: footerFragment}"></footer>
+  	<footer th:replace="~{@{common/fragments/footer} :: footerFragment}"></footer>
+  
 	<script type="text/javascript" th:src="@{/js/Sortable.min.js}"></script>
 	<script type="text/javascript" th:src="@{/js/Swap.js}"></script>
 	<script type="text/javascript" th:src="@{/js/funding.js}"></script>
