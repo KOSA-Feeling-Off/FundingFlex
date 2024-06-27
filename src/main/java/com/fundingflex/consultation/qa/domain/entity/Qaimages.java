@@ -1,7 +1,6 @@
-package com.fundingflex.consultation.qa.domain.dto;
+package com.fundingflex.consultation.qa.domain.entity;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 
@@ -19,10 +18,22 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class QaImagesDTO {
+@Entity
+@Table(name = "QAIMAGES") // 테이블 이름 지정
+public class Qaimages {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long qaImageId;
+	
+	@Column(length = 500)
 	private String qaImageUrl;
+	
 	private int seq;						// 이미지 순서
+	
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "counsul_id")
+    private Consultations consultations;
+	
+	@CreatedDate
 	private Date createdAt;		// 생성일지
-    private QaDTO consultations;
 }

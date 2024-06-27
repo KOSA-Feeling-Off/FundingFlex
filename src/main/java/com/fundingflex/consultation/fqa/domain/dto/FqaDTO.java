@@ -1,6 +1,9 @@
 package com.fundingflex.consultation.fqa.domain.dto;
 
 import java.util.Date;
+import java.util.List;
+
+import com.fundingflex.consultation.qa.domain.dto.QaImagesDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,7 +11,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "FQA")
 public class FqaDTO {
@@ -31,54 +38,4 @@ public class FqaDTO {
     
     @Column(columnDefinition = "NUMBER DEFAULT NULL")
     private Long adminUserId;
-
-    // Getters and setters...
-
-    public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Long getAdminUserId() {
-		return adminUserId;
-	}
-
-	public void setAdminUserId(Long adminUserId) {
-		this.adminUserId = adminUserId;
-	}
-
-	public Long getFqaId() {
-        return fqaId;
-    }
-
-    public void setFqaId(Long fqaId) {
-        this.fqaId = fqaId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getReply() {
-        return reply;
-    }
-
-    public void setReply(String reply) {
-        this.reply = reply;
-    }
 }

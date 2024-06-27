@@ -1,8 +1,10 @@
 package com.fundingflex.consultation.chat.domain;
 
 import java.util.Date;
+import java.util.List;
 
 import com.fundingflex.common.enums.Enums;
+import com.fundingflex.consultation.qa.domain.dto.QaImagesDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,7 +13,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "CHAT")
 public class ChatDTO {
@@ -43,52 +49,4 @@ public class ChatDTO {
         	isAdmin = Enums.Admin.N.name();
         }
     }
-
-	public Long getChatId() {
-		return chatId;
-	}
-
-	public void setChatId(Long chatId) {
-		this.chatId = chatId;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
-	public String getIsAdmin() {
-		return isAdmin;
-	}
-
-	public void setIsAdmin(String isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
-	public Long getChatNumber() {
-		return chatNumber;
-	}
-
-	public void setChatNumber(Long chatNumber) {
-		this.chatNumber = chatNumber;
-	}
 }
