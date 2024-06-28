@@ -126,7 +126,7 @@
         </div>
 
         <div class="back-link" th:if="${question.isReply == 'N'}">
-            <a th:href="@{/qa/reply/{id}(id=${question.counsulId})}" class="answer-button">답변 하기</a>
+            <a class="btn btn-primary" th:href="@{/qa/reply/{id}(id=${question.counsulId})}">답변 하기</a>
         </div>
 
         <div class="back-link ">

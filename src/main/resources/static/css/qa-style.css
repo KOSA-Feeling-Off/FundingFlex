@@ -1,5 +1,11 @@
 /* 공통쓰 */
 
+.my-qa-html, .my-qa-body {
+	overflow: hidden;
+	height: 100%;
+	margin: 0;
+}
+
 #my-qa-content {
 	width: 100%;
 	margin: 0 auto;
@@ -8,6 +14,35 @@
 .my-qa-main-title{
 	text-align: center;
 	font-weight: bold;
+}
+
+.my-qa-center{
+	text-align: center;
+}
+
+.my-qa-margin-top{
+	margin-top: 20px;
+}
+
+.my-qa-margin-bottom{
+	margin-top: 20px; 
+	padding-bottom: 10px;
+}
+
+.my-qa-no-margin-top{
+	margin-top: 0px; 
+}
+
+.my-qa-no-margin-bottom{
+	margin-bottom: 0px;
+}
+
+.my-qa-no-padding-bottom{
+	padding-bottom: 0px;
+}
+
+.my-qa-no-padding-top{
+	padding-top: 0px;
 }
 
 /*nav쪽*/
@@ -200,14 +235,16 @@ tr:nth-child(even) {
 
 /* ask.html */
 
-#title {
-	width: 87%;
+#my-qa-ask-input {
+	width: 86%;
 	margin: auto;
 }
 
-#content {
-	width: 87%;
+#my-qa-ask-textarea {
+	width: 86%;
 	margin: auto;
+	height: 17.0em;
+	resize : none;
 }
 
 .my-qa-ask-form {
@@ -228,4 +265,50 @@ tr:nth-child(even) {
 	border: none;
 	cursor: pointer;
 	margin-top: 20px;
+}
+
+/* fqa */
+.my-fqa-search-container {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.my-fqa-search-container form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+.my-fqa-search-container select {
+	margin-left: 80px;
+	margin-right: 10px;
+	flex: 1;
+}
+
+.my-fqa-search-container input {
+	margin-right: 10px;
+	flex: 7;
+}
+
+.my-fqa-search-container button {
+	margin-right: 80px;
+	flex: 0.8;
+}
+
+/* chat */
+#chat-box {
+	height: 400px; /* 고정 높이 설정 */
+	width: 100%; /* 고정 너비 설정 (부모 요소 기준) */
+	overflow-y: scroll; /* 세로 스크롤바 추가 */
+	overflow-x: hidden; /* 가로 스크롤바 숨김 */
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+/*reply*/
+/* 상담원 전용 스타일 */
+#waiting-message {
+    color: red;
+    display: none;
 }

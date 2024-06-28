@@ -29,9 +29,11 @@ public class QaController {
 
     @GetMapping("/myquestions")
     public String getUserQuestions(@RequestParam(value = "page", defaultValue = "0") int page,
-                                   @RequestParam(value = "size", defaultValue = "10") int size,
                                    Model model) {
         Long userId = 10L; 
+        
+        
+        int size = 10;
         int totalElements = qaService.countUserQuestions(userId);
         int totalPages = (totalElements + size - 1) / size;
 

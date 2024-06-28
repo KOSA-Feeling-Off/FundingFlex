@@ -11,7 +11,7 @@
 <div class="container-body">
         <div class="text-body">
         <div class="form-make-body col-md-8">
-    <h1 class="my-qa-main-title">문의</h1>
+    <h1 class="my-qa-main-title">문의 내역</h1>
     <nav class="my-qa-top-link">
         <a href="/qa/fqa">자주 문의한 내역</a>
         <!--  href="/qa/myquestions" -->
@@ -31,7 +31,7 @@
             </thead>
             <tbody>
                 <tr th:each="question, iterStat : ${questionsPage}">
-                    <td class="my-qa-thtd" th:text="${totalElements - (currentPage * questionsPage.size()) - iterStat.index}"></td>
+                    <td class="my-qa-thtd" th:text="${totalElements - (currentPage * 10) - iterStat.index}"></td>
                     <td class="my-qa-thtd"><a th:href="@{/qa/detail/{id}(id=${question.counsulId})}" th:text="${question.title}">질문 제목</a></td>
                     <td class="my-qa-thtd" th:text="${#dates.format(question.createdAt, 'yyyy-MM-dd')}">등록일</td>
                     <td class="my-qa-thtd" th:text="${question.isReply == 'Y' ? '답변 완료' : '답변 대기'}"></td>

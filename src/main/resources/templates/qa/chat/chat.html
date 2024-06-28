@@ -1,22 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{common/layouts/layout}">
 <head>
     <meta charset="UTF-8">
     <title>1:1 실시간 상담</title>
     <link rel="stylesheet" href="/css/qa-style.css">
 </head>
 <body>
-    <h1>문의</h1>
-    <nav>
+<div layout:fragment="content" class="content">
+<div class="container-body">
+        <div class="text-body">
+        	<div class="form-make-body col-md-8">
+        	
+    <h1 class="my-qa-main-title">실시간 상담</h1>
+    <nav class="my-qa-top-link">
         <a href="/qa/fqa">자주 문의한 내역</a>
         <a href="/qa/myquestions">내가 문의한 내역</a>
         <a href="/qa/ask">문의 하기</a>
-        <a href="/qa/chat">1:1 실시간 상담</a>
+        <!-- href="/qa/chat" -->
+        <a class="my-qa-select-top-tap">1:1 실시간 상담</a>
     </nav>
-    <div id="content">
-    	<h2>1:1 실시간 상담</h2>
-        <button onclick="window.open('/qa/chat-window', 'ChatWindow', 'width=400,height=500')">상담 연결하기</button>
-        <button onclick="window.open('/qa/chat-reply-window', 'ChatReplyWindow', 'width=400,height=500')" style="margin-top: 10px;">고객 연결하기</button>
+    
+    <div class="my-qa-center">
+        <button class="btn btn-primary my-qa-ask-btn" onclick="window.open('/qa/chat-window', 'ChatWindow', 'width=400,height=580')">상담사 연결하기</button>
+        <button class="btn btn-primary my-qa-ask-btn" onclick="window.open('/qa/chat-reply-window', 'ChatReplyWindow', 'width=400,height=580')">고객과 연결하기</button>
     </div>
-</body>
-</html>
+</div></div></div></div></body></html>
