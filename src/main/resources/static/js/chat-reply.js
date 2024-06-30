@@ -1,4 +1,5 @@
-const socket = new WebSocket('ws://192.168.230.13/ws/chat');
+//const socket = new WebSocket('ws://192.168.230.13/ws/chat');
+const socket = new WebSocket('ws://localhost/ws/chat');
 const readyAgentButton = document.getElementById('ready-agent');
 const chatForm = document.getElementById('chat-form');
 const chatBox = document.getElementById('chat-box');

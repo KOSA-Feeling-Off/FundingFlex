@@ -87,19 +87,4 @@ public class QaController {
         model.addAttribute("question", question);
         return "qa/questions-detail";
     }
-
-    @GetMapping("/chat")
-    public String liveChat() {
-        return "qa/chat/chat";
-    }
-
-    @GetMapping("/chat-window")
-    public String liveChatWindow() {
-        return "qa/chat/chat-window";
-    }
-
-    @GetMapping("/chat-reply-window")
-    public String liveChatReplyWindow() {
-        return "qa/chat/chat-reply-window";
-    }
 }

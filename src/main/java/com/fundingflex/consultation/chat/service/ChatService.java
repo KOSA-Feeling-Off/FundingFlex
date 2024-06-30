@@ -62,8 +62,8 @@ import java.util.concurrent.Executors;
 
 import org.springframework.stereotype.Service;
 
-import com.fundingflex.consultation.chat.ChatRepository;
-import com.fundingflex.consultation.chat.domain.ChatDTO;
+import com.fundingflex.consultation.chat.domain.dto.ChatDTO;
+import com.fundingflex.mybatis.mapper.chat.ChatMapper;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +72,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ChatService {
 
-    private final ChatRepository chatRepository;
+    private final ChatMapper chatMapper;
     private ExecutorService executorService;
     private boolean runThread = false;
 
@@ -106,7 +106,7 @@ public class ChatService {
                     chatQueue.remove();
                 }
 
-                ChatServiceThread chatServiceThread = new ChatServiceThread(this, chatRepository);
+                ChatServiceThread chatServiceThread = new ChatServiceThread(chatMapper);
                 chatServiceThread.setThreadChatQueue(threadChatQueue);
                 chatServiceThread.run();
 

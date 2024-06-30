@@ -39,18 +39,16 @@ package com.fundingflex.consultation.chat.service;
 
 import java.util.Queue;
 
-import com.fundingflex.consultation.chat.ChatRepository;
-import com.fundingflex.consultation.chat.domain.ChatDTO;
+import com.fundingflex.consultation.chat.domain.dto.ChatDTO;
+import com.fundingflex.mybatis.mapper.chat.ChatMapper;
 
 public class ChatServiceThread implements Runnable {
 
-    private final ChatService chatService;
-    private final ChatRepository chatRepository;
+    private final ChatMapper chatMapper;
     private Queue<ChatDTO> threadChatQueue;
 
-    public ChatServiceThread(ChatService chatService, ChatRepository chatRepository) {
-        this.chatService = chatService;
-        this.chatRepository = chatRepository;
+    public ChatServiceThread(ChatMapper chatMapper) {
+        this.chatMapper = chatMapper;
     }
 
     public void setThreadChatQueue(Queue<ChatDTO> threadChatQueue) {
@@ -60,7 +58,7 @@ public class ChatServiceThread implements Runnable {
     @Override
     public void run() {
         while (!threadChatQueue.isEmpty()) {
-            chatRepository.save(threadChatQueue.remove());
+        	chatMapper.save(threadChatQueue.remove());
         }
     }
 }
