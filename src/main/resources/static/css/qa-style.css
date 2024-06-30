@@ -1,181 +1,314 @@
-/* qa-style.css */
+/* 공통쓰 */
 
-/* 공통 스타일 */
-body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 20px; /* 변경: 패딩을 추가하여 여백 조정 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* 변경: 상단 정렬 */
-    min-height: 100vh;
+.my-qa-html, .my-qa-body {
+	overflow: hidden;
+	height: 100%;
+	margin: 0;
 }
 
-h1 {
-    color: #333;
-    margin: 10px 0; /* 변경: 마진 조정 */
+#my-qa-content {
+	width: 100%;
+	margin: 0 auto;
 }
 
-nav {
-    margin-bottom: 20px;
+.my-qa-main-title{
+	text-align: center;
+	font-weight: bold;
 }
 
-nav a {
-    color: #0066cc;
-    text-decoration: none;
-    margin-right: 15px;
-    font-weight: bold;
+.my-qa-center{
+	text-align: center;
 }
 
-nav a:hover {
-    text-decoration: underline;
+.my-qa-margin-top{
+	margin-top: 20px;
 }
 
-/* 채팅 상자 스타일 */
+.my-qa-margin-bottom{
+	margin-top: 20px; 
+	padding-bottom: 10px;
+}
+
+.my-qa-no-margin-top{
+	margin-top: 0px; 
+}
+
+.my-qa-no-margin-bottom{
+	margin-bottom: 0px;
+}
+
+.my-qa-no-padding-bottom{
+	padding-bottom: 0px;
+}
+
+.my-qa-no-padding-top{
+	padding-top: 0px;
+}
+
+/*nav쪽*/
+.my-qa-top-link{
+	text-align: center;
+	margin: 30px 0 30px 0;
+}
+
+.my-qa-top-link a {
+	margin: 0 15px;
+	text-decoration: none;
+	color: #000;
+}
+
+.my-qa-top-link a:hover {
+    color: #007ef0; /* 호버 시 색 변경 예시 */
+}
+
+.my-qa-select-top-tap {
+    font-size: 1.2em; /* 글씨 크기를 좀 더 크게 설정 */
+    font-weight: bold; /* 글씨를 진하게 설정 */
+     color:black;
+}
+
+.my-qa-select-top-tap:hover {
+    color: black !important; /* 호버 시에도 원래 색상을 유지 */
+}
+
+.number-column {
+	background-color: #f2f2f2;
+	width: 12.5%;
+}
+
+.title-column {
+	background-color: #f2f2f2;
+	width: 52.5%;
+}
+
+.date-column {
+	background-color: #f2f2f2;
+	width: 17.5%;
+}
+
+.status-column {
+	background-color: #f2f2f2;
+	width: 17.5%;
+}
+
+
+
+/* myquestions.html css */
+
+.my-qa-pagination {
+	text-align: center;
+}
+
+.pagination a {
+	margin: 0 5px;
+	text-decoration: none;
+	color: #000;
+}
+
+.my-qa-table{
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.my-qa-thead:nth-child(even),
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.my-qa-thtd{
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+
+/* questions-detail.html css */
+#my-qa-questions-detail-content{
+	background-color: rgb(249, 249, 249);
+}
+
+.question-de-header {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+}
+
+.my-qa-de-title {
+	font-size: 2.5em;
+	font-weight: bold;
+	margin: 20px 0 15px 20px;
+	padding-top: 15px; /* 상단 패딩 추가 */
+}
+
+.question-de-header .meta {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+}
+
+.question-de-header .meta div {
+	flex: 1;
+	border-right: 1px solid #ddd;
+	padding: 5px;
+}
+
+.question-de-header .meta div:last-child {
+	border-right: none;
+}
+
+.question-content, .question-reply {
+	margin-left : 30px;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+}
+
+.question-reply {
+	display: none; /* 기본적으로 숨김 */
+}
+
+.question-reply.visible {
+	display: block; /* visible 클래스가 추가되면 보이게 함 */
+}
+
+.question-reply strong {
+  font-size: 1.5em; /* 글씨 크기를 좀 더 크게 설정 */
+    font-weight: bold; /* 글씨를 진하게 설정 */
+}
+
+.question-reply p {
+	margin-top : 15px;
+    margin-left: 10px; /* 강조된 텍스트와 span 사이의 여백을 생성 */
+}
+
+
+.back-link {
+	display: block;
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 10px;
+	padding-bottom: 15px; /* 하단 패딩 추가 */
+}
+
+.back-link a {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+.back-link a:hover {
+	text-decoration: underline;
+}
+
+.image-gallery {
+	margin-left : 15px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.image-gallery img {
+	max-width: 200px;
+	margin: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+
+.image-gallery+.question-reply {
+	margin-top: 20px;
+	padding-top: 20px;
+}
+
+.my-qa-left-text {
+    display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+    justify-content: flex-end; /* 자식 요소를 오른쪽 끝으로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+.my-qa-left-text strong {
+    margin-right: 5px; /* 강조된 텍스트와 span 사이의 여백을 생성 */
+}
+
+.my-qa-left-text span {
+    margin-left: 5px; /* 날짜와 strong 사이의 여백을 생성 */
+	margin-right: 30px;
+}
+
+/* ask.html */
+
+#my-qa-ask-input {
+	width: 86%;
+	margin: auto;
+}
+
+#my-qa-ask-textarea {
+	width: 86%;
+	margin: auto;
+	height: 17.0em;
+	resize : none;
+}
+
+.my-qa-ask-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.my-qa-ask-form-title{
+	padding-left:50px;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-top: 30px;
+}
+
+.my-qa-ask-btn {
+	align-self: center;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+/* fqa */
+.my-fqa-search-container {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.my-fqa-search-container form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+.my-fqa-search-container select {
+	margin-left: 80px;
+	margin-right: 10px;
+	flex: 1;
+}
+
+.my-fqa-search-container input {
+	margin-right: 10px;
+	flex: 7;
+}
+
+.my-fqa-search-container button {
+	margin-right: 80px;
+	flex: 0.8;
+}
+
+/* chat */
 #chat-box {
-    width: 100%;
-    max-width: 600px;
-    height: 500px; /* 변경: 높이 증가 */
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
-    background-color: #fff;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
+	height: 400px; /* 고정 높이 설정 */
+	width: 100%; /* 고정 너비 설정 (부모 요소 기준) */
+	overflow-y: scroll; /* 세로 스크롤바 추가 */
+	overflow-x: hidden; /* 가로 스크롤바 숨김 */
+	border: 1px solid #ccc;
+	padding: 10px;
 }
 
-.message {
-    margin-bottom: 10px;
-    padding: 10px 15px; /* 변경: 패딩 증가 */
-    border-radius: 15px; /* 변경: 더 둥글게 */
-    background-color: #f1f1f1;
-    max-width: 75%; /* 변경: 더 넓게 */
-    align-self: flex-start;
-    position: relative;
-}
-
-.message.me {
-    background-color: #d1eaff;
-    align-self: flex-end;
-}
-
-.message .timestamp {
-    font-size: 0.8em;
-    color: gray;
-    position: absolute;
-    bottom: -20px; /* 변경: 위치 조정 */
-    right: 10px;
-}
-
-.message.me .timestamp {
-    right: 10px;
-}
-
+/*reply*/
+/* 상담원 전용 스타일 */
 #waiting-message {
     color: red;
-    font-size: 1.2em;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* 채팅 입력 필드 스타일 */
-#chat-form {
-    display: flex;
-    width: 100%;
-    max-width: 600px;
-    margin-top: 10px;
-}
-
-#chat-input {
-    flex: 1;
-    padding: 15px; /* 변경: 패딩 증가 */
-    border: 1px solid #ddd;
-    border-radius: 5px 0 0 5px;
-    outline: none;
-}
-
-#chat-input:focus {
-    border-color: #66afe9;
-}
-
-button {
-    background-color: #0066cc;
-    color: white;
-    border: none;
-    padding: 15px 20px; /* 변경: 패딩 증가 */
-    cursor: pointer;
-    border-radius: 5px; /* 변경: 둥근 버튼 */
-    margin-top: 10px; /* 변경: 버튼 간 간격 */
-    font-size: 1em; /* 변경: 폰트 크기 증가 */
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #005bb5;
-}
-
-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
-
-/* 문의하기 페이지 스타일 */
-form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 600px;
-    margin: 20px 0;
-}
-
-label {
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-input[type="text"],
-textarea {
-    width: 100%;
-    padding: 15px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    outline: none;
-    font-size: 1em;
-}
-
-input[type="text"]:focus,
-textarea:focus {
-    border-color: #66afe9;
-}
-
-textarea {
-    height: 200px; /* 변경: 높이 증가 */
-    resize: vertical;
-}
-
-.search-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.search-container input[type="text"], .search-container select, .search-container button {
-    margin-right: 10px;
-}
-
-.search-container input[type="text"] {
-    flex: 1;
-    padding: 5px;
-}
-
-.search-container select {
-    padding: 5px;
-}
-
-.search-container button {
-    padding: 5px 10px;
+    display: none;
 }

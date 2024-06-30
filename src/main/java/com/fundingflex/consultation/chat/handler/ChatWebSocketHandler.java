@@ -142,7 +142,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-import com.fundingflex.consultation.chat.domain.ChatDTO;
+import com.fundingflex.consultation.chat.domain.dto.ChatDTO;
 import com.fundingflex.consultation.chat.service.ChatService;
 
 import org.slf4j.Logger;

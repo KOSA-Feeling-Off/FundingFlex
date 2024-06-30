@@ -1,180 +1,34 @@
-<!-- 
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{common/layouts/layout}">
 <head>
     <meta charset="UTF-8">
     <title>문의 하기</title>
-    <link rel="stylesheet" href="/css/qa-style.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            text-align: center;
-        }
-        nav {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #000;
-        }
-        #title {
-            width: 80%;
-            margin: 0 auto;
-        }
-        #content {
-            width: 80%;
-            margin: 0 auto;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label, input, textarea, button {
-            margin: 10px 0;
-        }
-        button {
-            align-self: center;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
+   
 </head>
 <body>
-    <h1>문의</h1>
-    <nav>
+<div layout:fragment="content" class="content">
+<div class="container-body">
+        <div class="text-body">
+        	<div class="form-make-body col-md-8">
+    <h1 class="my-qa-main-title">문의 작성</h1>
+    <nav class="my-qa-top-link">
         <a href="/qa/fqa">자주 문의한 내역</a>
         <a href="/qa/myquestions">내가 문의한 내역</a>
-        <a href="/qa/ask">문의 하기</a>
+        <!-- href="/qa/ask" -->
+        <a class="my-qa-select-top-tap">문의 하기</a>
         <a href="/qa/chat">1:1 실시간 상담</a>
     </nav>
-    <div id="content">
-        <h2>문의 하기</h2>
-        <form action="/qa/ask" method="post">
-            <label for="title">제목:</label>
-            <input type="text" id="title" name="title" required>
-            <label for="content">내용:</label>
-            <textarea id="content" name="content" required></textarea>
-            
-            <!-- 이미지 부분 추가 ->
-                                <!-- 이미지 업로드 5개의 네모 칸 ->
-                    <div class="form-group mt-5">
-                        <label>이미지 업로드</label>
-                        <div id="imageUploadContainer" class="image-upload-container">
-                            <div class="image-upload">
-                                <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
-                                <img src="#">
-                            </div>
-                            <div class="image-upload">
-                                <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
-                                <img src="#">
-                            </div>
-                            <div class="image-upload">
-                                <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
-                                <img src="#">
-                            </div>
-                            <div class="image-upload">
-                                <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
-                                <img src="#">
-                            </div>
-                            <div class="image-upload">
-                                <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
-                                <img src="#">
-                            </div>
-                        </div>
-                    </div>
-                   
-            
-            
-            <button type="submit">제출</button>
-        </form>
-    </div>
-    
-    	<script th:src="@{/js/Swap.js}"></script>
-    
-</body>
-</html>
--->
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>문의 하기</title>
-    <link rel="stylesheet" href="/css/qa-style.css">
-	<link rel="stylesheet" th:href="@{/css/funding-style.css}">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            text-align: center;
-        }
-        nav {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        nav a {
-            margin: 0 15px;
-            text-decoration: none;
-            color: #000;
-        }
-        #title {
-            width: 80%;
-            margin: 0 auto;
-        }
-        #content {
-            width: 80%;
-            margin: 0 auto;
-        }
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-        label, input, textarea, button {
-            margin: 10px 0;
-        }
-        button {
-            align-self: center;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <h1>문의</h1>
-    <nav>
-        <a href="/qa/fqa">자주 문의한 내역</a>
-        <a href="/qa/myquestions">내가 문의한 내역</a>
-        <a href="/qa/ask">문의 하기</a>
-        <a href="/qa/chat">1:1 실시간 상담</a>
-    </nav>
-    <div id="content">
-        <h2>문의 하기</h2>
-        <form action="/qa/ask" method="post" enctype="multipart/form-data">
-            <label for="title">제목:</label>
-            <input type="text" id="title" name="title" required>
-            <label for="content">내용:</label>
-            <textarea id="content" name="content" required></textarea>
-            
+    <div id="my-qa-content">
+        <form class="my-qa-ask-form" action="/qa/ask" method="post" enctype="multipart/form-data">
+            <label class="my-qa-ask-form-title" for="title">제목</label>
+            <input type="text" id="my-qa-ask-input" name="title" placeholder="제목을 입력해주세요" required>
+            <label class="my-qa-ask-form-title" for="content">내용</label>
+            <textarea id="my-qa-ask-textarea" name="content" placeholder="내용을 입력해주세요" required></textarea>
+                       
             <!-- 이미지 부분 추가 -->
             <div class="form-group mt-5">
-                <label>이미지 업로드</label>
+                <label class="my-qa-ask-form-title">이미지 업로드</label>
                 <div id="imageUploadContainer" class="image-upload-container">
                     <div class="image-upload">
                         <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
@@ -199,7 +53,7 @@
                 </div>
             </div>
             
-            <button type="submit">제출</button>
+            <button class="btn btn-primary my-qa-ask-btn" type="submit">제출</button>
         </form>
     </div>
     
@@ -218,5 +72,4 @@
             }
         }
     </script>
-</body>
-</html>
+</div></div></div></div></body></html>

@@ -1,31 +1,36 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{common/layouts/layout}">
 <head>
     <meta charset="UTF-8">
-    <title>자주 묻는 질문 추가</title>
+    <title>FQA 추가</title>
     <link rel="stylesheet" href="/css/qa-style.css">
 </head>
 <body>
-    <h1>새로운 자주 묻는 질문 추가</h1>
-    <nav>
-        <a href="/qa/frequent">자주 문의한 내역</a>
+<div layout:fragment="content" class="content">
+<div class="container-body">
+        <div class="text-body">
+        	<div class="form-make-body col-md-8">
+    <h1 class="my-qa-main-title">FQA 작성</h1>
+    <nav class="my-qa-top-link">
+        <a href="/qa/fqa">자주 문의한 내역</a>
         <a href="/qa/myquestions">내가 문의한 내역</a>
         <a href="/qa/ask">문의 하기</a>
         <a href="/qa/chat">1:1 실시간 상담</a>
     </nav>
-    <div id="content">
-        <form action="/qa/fqa/save" method="post">
-            <label for="title">질문 제목:</label><br>
-            <input type="text" id="title" name="title" required><br><br>
+    
+    <div id="my-qa-content">
+        <form class="my-qa-ask-form" action="/qa/fqa/save" method="post">
+            <label class="my-qa-ask-form-title" for="title">제목</label>
+            <input type="text" id="my-qa-ask-input" name="title" placeholder="제목을 입력해주세요" required>
+            <label class="my-qa-ask-form-title" for="content">내용</label>
+            <textarea id="my-qa-ask-textarea" name="content" placeholder="내용을 입력해주세요" required></textarea>
+            <label class="my-qa-ask-form-title" for="reply">답변</label>
+            <textarea id="my-qa-ask-textarea" name="reply" placeholder="내용을 입력해주세요" required></textarea>
             
-            <label for="content">질문 내용:</label><br>
-            <textarea id="content" name="content" rows="4" cols="50" required></textarea><br><br>
-            
-            <label for="reply">답변:</label><br>
-            <textarea id="reply" name="reply" rows="4" cols="50" required></textarea><br><br>
-            
-            <input type="submit" value="저장">
+            <button class="btn btn-primary my-qa-ask-btn" type="submit">저장</button>
         </form>
     </div>
-</body>
-</html>
+    
+    
+</div></div></div></div></body></html>
