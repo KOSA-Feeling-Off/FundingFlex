@@ -1,3 +1,4 @@
+/*
 package com.fundingflex.funding.repository;
 
 import java.util.List;
@@ -11,3 +12,4 @@ import com.fundingflex.funding.domain.entity.FundingJoin;
 public interface FundingJoinRepository extends JpaRepository<FundingJoin, Long> {
 	List<FundingJoin> findByFundingsId(Long fundingsId);
 }
+*/

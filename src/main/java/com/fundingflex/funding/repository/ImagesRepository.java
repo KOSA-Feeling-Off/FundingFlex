@@ -1,3 +1,4 @@
+/*
 package com.fundingflex.funding.repository;
 
 import java.util.List;
@@ -12,3 +13,4 @@ public interface ImagesRepository extends JpaRepository<Images, Long> {
 
     Optional<List<Images>> findByFundings_FundingsIdOrderBySeqAsc(Long fundingId);
 }
+*/

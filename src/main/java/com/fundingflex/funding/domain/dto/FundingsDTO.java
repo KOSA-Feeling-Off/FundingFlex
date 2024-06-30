@@ -5,6 +5,7 @@ import com.fundingflex.funding.domain.enums.FundingsStatusEnum;
 
 import lombok.Data;
 
+
 @Data
 public class FundingsDTO {
     private Long fundingsId;
@@ -15,4 +16,10 @@ public class FundingsDTO {
     private int goalAmount;
     private int currentAmount;
     private List<String> imageUrls;
+    
+    private Long categoryId;
+    
+    public List<String> getImageUrls() {
+        return this.imageUrls;
+    }
 }
