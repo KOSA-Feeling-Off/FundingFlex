@@ -1,31 +1,39 @@
 package com.fundingflex.member.domain.dto;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
 import com.fundingflex.member.domain.entity.Members;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
 	private final Members members; // 인증된 사용자 정보를 저장하는 UserEntity객체
+	
+	public CustomUserDetails(Members members) {
+        this.members = members;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// 사용자 권한을 반환합니다.
-		Collection<GrantedAuthority> collection = new ArrayList<>();
-		collection.add(new GrantedAuthority() {
-			@Override
-			public String getAuthority() {
-				// UserEntity에서 사용자 권한을 가져와 반환합니다.
-				return members.getRole();
-			}
-		});
-		return collection;
-	}
+//	@Override
+//	public Collection<? extends GrantedAuthority> getAuthorities() {
+//		// 사용자 권한을 반환합니다.
+//		Collection<GrantedAuthority> collection = new ArrayList<>();
+//		collection.add(new GrantedAuthority() {
+//			@Override
+//			public String getAuthority() {
+//				// UserEntity에서 사용자 권한을 가져와 반환합니다.
+//				return members.getRole();
+//			}
+//		});
+//		return collection;
+//	}
+	 @Override
+	    public Collection<? extends GrantedAuthority> getAuthorities() {
+	        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + members.getRole()));
+	    }
 
 	@Override
 	public String getPassword() {

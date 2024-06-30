@@ -1,22 +1,26 @@
 package com.fundingflex.member.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.fundingflex.common.util.jwt.JWTUtil;
 import com.fundingflex.member.domain.dto.AuthResponse;
 import com.fundingflex.member.domain.form.MemberLoginForm;
 import com.fundingflex.member.service.SigninService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,27 +28,39 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class SigninController {
 
-    private final SigninService signinService;
+	private final SigninService signinService;
+	private final JWTUtil jwtUtil;
 
-    
-    @GetMapping("/signin")
-	public String signin(MemberLoginForm memberLoginForm) {
+	@GetMapping("/login")
+	public String signin(Model model) {
+		model.addAttribute("memberLoginForm", new MemberLoginForm());
 		return "/pages/signin_form";
 	}
-    
-    
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody MemberLoginForm loginForm) {
-        try {
-            // SigninService를 사용하여 사용자 인증 및 토큰 생성
-            String token = signinService.authenticateAndGenerateToken(loginForm);
-            String bearerToken = token; // "Bearer "를 토큰 앞에 붙임
-            log.info("Login successful, JWT Token: {}", bearerToken);
-            // 응답에 JWT 토큰을 포함하여 반환합니다.
-            return ResponseEntity.ok().header("Authorization", bearerToken).body(new AuthResponse(bearerToken)); // 변경된 부분
-        } catch (AuthenticationException e) {
-            // 인증에 실패하면 401 Unauthorized 응답을 반환합니다.
-            return ResponseEntity.status(401).body("Authentication failed");
-        }
-    }
+
+	@PostMapping("/signin")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody MemberLoginForm loginForm) {
+		try {
+			// SigninService를 사용하여 사용자 인증 및 토큰 생성
+			String token = signinService.authenticateAndGenerateToken(loginForm);
+			log.info("Login successful, JWT Token: {}", token);
+			return ResponseEntity.ok().body(new AuthResponse(token)); // Authorization 헤더 대신 응답 본문에 포함시키기.
+			// 응답에 JWT 토큰을 포함하여 반환합니다.
+		} catch (AuthenticationException e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed: " + e.getMessage());
+		}
+	}
+	
+	@GetMapping("/test_jwt") 
+	public String testJwt(HttpServletRequest request) {
+		
+		String token = jwtUtil.resolveToken(request);
+		log.info("token {}" ,token);
+		
+		Authentication auth = jwtUtil.getAuthentication(token);
+		log.info("principal {}, email {}, authorities {}", auth.getPrincipal(), auth.getName(), auth.getAuthorities());
+		log.info("isValid {}", jwtUtil.isExpired(token));
+		
+		return jwtUtil.getEmail(token);
+	}
+	
 }

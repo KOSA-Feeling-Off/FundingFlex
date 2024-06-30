@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{common/layouts/layout}">
+<html xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{common/layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport"
@@ -12,33 +13,60 @@
 <title>Sign Up</title>
 </head>
 <body>
-	<div layout:fragment="content" class="container my-3">
-		<div class="my-3 border-bottom">
-			<div>
-				<h4>회원가입</h4>
+	<div layout:fragment="content" class="content">
+		<div class="container-body">
+			<div class="col-md-6">
+				<div class="text-body">
+					<div class="col-md-7">
+						<div class="my-3 border-bottom">
+							<div>
+								<h4 class="signup-title">회원가입</h4>
+							</div>
+						</div>
+						<form th:action="@{/api/signup}" th:object="${memberResisterForm}"
+							method="post">
+							<div
+								th:replace="@{/common/error/form_errors} :: formErrorsFragment"></div>
+							<div class="signup-row">
+								<label for="email" class="signup-label">이메일</label>
+								<input type="text" th:field="*{email}" class="form-control"
+										placeholder="이메일을 입력해주세요.">
+							</div>
+							<div class="signup-row">
+								<label for="nickname" class="signup-label">닉네임</label>
+								<input type="text" th:field="*{nickname}" class="form-control"
+										placeholder="닉네임을 입력해주세요.">
+							</div>
+							<div class="signup-row">
+								<label for="password1" class="signup-label">비밀번호</label>
+								<input type="password" th:field="*{password1}" class="form-control"
+										placeholder="비밀번호를 입력해주세요.">
+							</div>
+							<div class="signup-row">
+								<label for="password2" class="signup-label">비밀번호 확인</label>
+								<input type="password" th:field="*{password2}" class="form-control"
+										placeholder="비밀번호를 다시 한번 입력해주세요.">
+							</div>
+							<div class="signup-row">
+								<label for="profile_url" class="signup-label">프로필 사진</label>
+								<div class="signup-image-upload">
+									<div class="image-upload">
+                        <input type="file" name="images" accept="image/*" onchange="previewImage(this)">
+                        <img src="#">
+                    </div>
+								</div>
+							</div>
+							<div class="signup-button">
+								<button type="reset"
+									class="btn btn-primary signup-detail-button">이전으로</button>
+								<button type="submit"
+									class="btn btn-primary signup-detail-button">회원가입</button>
+							</div>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
-		<form th:action="@{/api/signup}" th:object="${memberResisterForm}"
-			method="post">
-			<div th:replace="@{/common/error/form_errors} :: formErrorsFragment"></div>
-			<div class="mb-3">
-				<label for="email" class="form-label">이메일</label> 
-					<input type="text" th:field="*{email}" class="form-control">
-			</div>
-			<div class="mb-3">
-				<label for="nickname" class="form-label">닉네임</label> 
-					<input type="text" th:field="*{nickname}" class="form-control">
-			</div>
-			<div class="mb-3">
-				<label for="password1" class="form-label">비밀번호</label>
-					 <input type="password" th:field="*{password1}" class="form-control">
-			</div>
-			<div class="mb-3">
-				<label for="password2" class="form-label">비밀번호 확인</label> <input
-					type="password" th:field="*{password2}" class="form-control">
-			</div>
-			<button type="submit" class="btn btn-primary">회원가입</button>
-		</form>
 	</div>
 </body>
 </html>

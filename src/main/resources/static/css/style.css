@@ -174,7 +174,7 @@ body {
 }
 
 .footer .container {
-	width: 100%
+	width: 100%;
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -277,4 +277,90 @@ body {
 
 .icon_heart_alt.clicked::before {
 	color: red; /* 클릭 시 변경할 색상 */
+}
+
+/* login_form css */
+.login-title {
+    font-size: 70px; /* 로그인 제목의 글씨 크기 */
+    margin: 40px 0 40px 0; /* 제목을 위로 조금 더 올림 */
+    text-align: center; /* 제목을 중앙 정렬 */
+    color: #333; /* 제목 색상 설정 */
+}
+
+.form-group {
+    display: flex; /* Flexbox를 사용하여 아이템들을 행으로 배치 */
+    justify-content: center; /* 중앙 정렬 */
+    align-items: center; /* 세로 방향에서도 중앙 정렬 */
+    margin-bottom: 20px; /* 마진으로 각 form-group 간 간격 조정 */
+}
+
+.col-form-label {
+    margin-right: 10px; /* 레이블과 입력 필드 사이의 간격 조정 */
+}
+
+.login-row{
+	margin-bottom: 50px;
+	display: flexr
+}
+
+.signin-button{
+	margin:0 30px 0 30px;
+}
+
+.signin-buttons{
+	margin: 0 40px 0 40px
+}
+.password-row, .email-row{
+	flex: 0 0 auto 0;
+	width: 80%;
+}
+
+.input-row {
+    display: flex;
+    width: 60%; /* 너비를 전체로 설정 */
+    margin-left: 100px;
+}
+
+.form-control {
+    width: 60%; /* 입력 필드 너비를 부모 요소의 50%로 설정 */
+    display: block; /* 블록 레벨 요소로 설정하여 너비가 적용되도록 함 */
+    margin: 0 auto; /* 좌우 마진 자동으로 설정하여 가운데 정렬 */
+    margin: 0 60px 0 30px;
+}
+
+.signin-label{
+	flex: 0 0 auto;
+	margin-left: 30%;
+	margin-top: 24px;
+	width: 111px;
+	font-size: x-large;
+	margin-bottom: 30px;
+	text-align: right;
+	
+}
+
+/* signup_form css */
+.signup-title{
+	text-align: center;
+	font-size: 40px;
+}
+
+.signup-row{
+	display: flex;
+	font-size: 30px;
+	margin: 70px 0 76px 0;
+}
+.signup-label{
+	width:190px;
+	text-align: right;
+}
+.signup-image-upload{
+	margin: 0 60px 0 30px;
+}
+.signup-button{
+	display: flex;
+	justify-content: center; /* 가로축 중앙 정렬 */
+}
+.signup-detail-button{
+	margin:0 30px 0 30px;
 }
