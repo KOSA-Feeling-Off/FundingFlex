@@ -1,9 +1,9 @@
 package com.fundingflex.funding.domain.dto;
-import java.util.List;
 
 import com.fundingflex.funding.domain.enums.FundingsStatusEnum;
-
+import java.util.List;
 import lombok.Data;
+
 
 @Data
 public class FundingsDTO {
@@ -15,4 +15,10 @@ public class FundingsDTO {
     private int goalAmount;
     private int currentAmount;
     private List<String> imageUrls;
+    
+    private Long categoryId;
+    
+    public List<String> getImageUrls() {
+        return this.imageUrls;
+    }
 }

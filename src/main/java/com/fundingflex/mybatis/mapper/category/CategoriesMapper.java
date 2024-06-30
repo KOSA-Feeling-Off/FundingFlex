@@ -4,15 +4,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.fundingflex.category.domain.dto.CategoriesDTO;
+import com.fundingflex.category.domain.entity.Categories;
 
 
 @Mapper
 public interface CategoriesMapper {
 	
-	List<CategoriesDTO> selectAllCategories();
+	List<Categories> selectAllCategories();
 
-	CategoriesDTO selectCategoryById(Long categoryId);
+	Categories selectCategoryById(Long categoryId);
 
 	int existsById(Long categoryId);
 }
