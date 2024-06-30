@@ -1,16 +1,13 @@
 package com.fundingflex.funding.service;
 
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.fundingflex.funding.domain.dto.FundingRequestDTO;
 import com.fundingflex.funding.domain.dto.FundingResponseDTO;
 import com.fundingflex.funding.domain.entity.FundingConditions;
 import com.fundingflex.funding.domain.entity.FundingJoin;
 import com.fundingflex.mybatis.mapper.funding.FundingsMapper;
-
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service

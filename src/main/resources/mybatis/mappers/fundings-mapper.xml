@@ -1,50 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper
-	namespace="com.fundingflex.mybatis.mapper.funding.FundingsMapper">
+<mapper namespace="com.fundingflex.mybatis.mapper.funding.FundingsMapper">
 
 
 	<!-- 펀딩 정보 저장 후 id 반환 -->
-	<insert id="insertFundings"
-		parameterType="com.fundingflex.funding.domain.entity.Fundings">
+	<insert id="insertFundings" parameterType="com.fundingflex.funding.domain.entity.Fundings">
 
 		INSERT
-		INTO
-		FUNDINGS ( category_id
-		, user_id
-		, title
-		, content
-		, status_flag
-		, goal_amount
-		, created_at
-		, created_by
-		, is_deleted
-		)
+		  INTO
+	  FUNDINGS ( category_id
+		  	   , user_id
+		  	   , title
+		  	   , content
+		  	   , status_flag
+		  	   , goal_amount
+		  	   , created_at
+		  	   , created_by
+		  	   , is_deleted
+		  	   )
 		VALUES ( #{categoryId}
-		, #{userId}
-		, #{title}
-		, #{content}
-		, #{statusFlag,
-		typeHandler=com.fundingflex.common.util.EnumTypeHandler,
-		jdbcType=NUMERIC}
-		, #{goalAmount}
-		, CURRENT_TIMESTAMP
-		, '이너프'
-		, #{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler,
-		jdbcType=VARCHAR}
-		)
+			   , #{userId}
+			   , #{title}
+			   , #{content}
+			   , #{statusFlag, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=NUMERIC}
+			   , #{goalAmount}
+			   , CURRENT_TIMESTAMP
+			   , '이너프'
+			   , #{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=VARCHAR}
+			   )
 
 		<!-- 방금 삽입된 row의 ID 가져오기 -->
-		<selectKey keyProperty="fundingsId" resultType="long"
-			order="AFTER">
+		<selectKey keyProperty="fundingsId" resultType="long" order="AFTER">
 			SELECT fundings_id
-			FROM FUNDINGS
-			WHERE category_id = #{categoryId}
-			AND user_id = #{userId}
-			AND title = #{title}
-			AND ROWNUM = 1
-			ORDER BY created_at DESC
+			  FROM FUNDINGS
+			 WHERE category_id 	= #{categoryId}
+			   AND user_id 		= #{userId}
+			   AND title 		= #{title}
+			   AND ROWNUM 		= 1
+		  ORDER BY created_at 	DESC
 		</selectKey>
 
 	</insert>
@@ -53,35 +47,58 @@
 	<!-- 펀딩 체크 -->
 	<select id="existsById" resultType="int">
 		SELECT CASE WHEN EXISTS (SELECT 1
-		FROM fundings
-		WHERE fundings_id = #{fundingsId})
-		THEN 1
-		ELSE 0
-		END
-		FROM dual
+	                               FROM fundings
+	                              WHERE fundings_id = #{fundingsId})
+	                THEN 1
+	                ELSE 0
+	           END
+	      FROM dual
+	</select>
+
+	<!--펀딩 수정 폼 조회 -->
+	<select id="selectFundingsForm" resultType="com.fundingflex.funding.domain.form.FundingsForm">
+		SELECT category_id
+		     , fundings_id				fundingsId
+				 , title              title
+				 , content            content
+				 , goal_amount        goalAmount
+		  FROM fundings
+		 WHERE fundings_id				= #{fundingsId}
 	</select>
 
 
-	<!-- 펀딩 정보 조회 -->
-	<select id="selectFundingInfo"
-		resultType="com.fundingflex.funding.domain.dto.FundingsInfoDTO">
-		SELECT c.category_id categoryId
-		, c.category_name categoryName
-		, f.fundings_id fundingsId
-		, f.title title
-		, f.content content
-		, f.goal_amount goalAmount
-		, f.status_flag statusFlag
-		, NVL(fc.collected_amount, 0) collectedAmount
-		, NVL(fc.percent,0) percent
-		FROM fundings f
-		INNER JOIN categories c
-		ON f.category_id = c.category_id
-		LEFT JOIN funding_conditions fc
-		ON f.fundings_id = fc.fundings_id
-		WHERE f.category_id = #{categoryId}
-		AND f.fundings_id = #{fundingsId}
-	</select>
+  	<!-- 펀딩 정보 상세 조회 -->
+	<select id="selectFundingInfo" resultType="com.fundingflex.funding.domain.dto.FundingsInfoDTO">
+        SELECT c.category_id        categoryId
+             , c.category_name      categoryName
+             , f.fundings_id        fundingsId
+             , f.title              title
+             , f.content            content
+             , f.goal_amount        goalAmount
+             , f.status_flag        statusFlag
+             , NVL(fc.collected_amount, 0)  collectedAmount
+             , NVL(fc.percent,0)           percent
+          FROM fundings             f
+   	INNER JOIN categories 			c
+   			ON f.category_id 		= c.category_id
+     LEFT JOIN funding_conditions   fc
+            ON f.fundings_id        = fc.fundings_id
+         WHERE f.category_id        = #{categoryId}
+           AND f.fundings_id        = #{fundingsId}
+  </select>
+
+
+	<!-- 펀딩 수정 -->
+	<update id="updateFunding">
+		UPDATE fundings
+		   SET title				= #{fundingsForm.title}
+		     , content			= #{fundingsForm.content}
+			   , goal_amount	= #{fundingsForm.goalAmount}
+				 , updated_at		= CURRENT_TIMESTAMP
+				 , updated_by		= '이너프'
+		 WHERE category_id	= #{categoryId}
+		   AND fundings_id	= #{fundingId}
+  </update>
 
 
 	<!-- 펀딩 리스트 조회 -->
@@ -145,6 +162,7 @@
 		= #{percent} WHERE fundings_id =
 		#{fundingsId}
 	</update>
+
 
 	<!-- 펀딩 참여 삽입 -->
 	<insert id="insertFundingJoin">

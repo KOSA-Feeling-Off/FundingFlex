@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var imageUploadContainer = document.getElementById('imageUploadContainer');
+
+    // 이미지 업로드 컨테이너
+    const imageUploadContainer = document.getElementById('imageUploadContainer');
+
+    // 이미지 순서 변경 이벤트 추가
     if (imageUploadContainer) {
-        var sortable = new Sortable(imageUploadContainer, {
+        let sortable = new Sortable(imageUploadContainer, {
             animation: 150,
             swap: true,
             swapClass: 'highlight',
@@ -10,14 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        
-        var imageUploads = imageUploadContainer.getElementsByClassName('image-upload');
-        for (var i = 0; i < imageUploads.length; i++) {
+        let imageUploads = imageUploadContainer.getElementsByClassName('image-upload');
+        for (let i = 0; i < imageUploads.length; i++) {
             imageUploads[i].id = 'image-upload-' + i;
         }
     }
-	
-	// 금액 천단위 표시
+
+
+	  // 금액 천단위 표시
     function formatNumberWithCommas(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
@@ -32,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         collectedAmountElement.textContent = formatNumberWithCommas(collectedAmountElement.textContent);
     }
 	
-	// 애니메이션 효과를 위한 함수
+	  // 애니메이션 효과를 위한 함수
     function animateValue(element, start, end, duration, unit) {
         let startTimestamp = null;
 		
@@ -60,12 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const progress = Math.min((timestamp - startTimestamp) / duration, 1);
             element.style.width = (progress * (end - start) + start) + '%';
             
-			if (progress < 1) {
-                window.requestAnimationFrame(step);
-            }
-        };
+          if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
 		
-        window.requestAnimationFrame(step);
+            window.requestAnimationFrame(step);
     }
 
     // 퍼센트 애니메이션
@@ -83,8 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const percent = parseInt(labelRaised.textContent.replace('%', '').trim());
         animateValue(labelRaised, 0, percent, 1000, '% 달성');
     }
-	
-
+    
     // 금액 애니메이션
     if (collectedAmountElement) {
         const collectedAmountValue = parseInt(collectedAmountElement.textContent.replace(/[^0-9]/g, ''));
@@ -92,28 +95,38 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 	
 	
-	// 좋아요 버튼 클릭 이벤트
-	const heartButton = document.getElementById('heartButton');
-    heartButton.addEventListener('click', () => {
-        heartButton.classList.toggle('clicked');
-    });
+	  // 좋아요 버튼 클릭 이벤트
+    const heartButton = document.getElementById('heartButton');
+    if (heartButton) {
+        heartButton.addEventListener('click', () => {
+            heartButton.classList.toggle('clicked');
+        });
+    }
+
 });
 
 
+// 이미지 미리보기
 function previewImage(input) {
-    var file = input.files[0];
-    var maxSize = 2 * 1024 * 1024; // 2MB
+    let file = input.files[0];
+
+    // 파일이 선택되지 않은 경우
+    if (!file) {
+        return;
+    }
+
+    let maxSize = 2 * 1024 * 1024; // 2MB
 
     if (file.size > maxSize) {
         alert('이미지 파일의 크기는 2MB를 초과할 수 없습니다.');
         input.value = '';
         return;
     }
-    
-    var reader = new FileReader();
+
+    let reader = new FileReader();
 
     reader.onload = function(e) {
-        var img = input.nextElementSibling;
+        let img = input.nextElementSibling;
         img.src = e.target.result;
         img.style.display = 'block';
     }
@@ -121,16 +134,18 @@ function previewImage(input) {
     reader.readAsDataURL(file);
 }
 
+
+// 이미지 순서 변경
 function updateImageSequence() {
-    var imageUploadContainer = document.getElementById('imageUploadContainer');
-    var imageUploads = imageUploadContainer.getElementsByClassName('image-upload');
-    var sequence = [];
-	
-    for (var i = 0; i < imageUploads.length; i++) {
-        var input = imageUploads[i].querySelector('input[type="file"]');
+    let imageUploadContainer = document.getElementById('imageUploadContainer');
+    let imageUploads = imageUploadContainer.getElementsByClassName('image-upload');
+    let sequence = [];
+
+    for (let i = 0; i < imageUploads.length; i++) {
+        let input = imageUploads[i].querySelector('input[type="file"]');
         sequence.push(input.files[0] ? input.files[0].name : null);
     }
-	
+
     console.log('Image sequence updated:', sequence);
 }
 
@@ -139,18 +154,18 @@ function updateImageSequence() {
 	유효성 검사
 */
 function validateForm() {
-    var fields = [
+    let fields = [
 		{ id: 'category', errorId: 'categoryError', errorMessage: '카테고리를 선택하세요' },
         { id: 'title', errorId: 'titleError', errorMessage: '제목을 입력해주세요' },
         { id: 'content', errorId: 'contentError', errorMessage: '내용을 입력해주세요' },
         { id: 'goalAmount', errorId: 'amountError', errorMessage: '금액을 입력해주세요' }
     ];
 
-    var isValid = true;
+    let isValid = true;
 
     fields.forEach(function(field) {
-        var input = document.getElementById(field.id);
-        var error = document.getElementById(field.errorId);
+        let input = document.getElementById(field.id);
+        let error = document.getElementById(field.errorId);
 
         console.log(input);
         if (input.value.trim() === '' || input.value === "0") {
@@ -166,7 +181,7 @@ function validateForm() {
     return isValid;
 }
 
-// 이미지 선택 이벤트
+// 펀딩 상세 이미지 선택 이벤트
 function changeMainImage(thumbnail) {
     const mainImage = document.getElementById('mainImage');
     mainImage.src = thumbnail.src;

@@ -1,8 +1,7 @@
 package com.fundingflex.funding.domain.dto;
-import java.util.List;
 
 import com.fundingflex.funding.domain.enums.FundingsStatusEnum;
-
+import java.util.List;
 import lombok.Data;
 
 

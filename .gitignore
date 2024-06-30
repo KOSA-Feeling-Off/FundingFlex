@@ -112,3 +112,7 @@ Desktop.ini
 .cargo/
 *.rs.bk
 *.rs.bkp
+
+
+# 펀딩 이미지, QA 이미지 추가
+/src/main/resources/static/images/*

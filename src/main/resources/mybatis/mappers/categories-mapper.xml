@@ -3,29 +3,32 @@
 
 <mapper namespace="com.fundingflex.mybatis.mapper.category.CategoriesMapper">
 
-  <!-- 카테고리 조회 -->
-	<select id="selectAllCategories" resultType="com.fundingflex.category.domain.dto.CategoriesDTO">
-    SELECT category_id 		categoryId
-         , category_name 	categoryName
-      FROM categories
-  </select>
+	<!-- 카테고리 모두 조회 -->
+	<select id="selectAllCategories" resultType="com.fundingflex.category.domain.entity.Categories">
+	    SELECT category_id 		categoryId
+	         , category_name 	categoryName
+	      FROM categories
+  	</select>
 
-  <select id="selectCategoryById" resultType="com.fundingflex.category.domain.dto.CategoriesDTO">
-    SELECT category_id 		categoryId
-         , category_name 	categoryName
-      FROM categories
-     WHERE category_id  = #{categoryId}
-  </select>
 
-  <select id="existsById" resultType="int">
-    SELECT CASE WHEN EXISTS (SELECT 1
-                               FROM categories
-                              WHERE category_id = #{categoryId})
-                THEN 1
-                ELSE 0
-           END
-      FROM dual
-  </select>
+	<!-- 카테고리 조회 (id 기준) -->
+  	<select id="selectCategoryById" resultType="com.fundingflex.category.domain.entity.Categories">
+	    SELECT category_id 		categoryId
+	         , category_name 	categoryName
+	      FROM categories
+	     WHERE category_id  = #{categoryId}
+  	</select>
 
+
+	<!-- 카테고리 체크 -->
+	<select id="existsById" resultType="int">
+		SELECT CASE WHEN EXISTS (SELECT 1
+	                               FROM categories
+	                              WHERE category_id = #{categoryId})
+	                THEN 1
+	                ELSE 0
+	           END
+	      FROM dual
+	</select>
 
 </mapper>
