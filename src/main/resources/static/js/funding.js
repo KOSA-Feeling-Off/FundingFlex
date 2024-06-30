@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (labelRaised) {
         const percent = parseInt(labelRaised.textContent.replace('%', '').trim());
-        animateValue(labelRaised, 0, percent, 1000, '% 달성');
+        animateValue(labelRaised, 0, percent, 1000, '%');
     }
 	
 

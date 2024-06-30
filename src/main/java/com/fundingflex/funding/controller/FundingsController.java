@@ -3,10 +3,11 @@ package com.fundingflex.funding.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.fundingflex.category.domain.dto.CategoriesDTO;
 import com.fundingflex.category.service.CategoriesService;
 import com.fundingflex.funding.domain.dto.FundingIdsDTO;
 import com.fundingflex.funding.domain.dto.FundingsDTO;
+import com.fundingflex.funding.domain.dto.FundingsInfoDTO;
 import com.fundingflex.funding.domain.dto.ResponseFundingInfoDTO;
 import com.fundingflex.funding.domain.form.FundingsForm;
 import com.fundingflex.funding.service.FundingsService;
@@ -45,15 +47,12 @@ public class FundingsController {
         return "funding/funding-form";
     }
     
-
-	// 개설 펀딩 저장
+    // 개설 펀딩 저장
     @PostMapping
     public String createFunding(@ModelAttribute("fundingsForm") FundingsForm fundingsForm,
             @RequestParam("images") MultipartFile[] images, Model model) {
         
-    	//  @AuthenticationPrincipal UserDetails currentUser
-    	Long id = 1L;
-        FundingIdsDTO fundingsDto = fundingsService.saveFundings(fundingsForm, images, id);
+        FundingIdsDTO fundingsDto = fundingsService.saveFundings(fundingsForm, images);
         
         return "redirect:/api/fundings/" + fundingsDto.getCategoryId()
                     + "/details/" + fundingsDto.getFundingsId();
@@ -62,7 +61,7 @@ public class FundingsController {
     // 펀딩 목록 화면 조회
     @GetMapping("/list-view")
     public String getFundingsPage() {
-        return "/funding/fundings.html"; // static 폴더 내의 HTML 파일 이름
+        return "fundings.html"; // static 폴더 내의 HTML 파일 이름
     }
 
     
@@ -76,37 +75,12 @@ public class FundingsController {
         return "funding/funding-details";
     }
 
-    /*
+    // 펀딩 목록 ajax
     @GetMapping("/list")
     @ResponseBody
-    public ResponseEntity<List<FundingsDTO>> getAllFundings(@RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy) {
-        try {
-            List<FundingsDTO> fundingsList = fundingsService.getAllFundings(sortBy);
-            return ResponseEntity.ok(fundingsList);
-        } catch (Exception e) {
-            // 로그 출력
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-    */
-    
-    @GetMapping("/list")
-    @ResponseBody
-    public ResponseEntity<List<FundingsDTO>> getAllFundings(@RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy) {
-        try {
-            List<FundingsDTO> fundingsList;
-            if ("inProgress".equals(sortBy)) {
-                fundingsList = fundingsService.getInProgressFundings(sortBy);
-            } else {
-                fundingsList = fundingsService.getAllFundings(sortBy);
-            }
-            return ResponseEntity.ok(fundingsList);
-        } catch (Exception e) {
-            // 로그 출력
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public ResponseEntity<List<FundingsDTO>> getAllFundings() {
+        List<FundingsDTO> fundingsList = fundingsService.getAllFundings();
+        return ResponseEntity.ok(fundingsList);
     }
     
     // 좋아요 처리
@@ -117,6 +91,5 @@ public class FundingsController {
         return ResponseEntity.ok(Map.of("liked", liked));
     }
     
-
     
 }
