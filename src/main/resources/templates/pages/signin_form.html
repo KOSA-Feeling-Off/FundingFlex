@@ -7,34 +7,64 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-    <div class="container">
-        <span sec:authorize="isAnonymous()">[인증 안됨]</span> 
-        <span sec:authorize="isAuthenticated()">[인증됨]</span>
-        <h2>로그인</h2>
+    <div>
+        <div class="login-title">로그인</div>
         <form th:action="@{/api/signin}" method="post" class="form-horizontal" th:object="${memberLoginForm}">
-            <div class="form-group">
-                <label for="email" class="control-label col-sm-2">사용자 EMAIL</label>
-                <div class="col-sm-8">
-                    <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요">
+            <div class="form-group login-row">
+                <label for="email" class="signin-label">  이메일</label>
+                <div class="input-row">
+                    <input type="text" name="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요" th:value="${memberLoginForm.email}">
+                </div>
+            </div>
+            <div class="form-group login-row">
+                <label for="password" class="signin-label">비밀번호</label>
+                <div class="input-row">
+                    <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요" th:value="${memberLoginForm.password}">
                 </div>
             </div>
             <div class="form-group">
-                <label for="password" class="control-label col-sm-2">비밀번호</label>
-                <div class="col-sm-8">
-                    <input type="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-8">
-                    <button type="submit" class="btn btn-primary">로그인</button>
-                    <button type="reset" class="btn btn-secondary">취소</button>
+                <div class="signin-button">
+                    <button type="submit" class="btn btn-primary signin-buttons">로그인</button>
+                    <button type="reset" class="btn btn-secondary signin-buttons">취소</button>
                 </div>
             </div>
         </form>
-        <div sec:authorize="isAuthenticated()">
-            <p>로그인되었습니다. <a th:href="@{/logout}">로그아웃</a></p>
-        </div>
     </div>
 </div>
+<script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // 기본 폼 제출 방지
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const requestData = {
+                email: email,
+                password: password
+            };
+
+            fetch('/api/signin', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(requestData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Success:', data);
+                // 로그인 성공 후 처리
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // 로그인 실패 후 처리
+            });
+        });
+    </script>
 </body>
 </html>
