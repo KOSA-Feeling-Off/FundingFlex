@@ -1,3 +1,4 @@
+/* funding Form */
 .image-upload-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -40,6 +41,11 @@
 
 
 
+/* funding details */
+.row {
+	align-items: center;
+	padding: 0 20px 0 100px;
+}
 
 
 .image-container {
@@ -91,14 +97,12 @@
 }
 
 .project-funding-info .goal-amount {
-    font-size: 24px;
+    font-size: 32px;
     color: #333;
 }
 
 .percent-raised {
-    font-size: 18px;
     font-weight: bold;
-    margin-bottom: 30px;
 }
 
 .project-raised .raised-label {
@@ -122,19 +126,22 @@
     transition: width 0.4s ease;
 }
 
+.project-summery .btn {
+	margin-top: 20px;
+	width: 100%;
+}
 
 
 .description-content {
     text-align: center;
 }
 
-.content-wrapper {
-    margin-top: 70px;
+.preserve-whitespace {
+    white-space: pre-wrap;
 }
 
 .project-funding-title-likes {
     display: flex;
-    align-items: center; /* 세로 정렬을 가운데로 맞춤 */
+    align-items: center;
     margin-bottom: 100px; /* 하단 여백 추가 */
 }
-
