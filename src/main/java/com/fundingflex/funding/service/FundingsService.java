@@ -1,5 +1,16 @@
 package com.fundingflex.funding.service;
 
+
+import java.sql.SQLException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.apache.ibatis.javassist.NotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fundingflex.category.domain.entity.Categories;
 import com.fundingflex.category.service.CategoriesService;
 import com.fundingflex.common.enums.DeleteFlagEnum;
@@ -14,17 +25,10 @@ import com.fundingflex.funding.domain.entity.Images;
 import com.fundingflex.funding.domain.form.FundingsForm;
 import com.fundingflex.mybatis.mapper.category.CategoriesMapper;
 import com.fundingflex.mybatis.mapper.funding.FundingsMapper;
+
 import jakarta.transaction.Transactional;
-import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.javassist.NotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Service
