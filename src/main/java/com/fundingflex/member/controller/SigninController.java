@@ -49,18 +49,4 @@ public class SigninController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed: " + e.getMessage());
 		}
 	}
-	
-	@GetMapping("/test_jwt") 
-	public String testJwt(HttpServletRequest request) {
-		
-		String token = jwtUtil.resolveToken(request);
-		log.info("token {}" ,token);
-		
-		Authentication auth = jwtUtil.getAuthentication(token);
-		log.info("principal {}, email {}, authorities {}", auth.getPrincipal(), auth.getName(), auth.getAuthorities());
-		log.info("isValid {}", jwtUtil.isExpired(token));
-		
-		return jwtUtil.getEmail(token);
-	}
-	
 }
