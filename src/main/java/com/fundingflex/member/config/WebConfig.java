@@ -8,8 +8,6 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.fundingflex.member.annotation.CustomAuthenticationPrincipalArgumentResolver;
-
 @Component("myWebConfig")
 public class WebConfig implements WebMvcConfigurer {
 	@Override
@@ -21,10 +19,4 @@ public class WebConfig implements WebMvcConfigurer {
         .exposedHeaders("Authorization")  // 클라이언트가 접근할 수 있도록 헤더 노출
         .allowCredentials(true);
 	}
-	
-	@Override
-    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new CustomAuthenticationPrincipalArgumentResolver());
-    }
-
 }

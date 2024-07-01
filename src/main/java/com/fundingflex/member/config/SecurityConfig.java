@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.fundingflex.common.util.jwt.JWTFilter;
 import com.fundingflex.common.util.jwt.JWTUtil;
 import com.fundingflex.common.util.jwt.LoginFilter;
+import com.fundingflex.member.service.CustomUserDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,8 @@ public class SecurityConfig {
 	//AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
 	private final AuthenticationConfiguration authenticationConfiguration;
 	private final JWTUtil jwtUtil;
+    private final CustomUserDetailsService customUserDetailsService;
+
 
 	/**
 	 * BCryptPasswordEncoder는 비밀번호를 해싱하는 데 사용됩니다. BCrypt 해시 함수는 각 해시마다 고유한 솔트를 생성하여
@@ -54,7 +57,7 @@ public class SecurityConfig {
 		            .anyRequest().permitAll())
 //		        .addFilterBefore(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
 		        .addFilterBefore(new LoginFilter(authenticationManager, jwtUtil), UsernamePasswordAuthenticationFilter.class)
-		        .addFilterAfter(new JWTFilter(jwtUtil), LoginFilter.class)
+		        .addFilterAfter(new JWTFilter(jwtUtil, customUserDetailsService), LoginFilter.class)
 		        .sessionManagement(session -> session
 		            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		    return http.build();
