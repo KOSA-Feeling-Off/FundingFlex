@@ -20,6 +20,14 @@
     border-radius: 8px;
 }
 
+.section-category-container{
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 40px;
+    border-radius: 8px;
+}
+
+
 h1 {
     text-align: center;
     color: #333;
@@ -30,7 +38,7 @@ h2 {
     text-align: left;
     color: #333;
     margin-bottom: 20px;
-    margin-top: 70px
+    margin-top: 15px
 }
 .funding-item {
     position: relative;
@@ -150,179 +158,3 @@ h2 {
     z-index: 1;
 }
 
-
-/*
-body {
-	font-family: Arial, sans-serif;
-	background-color: #fff;
-	margin: 0;
-	padding: 0;
-}
-
-.content-container {
-	background-color: #fff;
-	padding: 20px;
-	max-width: 1200px;
-	width: 100%;
-	margin: 20px auto; // Center the container 
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
-}
-
-h1 {
-	text-align: center;
-	color: #333;
-	margin-bottom: 20px;
-	width: 100%;
-}
-
-.filter-container {
-	display: flex;
-	justify-content: flex-start; // Align to the left 
-	margin-bottom: 20px;
-	width: 100%;
-}
-
-.funding-item {
-	position: relative;
-	background-color: #fff;
-	border: 1px solid #BFEFFF;
-	border-radius: 8px;
-	padding: 10px;
-	width: calc(25% - 20px); // 4 items per row 
-	box-sizing: border-box;
-	cursor: pointer;
-	text-decoration: none;
-	color: inherit;
-}
-
-.funding-item:hover {
-	box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-}
-
-.funding-title {
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
-	margin-bottom: 10px;
-}
-
-.funding-details {
-	font-size: 14px;
-	color: #555;
-	margin-bottom: 10px;
-}
-
-.funding-images {
-	position: relative;
-	width: 100%;
-	overflow: hidden;
-	border-radius: 8px;
-	margin-bottom: 10px;
-	height: 200px; // Fixed height
-}
-
-.funding-images img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	display: none;
-}
-
-.funding-images img.active {
-	display: block;
-}
-
-.funding-images .prev, .funding-images .next {
-	cursor: pointer;
-	position: absolute;
-	top: 50%;
-	width: auto;
-	padding: 16px;
-	margin-top: -22px;
-	color: white;
-	font-weight: bold;
-	font-size: 18px;
-	transition: 0.6s ease;
-	border-radius: 0 3px 3px 0;
-	user-select: none;
-	text-decoration-line: none;
-}
-
-.funding-images .next {
-	right: 0;
-	border-radius: 3px 0 0 3px;
-}
-
-.funding-images .prev:hover, .funding-images .next:hover {
-	background-color: rgba(0, 0, 0, 0.8);
-}
-
-.funding-progress {
-	background-color: #e0e0e0;
-	border-radius: 4px;
-	overflow: hidden;
-	margin-bottom: 10px;
-	position: relative;
-	height: 20px;
-}
-
-.funding-progress-bar {
-	height: 100%;
-	background-color: #28a745;
-	width: 0;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-.funding-progress-text {
-	position: absolute;
-	width: 100%;
-	text-align: center;
-	line-height: 20px;
-	font-size: 12px;
-	color: #fff;
-	z-index: 1;
-}
-
-.create-funding-btn {
-	background-color: #007bff;
-	color: white;
-	border: none;
-	padding: 10px 20px;
-	border-radius: 4px;
-	cursor: pointer;
-	text-decoration: none;
-	position: absolute;
-	right: 50px; // Move button to the left 
-	top: 20px;
-}
-
-.create-funding-btn:hover {
-	background-color: #0056b3;
-}
-
-.header {
-	position: relative;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	border: none;
-}
-
-.like-button {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	cursor: pointer;
-	font-size: 24px;
-	color: #ddd;
-}
-
-.like-button.liked {
-	color: #ff0000;
-}
-*/

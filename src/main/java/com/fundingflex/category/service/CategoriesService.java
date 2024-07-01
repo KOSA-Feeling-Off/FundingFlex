@@ -23,7 +23,7 @@ public class CategoriesService {
 	
 	// 카테고리 조회
 	public Categories selectCategoriesById(Long categoryId) {
-		return categoriesMapper.selectCategoryById(categoryId);
-	}
+        return categoriesMapper.selectCategoryById(categoryId);
+    }
 
 }

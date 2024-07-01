@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FundingsService {
 
+	private static final Logger logger = LoggerFactory.getLogger(FundingsService.class);
+	
 	private final FundingsMapper fundingsMapper;
 	private final ImageService imageService;
 
@@ -221,7 +225,9 @@ public class FundingsService {
 
     // 카테고리별 목록
     public List<FundingsDTO> getFundingsByCategory(Long categoryId, String sortBy) {
+        logger.debug("Getting fundings for category ID: {} with sort by: {}", categoryId, sortBy);
         List<FundingsDTO> fundingsList = fundingsMapper.getFundingsByCategory(categoryId, sortBy);
+        logger.debug("Fundings list retrieved: {}", fundingsList);
         return fundingsList.stream().map(funding -> {
             FundingsDTO dto = new FundingsDTO();
             dto.setFundingsId(funding.getFundingsId());
@@ -230,7 +236,7 @@ public class FundingsService {
             dto.setStatusFlag(funding.getStatusFlag());
             dto.setLikeCount(funding.getLikeCount());
             dto.setGoalAmount(funding.getGoalAmount());
-            dto.setCategoryId(funding.getCategoryId()); // 추가
+            dto.setCategoryId(funding.getCategoryId());
 
             int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
                 .mapToInt(FundingJoin::getFundingAmount).sum();
@@ -265,6 +271,23 @@ public class FundingsService {
 
             return dto;
         }).collect(Collectors.toList());
+    }
+    
+    // 좋아요 기능 수정
+    public boolean toggleLikeFunding(Long fundingsId, String userId) {
+        String userFundingsKey = userId + "-" + fundingsId;
+
+        if (userLikes.contains(userFundingsKey)) {
+            // 이미 좋아요를 누른 경우, 좋아요 취소
+            userLikes.remove(userFundingsKey);
+            fundingsMapper.decrementLikeCount(fundingsId);
+            return false; // 좋아요 취소됨
+        } else {
+            // 좋아요 추가
+            userLikes.add(userFundingsKey);
+            fundingsMapper.incrementLikeCount(fundingsId);
+            return true; // 좋아요 추가됨
+        }
     }
 
 }

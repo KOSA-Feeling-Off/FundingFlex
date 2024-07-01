@@ -186,3 +186,59 @@ function changeMainImage(thumbnail) {
     const mainImage = document.getElementById('mainImage');
     mainImage.src = thumbnail.src;
 }
+
+
+	// 펀딩 참여하기 버튼 클릭 이벤트 리스너
+    const joinFundingButton = document.getElementById('joinFundingButton');
+    if (joinFundingButton) {
+        joinFundingButton.addEventListener('click', async function () {
+            const fundingId = document.getElementById('fundingId').value; // 적절한 방식으로 펀딩 아이디를 가져옵니다.
+
+            // 로그인 여부 확인 API 요청
+            const response = await fetch('/api/auth/check-login', {
+                method: 'GET',
+                credentials: 'include' // 쿠키를 포함하여 요청
+            });
+
+            if (response.status === 401) {
+                // 로그인되지 않은 경우 로그인 페이지로 리디렉션
+                window.location.href = 'http://localhost/api/signin';
+                return;
+            }
+
+            const user = await response.json(); // 로그인된 사용자 정보
+
+            const fundingAmount = document.getElementById('fundingAmount').value; // 펀딩 금액을 가져옵니다.
+            const nameUndisclosed = document.getElementById('nameUndisclosed').checked ? 'Y' : 'N'; // 이름 비공개 여부
+            const amountUndisclosed = document.getElementById('amountUndisclosed').checked ? 'Y' : 'N'; // 금액 비공개 여부
+
+            const requestBody = {
+                fundingsId: fundingId,
+                userId: user.id,
+                fundingAmount: fundingAmount,
+                nameUndisclosed: nameUndisclosed,
+                amountUndisclosed: amountUndisclosed
+            };
+
+            try {
+                const response = await fetch('/api/fundings/join', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (response.ok) {
+                    alert('펀딩 참여가 완료되었습니다!');
+                    // 필요한 경우 페이지를 새로고침하거나 다른 동작을 수행합니다
+                } else {
+                    const errorText = await response.text();
+                    alert('펀딩 참여에 실패했습니다: ' + errorText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('펀딩 참여 중 오류가 발생했습니다.');
+            }
+        });
+    }

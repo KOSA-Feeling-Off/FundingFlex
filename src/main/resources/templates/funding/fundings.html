@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/css/mainpage.css}">
     <script>
+    
     async function fetchFundings(sortBy = 'createdDate') {
         try {
             const response = await fetch(`/api/fundings/list?sortBy=${sortBy}`);
@@ -20,6 +21,7 @@
         }
     }
 
+    // 펀딩 리스트 화면
     function displayFundings(fundingsList, sortBy) {
         const fundingsContainer = document.getElementById(`${sortBy}Container`);
         fundingsContainer.innerHTML = '';
@@ -106,7 +108,8 @@
             fundingsContainer.appendChild(fundingItem);
         });
     }
-
+	
+    // 이미지 슬라이드
     function showSlides(container, n) {
         const slides = container.querySelectorAll('img');
         let currentIndex = Array.from(slides).findIndex(slide => slide.classList.contains('active'));
@@ -116,6 +119,7 @@
         slides[currentIndex].classList.add('active');
     }
 
+    // 좋아요 기능
     async function handleLike(fundingsId, likeButton, likeCountElement) {
         try {
             const response = await fetch(`/api/fundings/like/${fundingsId}`, {
@@ -127,7 +131,8 @@
                     likeButton.classList.add('liked');
                     likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1;
                 } else {
-                    alert('이미 좋아요를 누르셨습니다.');
+                    likeButton.classList.remove('liked');
+                    likeCountElement.textContent = parseInt(likeCountElement.textContent) - 1;
                 }
             } else {
                 alert('좋아요 처리 중 오류가 발생했습니다.');

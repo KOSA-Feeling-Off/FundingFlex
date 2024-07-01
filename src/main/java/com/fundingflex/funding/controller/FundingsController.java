@@ -1,22 +1,10 @@
 package com.fundingflex.funding.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fundingflex.category.domain.entity.Categories;
-import com.fundingflex.category.service.CategoriesService;
-import com.fundingflex.funding.domain.dto.FundingIdsDTO;
-import com.fundingflex.funding.domain.dto.FundingsDTO;
-import com.fundingflex.funding.domain.dto.ImageData;
-import com.fundingflex.funding.domain.dto.ResponseFundingInfoDTO;
-import com.fundingflex.funding.domain.entity.Images;
-import com.fundingflex.funding.domain.form.FundingsForm;
-import com.fundingflex.funding.service.FundingsService;
-import com.fundingflex.funding.service.ImageService;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -29,6 +17,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fundingflex.category.domain.entity.Categories;
+import com.fundingflex.category.service.CategoriesService;
+import com.fundingflex.funding.domain.dto.FundingIdsDTO;
+import com.fundingflex.funding.domain.dto.FundingsDTO;
+import com.fundingflex.funding.domain.dto.ImageData;
+import com.fundingflex.funding.domain.dto.ResponseFundingInfoDTO;
+import com.fundingflex.funding.domain.entity.Images;
+import com.fundingflex.funding.domain.form.FundingsForm;
+import com.fundingflex.funding.service.FundingsService;
+import com.fundingflex.funding.service.ImageService;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequestMapping("/api/fundings")
@@ -57,7 +60,7 @@ public class FundingsController {
             @RequestParam("images") MultipartFile[] images) {
         
     	//  @AuthenticationPrincipal UserDetails currentUser
-    	Long id = 5L;
+    	Long id = 1L;
         FundingIdsDTO fundingsDto =
         		fundingsService.saveFundings(fundingsForm, images, id);
         
@@ -155,8 +158,10 @@ public class FundingsController {
     // 좋아요 처리
     @PostMapping("/like/{fundingsId}")
     @ResponseBody
-    public ResponseEntity<?> likeFunding(@PathVariable("fundingsId") Long fundingsId) {
-        boolean liked = fundingsService.likeFunding(fundingsId);
+    public ResponseEntity<?> toggleLikeFunding(@PathVariable("fundingsId") Long fundingsId) {
+        // 예시 사용자 ID (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함)
+        String userId = "exampleUserId";
+        boolean liked = fundingsService.toggleLikeFunding(fundingsId, userId);
         return ResponseEntity.ok(Map.of("liked", liked));
     }
     

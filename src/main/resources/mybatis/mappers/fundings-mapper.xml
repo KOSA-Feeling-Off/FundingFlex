@@ -28,6 +28,7 @@
 		INTO
 		FUNDINGS ( category_id
 		, user_id
+		, category_name
 		, title
 		, content
 		, status_flag
@@ -39,6 +40,7 @@
 		VALUES (
 		#{categoryId}
 		, #{userId}
+		, #{categoryName}
 		, #{title}
 		, #{content}
 		, #{statusFlag,
@@ -147,6 +149,7 @@
 		FROM fundings f
 		LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted =
 		'N'
+		WHERE f.is_deleted = 'N'
 		ORDER BY
 		<choose>
 			<when test="sortBy == 'likes'">f.like_count DESC</when>
@@ -181,7 +184,7 @@
 		SELECT * FROM fundings WHERE fundings_id = #{fundingsId}
 	</select>
 
-	<!-- 펀딩 조건 조회 -->
+	<!-- 펀딩 상태 조회 -->
 	<select id="findFundingConditionsByFundingsId"
 		parameterType="long"
 		resultType="com.fundingflex.funding.domain.entity.FundingConditions">
@@ -196,7 +199,7 @@
 		#{fundingsId}
 	</select>
 
-	<!-- 펀딩 조건 업데이트 -->
+	<!-- 펀딩 상태 업데이트 -->
 	<update id="updateFundingConditions">
 		UPDATE funding_conditions SET collected_amount =
 		#{collectedAmount}, percent
@@ -231,6 +234,19 @@
 		#{fundingJoinId}
 	</delete>
 
+	
+	<!-- 좋아요 수 증가 -->
+    <update id="incrementLikeCount">
+        UPDATE fundings SET like_count = like_count + 1 WHERE fundings_id = #{fundingsId}
+    </update>
+
+    <!-- 좋아요 수 감소 -->
+    <update id="decrementLikeCount">
+        UPDATE fundings SET like_count = like_count - 1 WHERE fundings_id = #{fundingsId}
+    </update>
+	
+	
+	
 	<!-- 좋아요 수 업데이트 -->
 	<update id="updateLikeCount">
 		UPDATE fundings SET like_count = #{likeCount} WHERE
@@ -242,12 +258,10 @@
 	<select id="getFundingsByCategory" resultMap="FundingsResultMap">
 		SELECT f.fundings_id, f.title, f.content, f.status_flag, f.like_count,
 		f.goal_amount, f.category_id,
-		i.img_id, i.fundings_id AS
-		image_fundings_id, i.image_url, i.seq, i.is_deleted
+		i.img_id, i.fundings_id AS image_fundings_id, i.image_url, i.seq, i.is_deleted
 		FROM fundings f
-		LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted =
-		'N'
-		WHERE f.category_id = #{categoryId}
+		LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted = 'N'
+		WHERE f.category_id = #{categoryId} AND f.is_deleted = 'N'
 		ORDER BY
 		<choose>
 			<when test="sortBy == 'likes'">f.like_count DESC</when>
@@ -256,14 +270,17 @@
 		</choose>
 	</select>
 
+
 	<!-- 진행 중인 펀딩 목록 조회 -->
 	<select id="getInProgressFundings" resultMap="FundingsResultMap">
 		SELECT f.fundings_id, f.title, f.content, f.status_flag, f.like_count,
 		f.goal_amount, f.category_id,
-		i.img_id, i.fundings_id AS image_fundings_id, i.image_url, i.seq, i.is_deleted
+		i.img_id, i.fundings_id AS
+		image_fundings_id, i.image_url, i.seq, i.is_deleted
 		FROM fundings f
-		LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted = 'N'
-		WHERE f.status_flag = 2
+		LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted =
+		'N'
+		WHERE f.status_flag = 1
 		ORDER BY
 		<choose>
 			<when test="sortBy == 'likes'">f.like_count DESC</when>

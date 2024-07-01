@@ -5,10 +5,11 @@
     <meta charset="UTF-8">
     <title>카테고리별 펀딩</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainpage.css}">
     <script>
     async function fetchFundings(categoryId, sortBy = 'createdDate') {
         try {
-            const response = await fetch(`/api/fundings/categories/${categoryId}/list?sortBy=${sortBy}`);
+            const response = await fetch(`/api/categories/${categoryId}/list?sortBy=${sortBy}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
@@ -116,6 +117,7 @@
         slides[currentIndex].classList.add('active');
     }
 
+ // 좋아요 기능
     async function handleLike(fundingsId, likeButton, likeCountElement) {
         try {
             const response = await fetch(`/api/fundings/like/${fundingsId}`, {
@@ -127,7 +129,8 @@
                     likeButton.classList.add('liked');
                     likeCountElement.textContent = parseInt(likeCountElement.textContent) + 1;
                 } else {
-                    alert('이미 좋아요를 누르셨습니다.');
+                    likeButton.classList.remove('liked');
+                    likeCountElement.textContent = parseInt(likeCountElement.textContent) - 1;
                 }
             } else {
                 alert('좋아요 처리 중 오류가 발생했습니다.');
@@ -139,28 +142,31 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const categoryId = urlParams.get('categoryId');
-        if (categoryId) {
-            fetchFundings(categoryId, 'createdDate');
-        }
-        document.getElementById('sortBy').addEventListener('change', (event) => {
-            fetchFundings(categoryId, event.target.value);
+        const categoryId = document.getElementById('categoryId').value;
+        fetchFundings(categoryId);
+
+        document.getElementById('sortBy').addEventListener('change', function() {
+            const sortBy = this.value;
+            fetchFundings(categoryId, sortBy);
         });
     });
-</script>
+    </script>
 </head>
 <body>
-	<div layout:fragment="content">
-    <div class="container">
-        <h2>카테고리별 펀딩</h2>
-        <select id="sortBy">
-            <option value="createdDate">개설순</option>
-            <option value="inProgress">진행중</option>
-            <option value="likes">좋아요순</option>
-        </select>
-        <div id="fundingsContainer"></div>
-    </div>
+    <div layout:fragment="content">
+        <div class="content-wrapper">
+        	<!-- <div class="section-category-container"> -->
+            <div class="section-container">
+                <h2 th:text="${categoryName}">카테고리별 펀딩</h2>
+                <input type="hidden" id="categoryId" th:value="${categoryId}">
+                <select id="sortBy">
+                    <option value="createdDate">개설순</option>
+                    <option value="inProgress">진행중</option>
+                    <option value="likes">좋아요순</option>
+                </select>
+                <div id="fundingsContainer" class="content-container"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

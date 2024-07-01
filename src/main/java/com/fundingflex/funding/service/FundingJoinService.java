@@ -1,13 +1,16 @@
 package com.fundingflex.funding.service;
 
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
 import com.fundingflex.funding.domain.dto.FundingRequestDTO;
 import com.fundingflex.funding.domain.dto.FundingResponseDTO;
 import com.fundingflex.funding.domain.entity.FundingConditions;
 import com.fundingflex.funding.domain.entity.FundingJoin;
 import com.fundingflex.mybatis.mapper.funding.FundingsMapper;
-import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
@@ -15,6 +18,7 @@ public class FundingJoinService {
 
 	private final FundingsMapper fundingsMapper;
 
+	// 펀딩 참여하기
 	public FundingResponseDTO joinFunding(FundingRequestDTO requestDto) {
 		validateFundingAmount(requestDto.getFundingAmount());
 		FundingConditions fundingConditions = getOrCreateFundingConditions(requestDto.getFundingsId());
@@ -35,6 +39,7 @@ public class FundingJoinService {
 		return new FundingResponseDTO(fundingJoin.getFundingJoinId());
 	}
 
+	// 펀딩 참여 수정
 	public FundingResponseDTO updateFunding(FundingRequestDTO requestDto) {
 		validateFundingAmount(requestDto.getFundingAmount());
 		FundingJoin fundingJoin = getFundingJoinById(requestDto.getFundingJoinId());
@@ -57,21 +62,25 @@ public class FundingJoinService {
 		return new FundingResponseDTO(fundingJoin.getFundingJoinId());
 	}
 
+	// 펀딩 참여 삭제
 	public void deleteFunding(Long fundingJoinId) {
 		FundingJoin fundingJoin = getFundingJoinById(fundingJoinId);
 		fundingsMapper.deleteFundingJoin(fundingJoinId);
 		updateFundingConditionsAfterDeletion(fundingJoin.getFundingsId(), fundingJoin.getFundingAmount());
 	}
 
+	// 펀딩 상태 조회
 	public Optional<FundingConditions> getFundingConditions(Long fundingsId) {
 		return Optional.ofNullable(fundingsMapper.findFundingConditionsByFundingsId(fundingsId));
 	}
 
+	// 펀딩 참여 아이디로 조회
 	private FundingJoin getFundingJoinById(Long fundingJoinId) {
 		return fundingsMapper.findFundingJoinById(fundingJoinId)
 				.orElseThrow(() -> new RuntimeException("Funding join not found"));
 	}
 
+	// 펀딩 금액 조건 제한
 	private void validateFundingAmount(int amount) {
 		if (amount <= 0) {
 			throw new IllegalArgumentException("Funding amount must be greater than zero");
@@ -81,6 +90,7 @@ public class FundingJoinService {
 		}
 	}
 
+	// 펀딩 상태 생성 및 조회
 	private FundingConditions getOrCreateFundingConditions(Long fundingsId) {
 		FundingConditions fundingConditions = fundingsMapper.findFundingConditionsByFundingsId(fundingsId);
 		if (fundingConditions == null) {
@@ -90,6 +100,7 @@ public class FundingJoinService {
 		return fundingConditions;
 	}
 
+	// 펀딩 상태 업데이트
 	private void updateFundingConditions(Long fundingsId) {
 		FundingConditions fundingConditions = fundingsMapper.findFundingConditionsByFundingsId(fundingsId);
 		int newCollectedAmount = fundingsMapper.findFundingJoinsByFundingsId(fundingsId).stream()
@@ -99,6 +110,7 @@ public class FundingJoinService {
 		fundingsMapper.updateFundingConditions(fundingConditions);
 	}
 
+	// 펀딩 상태 삭제
 	private void updateFundingConditionsAfterDeletion(Long fundingsId, int deletedAmount) {
 		FundingConditions fundingConditions = fundingsMapper.findFundingConditionsByFundingsId(fundingsId);
 		int newCollectedAmount = fundingConditions.getCollectedAmount() - deletedAmount;
@@ -107,11 +119,13 @@ public class FundingJoinService {
 		fundingsMapper.updateFundingConditions(fundingConditions);
 	}
 
+	// 펀딩 목표 금액
 	private int getGoalAmount(Long fundingsId) {
 		FundingConditions fundingConditions = fundingsMapper.findFundingConditionsByFundingsId(fundingsId);
 		return fundingConditions.getGoalAmount();
 	}
 
+	// 펀딩 금액 백분율
 	private int calculatePercent(int collectedAmount, int goalAmount) {
 		return (int) ((collectedAmount / (double) goalAmount) * 100);
 	}

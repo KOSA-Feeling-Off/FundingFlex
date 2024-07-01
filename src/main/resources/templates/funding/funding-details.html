@@ -23,45 +23,60 @@
 				<!-- 오른쪽 정보 섹션 -->
 				<div class="col-lg-5">
 					<div class="project-summery">
-						<a th:href="@{/api/categories/{categoryId}(categoryId=${responseFundingInfo.fundingsInfoDto.categoryId})}"
-							class="category mb-3" th:utext="${responseFundingInfo.fundingsInfoDto.categoryName} + ' &gt; '">category</a>
-						
+						<a
+							th:href="@{/api/categories/{categoryId}(categoryId=${responseFundingInfo.fundingsInfoDto.categoryId})}"
+							class="category mb-3"
+							th:utext="${responseFundingInfo.fundingsInfoDto.categoryName} + ' &gt; '">category</a>
+
 						<div class="project-funding-title-likes">
-							<h3 class="project-title" th:text="${responseFundingInfo.fundingsInfoDto.title}">제목입니다.</h3>
+							<h3 class="project-title"
+								th:text="${responseFundingInfo.fundingsInfoDto.title}">제목입니다.</h3>
 							<span class="icon_heart_alt" id="heartButton"></span>
 						</div>
 						<div class="project-funding-info">
 							<div class="info-box">
-								<h1><span class="goal-amount" th:text="${responseFundingInfo.fundingsInfoDto.goalAmount} + ' 원'">$5036k</span></h1>
+								<h1>
+									<span class="goal-amount"
+										th:text="${responseFundingInfo.fundingsInfoDto.goalAmount} + ' 원'">$5036k</span>
+								</h1>
 							</div>
 						</div>
-	
+
 						<div class="project-raised clearfix">
 							<div class="d-flex align-items-center justify-content-between">
-								<div class="raised-label collected-amount" th:text="${responseFundingInfo.fundingsInfoDto.collectedAmount} + ' 원 달성'">Raised of $59,689</div>
-								<div class="percent-raised" id="percent-raised" th:text="${responseFundingInfo.fundingsInfoDto.percent} + ' % 달성'">79%</div>
+								<div class="raised-label collected-amount"
+									th:text="${responseFundingInfo.fundingsInfoDto.collectedAmount} + ' 원 달성'">Raised
+									of $59,689</div>
+								<div class="percent-raised" id="percent-raised"
+									th:text="${responseFundingInfo.fundingsInfoDto.percent} + ' % 달성'">79%</div>
 							</div>
-							
-							<div class="stats-bar" th:attr="data-value=${responseFundingInfo.fundingsInfoDto.percent}">
-								<div class="bar-line" id="bar-line" th:style="'width: ' + ${responseFundingInfo.fundingsInfoDto.percent}"></div>
-								<div class="progress-label" id="progress-label" th:text="${responseFundingInfo.fundingsInfoDto.percent}"></div>
+
+							<div class="stats-bar"
+								th:attr="data-value=${responseFundingInfo.fundingsInfoDto.percent}">
+								<div class="bar-line" id="bar-line"
+									th:style="'width: ' + ${responseFundingInfo.fundingsInfoDto.percent}"></div>
+								<div class="progress-label" id="progress-label"
+									th:text="${responseFundingInfo.fundingsInfoDto.percent}"></div>
 							</div>
 						</div>
-	
-						<button type="submit" class="btn btn-primary" th:onclick="'location.href=\'/fundingJoin\''"
-										th:classappend="${responseFundingInfo.fundingsInfoDto.statusFlag == 0 || responseFundingInfo.fundingsInfoDto.statusFlag == 3 || responseFundingInfo.fundingsInfoDto.statusFlag == 4} ? 'disabled' : ''">
-							<span th:switch="${responseFundingInfo.fundingsInfoDto.statusFlag}">
-									<span th:case="0">펀딩 오픈 예정</span>
-									<span th:case="1">펀딩 참여하기</span>
-									<span th:case="2">펀딩 참여하기</span>
-									<span th:case="3">펀딩 완료</span>
-									<span th:case="4">펀딩 취소</span>
-									<span th:case="*">펀딩 참여하기</span> <!-- 기본 값 -->
+
+						<button id="joinFundingButton" type="button"
+							class="btn btn-primary"
+							th:onclick="'location.href=\'/api/fundings/fundingJoin\''"
+							th:classappend="${responseFundingInfo.fundingsInfoDto.statusFlag == 0 || responseFundingInfo.fundingsInfoDto.statusFlag == 3 || responseFundingInfo.fundingsInfoDto.statusFlag == 4} ? 'disabled' : ''">
+							<span
+								th:switch="${responseFundingInfo.fundingsInfoDto.statusFlag}">
+								<span th:case="0">펀딩 오픈 예정</span> 
+								<span th:case="1">펀딩 참여하기</span> 
+								<span th:case="2">펀딩 참여하기</span> 
+								<span th:case="3">펀딩 완료</span> 
+								<span th:case="4">펀딩 취소</span> 
+								<span th:case="*">펀딩 참여하기</span>
 							</span>
 						</button>
 					</div>
 				</div>
-	
+
 			</div>
 			
 			<hr>

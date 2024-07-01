@@ -1,5 +1,11 @@
 package com.fundingflex.mybatis.mapper.funding;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
 import com.fundingflex.funding.domain.dto.FundingsDTO;
 import com.fundingflex.funding.domain.dto.FundingsInfoDTO;
 import com.fundingflex.funding.domain.entity.FundingConditions;
@@ -7,10 +13,6 @@ import com.fundingflex.funding.domain.entity.FundingJoin;
 import com.fundingflex.funding.domain.entity.Fundings;
 import com.fundingflex.funding.domain.entity.Images;
 import com.fundingflex.funding.domain.form.FundingsForm;
-import java.util.List;
-import java.util.Optional;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 
 @Mapper
@@ -43,7 +45,6 @@ public interface FundingsMapper {
     // 펀딩 상태 저장
     void insertFundingConditions(FundingConditions fundingConditions);
 
-    Optional<Fundings> findById(@Param("fundingsId") Long fundingsId);
     Optional<FundingJoin> findFundingJoinById(@Param("fundingJoinId") Long fundingJoinId);
 
     List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy);
@@ -66,5 +67,16 @@ public interface FundingsMapper {
     int insertFundingJoin(FundingJoin fundingJoin);
     int updateFundingJoin(FundingJoin fundingJoin);
     int deleteFundingJoin(Long fundingJoinId);
+    
+    // 좋아요 수 증가
+    void incrementLikeCount(@Param("fundingsId") Long fundingsId);
+
+    // 좋아요 수 감소
+    void decrementLikeCount(@Param("fundingsId") Long fundingsId);
+
+    // 사용자가 이미 좋아요를 눌렀는지 확인
+    Optional<Fundings> findById(@Param("fundingsId") Long fundingsId);
+
+    // 좋아요 수 업데이트
     int updateLikeCount(@Param("fundingsId") Long fundingsId, @Param("likeCount") int likeCount);
 }
