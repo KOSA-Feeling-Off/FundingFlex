@@ -34,8 +34,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	private final AuthenticationManager authenticationManager;
 	private final JWTUtil jwtUtil;
 	
-
-	
 	public LoginFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -45,15 +43,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 	        throws AuthenticationException {
-	    if ("GET".equalsIgnoreCase(request.getMethod())) {
-	        // GET 요청 무시 또는 적절한 응답 반환
-	        try {
-	            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET method is not supported");
-	            return null;
-	        } catch (IOException e) {
-	            throw new RuntimeException(e);
-	        }
-	    }
+//	    if ("GET".equalsIgnoreCase(request.getMethod())) {
+//	        // GET 요청 무시 또는 적절한 응답 반환
+//	        try {
+//	            response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, "GET method is not supported");
+//	            return null;
+//	        } catch (IOException e) {
+//	            throw new RuntimeException(e);
+//	        }
+//	    }
 
 	    try {
 	        MemberSigninRequest loginRequest = null;
@@ -82,8 +80,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	        }
 
 	        if (loginRequest.getEmail() == null || loginRequest.getPassword() == null) {
+	        	request.getSession().setAttribute("error", "이메일 혹은 패스워드를 입력하세요.");
 	            log.error("Email or Password is empty");
-	            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Email or Password is empty");
+	            response.sendRedirect("/api/login");
 	            return null;
 	        }
 	        
@@ -130,7 +129,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		    response.addCookie(cookie);
 
 		    SecurityContextHolder.getContext().setAuthentication(authentication);
-		    response.sendRedirect("/");
+		    response.sendRedirect("/api/home");
 		
 //		// CustomUserDetails 객체를 가져옵니다. 이는 인증된 사용자 정보를 포함합니다.
 //		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -165,8 +164,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException failed) throws IOException, ServletException {
+		log.info("Login failure: " + failed.getMessage());
+	    
+	    // 실패 원인을 세션에 저장
+	    request.getSession().setAttribute("error", "이메일 또는 패스워드가 정확하지 않습니다.");
 		log.info(" failure ");
-		response.setStatus(401);
+		response.sendRedirect("/api/login");
 	}
 	
 	private static class UserCredentials {
