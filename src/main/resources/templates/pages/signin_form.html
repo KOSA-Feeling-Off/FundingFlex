@@ -27,7 +27,7 @@
 						<div th:if="${error != null}" class="alert alert-danger" th:text="${error}"><!-- 에러 메시지가 여기에 표시됩니다 --></div>
 						<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
 							<button type="submit" class="btn btn-primary signin-buttons">로그인</button>
-							<button type="reset" class="btn btn-secondary signin-buttons" onclick="location.href='/'">취소</button>
+							<button type="reset" class="btn btn-secondary signin-buttons" onclick="location.href='/api/home'">취소</button>
 						</div>
 					</form>
 				</div>

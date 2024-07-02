@@ -47,8 +47,8 @@ public class SignupController {
             return "pages/signup_form";
         }
 
-        signupService.signup(memberResisterForm);
-        return "redirect:/";
+        signupService.signup(memberResisterForm, memberResisterForm.getProfileImage());
+        return "redirect:/api/login";
     }
 	
 	

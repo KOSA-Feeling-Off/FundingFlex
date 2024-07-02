@@ -19,17 +19,6 @@
 		FROM members WHERE email = #{email}
 	</select>
 
-	<!-- 중복 검사 -->
-	<select id="countByEmail" resultType="int">
-		SELECT COUNT(*) FROM
-		members WHERE email = #{email}
-	</select>
-
-	<select id="countByNickname" resultType="int">
-		SELECT COUNT(*) FROM
-		members WHERE nickname = #{nickname}
-	</select>
-
 	<select id="findByEmail"
 		resultType="com.fundingflex.member.domain.entity.Members">
 		SELECT * FROM members WHERE email = #{email}
@@ -37,9 +26,7 @@
 
 	<select id="existsByNickname" resultType="boolean">
 		SELECT CASE WHEN
-		COUNT(*) > 0 THEN 'true' ELSE 'false' END AS result
-		FROM members WHERE
-		nickname = #{nickname}
+		COUNT(*) > 0 THEN 1 ELSE 0 END AS result
+		FROM members WHERE nickname = #{nickname}
 	</select>
-
 </mapper>

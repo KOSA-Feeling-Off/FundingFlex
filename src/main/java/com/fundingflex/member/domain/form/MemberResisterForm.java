@@ -1,5 +1,7 @@
 package com.fundingflex.member.domain.form;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -20,4 +22,7 @@ public class MemberResisterForm {
 	
 	@NotEmpty(message = "비밀번호 확인은 필수 항목입니다.")
 	private String password2;
+	
+	// 파일 업로드 필드 추가
+    private MultipartFile profileImage;
 }
