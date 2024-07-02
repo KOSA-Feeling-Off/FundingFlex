@@ -101,6 +101,10 @@
     color: #333;
 }
 
+.info-box h1 {
+	text-align: left;
+}
+
 .percent-raised {
     font-weight: bold;
 }

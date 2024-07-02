@@ -72,6 +72,10 @@ public class FundingsService {
             Long fundingsId = newFundings.getFundingsId();
 
 
+            // funding_conditions 저장
+            fundingsMapper.insertFundingConditions(fundingsId, newFundings.getGoalAmount());
+
+
             // 이미지 처리 및 Images 객체 생성
             List<Images> imageList = imageService.processImages(images, fundingsId);
 
@@ -117,9 +121,19 @@ public class FundingsService {
         Long categoryId, Long fundingId) {
 
         try {
+
+            // 펀딩 정보 조회
+            Fundings fundings = fundingsMapper.findById(fundingId)
+                .orElseThrow(() -> new NotFoundException("해당 펀딩 정보가 없습니다."));
+
             // 펀딩 정보 수정
             if(fundingsMapper.updateFunding(fundingsForm, categoryId, fundingId) <= 0) {
                 throw new SQLException("펀딩 수정에 실패했습니다.");
+            }
+
+            // 펀딩 자금조달 목표금액 수정
+            if(fundings.getGoalAmount() != fundingsForm.getGoalAmount()) {
+                fundingsMapper.updateFundingConditionsAmount(fundingId, fundingsForm.getGoalAmount());
             }
 
             // 이미지 수정
@@ -199,6 +213,7 @@ public class FundingsService {
         }).collect(Collectors.toList());
     }
 
+
     // 좋아요 기능
     public boolean likeFunding(Long fundingsId) {
         // 예시 사용자 ID (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함)
@@ -218,6 +233,7 @@ public class FundingsService {
         fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount());
         return true;
     }
+
 
     // 카테고리별 목록
     public List<FundingsDTO> getFundingsByCategory(Long categoryId, String sortBy) {

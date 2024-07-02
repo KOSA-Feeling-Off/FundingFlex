@@ -1,5 +1,24 @@
 package com.fundingflex.funding.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fundingflex.category.domain.entity.Categories;
@@ -12,23 +31,9 @@ import com.fundingflex.funding.domain.entity.Images;
 import com.fundingflex.funding.domain.form.FundingsForm;
 import com.fundingflex.funding.service.FundingsService;
 import com.fundingflex.funding.service.ImageService;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.fundingflex.member.domain.dto.CustomUserDetails;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 @RequestMapping("/api/fundings")
@@ -38,10 +43,17 @@ public class FundingsController {
     private final FundingsService fundingsService;
     private final CategoriesService categoriesService;
     private final ImageService imageService;
+    
 
     // 펀딩 개설
     @GetMapping
     public String showFundingForm(Model model) {
+    	
+//    	@AuthenticationPrincipal CustomUserDetails userDetails
+//    	if(userDetails == null) {
+//    		return "redirect:/api/login";
+//    	}
+    	
         List<Categories> categoryList = categoriesService.selectAllCategories();
         
         model.addAttribute("fundingsForm", new FundingsForm());
@@ -57,7 +69,7 @@ public class FundingsController {
             @RequestParam("images") MultipartFile[] images) {
         
     	//  @AuthenticationPrincipal UserDetails currentUser
-    	Long id = 5L;
+    	Long id = 1L;
         FundingIdsDTO fundingsDto =
         		fundingsService.saveFundings(fundingsForm, images, id);
         
@@ -80,9 +92,9 @@ public class FundingsController {
         // 이미지 조회
         List<Images> imageList = imageService.selectImagesByFundingId(fundingId);
 
+        model.addAttribute("categoryList", categoryList);
         model.addAttribute("fundingsInfo", fundingsInfo);
         model.addAttribute("imageList", imageList);
-        model.addAttribute("categoryList", categoryList);
 
         return "funding/funding-modify-form";
     }
@@ -151,6 +163,7 @@ public class FundingsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    
     
     // 좋아요 처리
     @PostMapping("/like/{fundingsId}")

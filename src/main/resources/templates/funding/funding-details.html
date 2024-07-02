@@ -48,7 +48,7 @@
 							</div>
 						</div>
 	
-						<button type="submit" class="btn btn-primary" th:onclick="'location.href=\'/fundingJoin\''"
+						<button type="submit" class="btn btn-primary" th:onclick="'location.href=\'/api/fundings/fundingJoin\''"
 										th:classappend="${responseFundingInfo.fundingsInfoDto.statusFlag == 0 || responseFundingInfo.fundingsInfoDto.statusFlag == 3 || responseFundingInfo.fundingsInfoDto.statusFlag == 4} ? 'disabled' : ''">
 							<span th:switch="${responseFundingInfo.fundingsInfoDto.statusFlag}">
 									<span th:case="0">펀딩 오픈 예정</span>

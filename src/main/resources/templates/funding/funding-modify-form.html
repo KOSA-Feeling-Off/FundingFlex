@@ -30,15 +30,22 @@
 
         if (hiddenInput) {
           type = 'existing';
-          const imgSrcWithoutPath = imgTag.src.replace('http://localhost/images/fundings/', '').replace(/\s|%/g, '');
+
+          // 정규식
+          const regex = /http:\/\/(www\.)?localhost\/images\/fundings\//g;
+
+          const imgSrcWithoutPath = imgTag.src.replace(regex, '').replace(/\s|%/g, '');
           const hiddenValueClean = hiddenInput.value.replace(/\s|%/g, '');
 
           // 파일 이름의 UUID 부분만 비교
           const imgUUID = imgSrcWithoutPath.split('_')[0];
           const hiddenUUID = hiddenValueClean.split('_')[0];
 
+          console.log(imgUUID);
+          console.log(hiddenUUID);
+
           if (imgUUID === hiddenUUID) {
-            url = imgTag.src.replace('http://localhost/images/fundings/', '');
+            url = imgTag.src.replace(regex, '');
           } else if (imgTag.src.startsWith('data')) {
             url = '';
             filename = fileInput.files[0].name;  // 수정된 부분
