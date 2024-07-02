@@ -30,16 +30,16 @@ public class FundingJoin {
 	
 	private int goalAmount;
 	
-	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, boolean nameUndisclosed, boolean amountUndisclosed, String createdBy) {
+	
+	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed, char amountUndisclosed, char deletedFlg) {
         return FundingJoin.builder()
                 .fundingsId(fundingsId)
                 .userId(userId)
                 .fundingAmount(fundingAmount)
-                .nameUndisclosed(nameUndisclosed ? 'Y' : 'N')
-                .amountUndisclosed(amountUndisclosed ? 'Y' : 'N')
-                .createdAt(LocalDateTime.now())
-                .createdBy(createdBy)
-                .isDeleted('N')
+                .nameUndisclosed(nameUndisclosed)
+                .amountUndisclosed(amountUndisclosed)
+                .createdBy("이너프")
+                .isDeleted(deletedFlg)
                 .build();
     }
 

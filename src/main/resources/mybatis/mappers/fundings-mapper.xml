@@ -25,45 +25,40 @@
 		parameterType="com.fundingflex.funding.domain.entity.Fundings">
 
 		INSERT
-		INTO
-		FUNDINGS ( category_id
-		, user_id
-		, title
-		, content
-		, status_flag
-		, goal_amount
-		, created_at
-		, created_by
-		, is_deleted
-		)
-		VALUES (
-		#{categoryId}
-		, #{userId}
-		, #{title}
-		, #{content}
-		, #{statusFlag,
-		typeHandler=com.fundingflex.common.util.EnumTypeHandler,
-		jdbcType=NUMERIC}
-		, #{goalAmount}
-		, CURRENT_TIMESTAMP
-		, '이너프'
-		,
-		#{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler,
-		jdbcType=VARCHAR}
-		)
+		  INTO
+	  FUNDINGS ( category_id
+			   , user_id
+			   , category_name
+			   , title
+			   , content
+			   , status_flag
+			   , goal_amount
+			   , created_at
+			   , created_by
+			   , is_deleted
+			   )
+		VALUES ( #{categoryId}
+			   , #{userId}
+			   , #{categoryName}
+			   , #{title}
+			   , #{content}
+			   , #{statusFlag
+			   , typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=NUMERIC}
+			   , #{goalAmount}
+			   , CURRENT_TIMESTAMP
+			   , '이너프'
+		 	   , #{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=VARCHAR}
+		       )
 
 		<!-- 방금 삽입된 row의 ID 가져오기 -->
-		<selectKey keyProperty="fundingsId" resultType="long"
-			order="AFTER">
+		<selectKey keyProperty="fundingsId" resultType="long" order="AFTER">
 			SELECT fundings_id
-			FROM FUNDINGS
-			WHERE category_id =
-			#{categoryId}
-			AND user_id = #{userId}
-			AND title = #{title}
-			AND ROWNUM =
-			1
-			ORDER BY created_at DESC
+			  FROM FUNDINGS
+			 WHERE category_id 	= #{categoryId}
+			   AND user_id 		= #{userId}
+			   AND title 		= #{title}
+			   AND ROWNUM 		= 1
+		  ORDER BY created_at DESC
 		</selectKey>
 
 	</insert>
@@ -97,28 +92,24 @@
 
 
 	<!-- 펀딩 정보 상세 조회 -->
-	<select id="selectFundingInfo"
-		resultType="com.fundingflex.funding.domain.dto.FundingsInfoDTO">
-		SELECT c.category_id categoryId
-		, c.category_name
-		categoryName
-		, f.fundings_id fundingsId
-		, f.title title
-		, f.content
-		content
-		, f.goal_amount goalAmount
-		, f.status_flag statusFlag
-		,
-		NVL(fc.collected_amount, 0) collectedAmount
-		, NVL(fc.percent,0) percent
-		FROM fundings f
-		INNER JOIN categories c
-		ON f.category_id = c.category_id
-		LEFT JOIN funding_conditions fc
-		ON f.fundings_id = fc.fundings_id
-		WHERE
-		f.category_id = #{categoryId}
-		AND f.fundings_id = #{fundingsId}
+	<select id="selectFundingInfo" resultType="com.fundingflex.funding.domain.dto.FundingsInfoDTO">
+		SELECT c.category_id
+			 , c.category_name
+			 , f.fundings_id
+			 , f.title
+			 , f.content
+			 , f.goal_amount
+			 , f.status_flag
+			 , NVL(fc.collected_amount, 0)
+			 , NVL(fc.percent,0)
+		  FROM fundings 			f
+	INNER JOIN categories 			c
+			ON f.category_id 		= c.category_id
+	 LEFT JOIN funding_conditions 	fc
+			ON f.fundings_id 		= fc.fundings_id
+		 WHERE f.fundings_id 		= #{fundingsId}
+		   AND f.category_id 		= #{categoryId}
+		    
 	</select>
 
 
@@ -126,16 +117,15 @@
 	<update id="updateFunding">
 		UPDATE fundings
 		SET title = #{fundingsForm.title}
-		,
-		content = #{fundingsForm.content}
-		, goal_amount =
-		#{fundingsForm.goalAmount}
-		, updated_at = CURRENT_TIMESTAMP
-		, updated_by
-		= '이너프'
+		  , content = #{fundingsForm.content}
+		  , goal_amount = #{fundingsForm.goalAmount}
+		  , updated_at = CURRENT_TIMESTAMP
+		  , updated_by = '이너프'
 		WHERE category_id = #{categoryId}
 		AND fundings_id = #{fundingId}
 	</update>
+
+
 
 
 	<!-- 펀딩 리스트 조회 -->
@@ -157,51 +147,52 @@
 
 
 	<!-- 펀딩 이미지 조회 -->
-	<select id="findImagesByFundingsIdOrderBySeqAsc"
-		parameterType="long"
-		resultType="com.fundingflex.funding.domain.entity.Images">
-		SELECT * FROM images WHERE fundings_id = #{fundingsId}
-		ORDER BY seq ASC
+	<select id="findImagesByFundingsIdOrderBySeqAsc" parameterType="long" resultType="com.fundingflex.funding.domain.entity.Images">
+		SELECT * FROM images WHERE fundings_id = #{fundingsId} ORDER BY seq ASC
 	</select>
 
-	<!-- 펀딩 조건 삽입 -->
-	<insert id="insertFundingConditions"
-		parameterType="com.fundingflex.funding.domain.entity.FundingConditions">
-		INSERT INTO funding_conditions (fundings_id,
-		collected_amount, percent,
-		goal_amount)
-		VALUES (#{fundingsId},
-		#{collectedAmount}, #{percent}, #{goalAmount})
-	</insert>
+
 
 
 	<!-- 펀딩 정보 조회 by ID -->
-	<select id="findById" parameterType="long"
-		resultType="com.fundingflex.funding.domain.entity.Fundings">
+	<select id="findById" parameterType="long" resultType="com.fundingflex.funding.domain.entity.Fundings">
 		SELECT * FROM fundings WHERE fundings_id = #{fundingsId}
 	</select>
 
-	<!-- 펀딩 조건 조회 -->
-	<select id="findFundingConditionsByFundingsId"
-		parameterType="long"
-		resultType="com.fundingflex.funding.domain.entity.FundingConditions">
-		SELECT * FROM funding_conditions WHERE fundings_id =
-		#{fundingsId}
+
+	<!-- 펀딩 자금조달 insert -->
+	<insert id="insertFundingConditions">
+		INSERT
+		  INTO funding_conditions ( fundings_id, goal_amount)
+		VALUES (#{fundingsId}, #{goalAmount})
+	</insert>
+
+	<!-- 펀딩 자금조달 조회 (fundingsId 기준) -->
+	<select id="findFundingConditionsByFundingsId" parameterType="long" resultType="com.fundingflex.funding.domain.entity.FundingConditions">
+		SELECT * FROM funding_conditions WHERE fundings_id = #{fundingsId}
 	</select>
 
 	<!-- 펀딩 참여 조회 -->
 	<select id="findFundingJoinsByFundingsId" parameterType="long"
 		resultType="com.fundingflex.funding.domain.entity.FundingJoin">
-		SELECT * FROM funding_joins WHERE fundings_id =
-		#{fundingsId}
+		SELECT * FROM funding_joins WHERE fundings_id = #{fundingsId}
 	</select>
 
-	<!-- 펀딩 조건 업데이트 -->
+	<!-- 펀딩 자금조달 업데이트 -->
 	<update id="updateFundingConditions">
-		UPDATE funding_conditions SET collected_amount =
-		#{collectedAmount}, percent
-		= #{percent} WHERE fundings_id =
-		#{fundingsId}
+		UPDATE funding_conditions
+		   SET collected_amount = #{collectedAmount}
+		     , percent = #{percent}
+		   	 , 
+		 WHERE fundings_id = #{fundingsId}
+	</update>
+
+
+	<!-- 펀딩 자금조달 목표금액 업데이트 -->
+	<update id="updateFundingConditionsAmount">
+		UPDATE funding_conditions
+			 SET goal_amount		= #{goalAmount}
+		 WHERE fundings_id		= #{fundingsId}
 	</update>
 
 
@@ -233,9 +224,7 @@
 
 	<!-- 좋아요 수 업데이트 -->
 	<update id="updateLikeCount">
-		UPDATE fundings SET like_count = #{likeCount} WHERE
-		fundings_id =
-		#{fundingsId}
+		UPDATE fundings SET like_count = #{likeCount} WHERE fundings_id = #{fundingsId}
 	</update>
 
 	<!-- 카테고리별 펀딩 리스트 조회 -->
