@@ -47,8 +47,7 @@ public class FundingsService {
 
 	// 사용자별 좋아요 상태를 저장하기 위한 Set (실제 서비스에서는 데이터베이스를 사용)
 	private final Set<String> userLikes = new HashSet<>();
-
-
+	
 
 	// 저장
 	@Transactional
@@ -180,8 +179,8 @@ public class FundingsService {
 
     // 펀딩 리스트 조회
     @Transactional
-    public List<FundingsDTO> getAllFundings(String sortBy) {
-        List<FundingsDTO> fundingsList = fundingsMapper.getAllFundings(sortBy);
+    public List<FundingsDTO> getAllFundings(String sortBy, Long userId) {
+        List<FundingsDTO> fundingsList = fundingsMapper.getAllFundings(sortBy, userId);
         return fundingsList.stream().map(funding -> {
             FundingsDTO dto = new FundingsDTO();
             dto.setFundingsId(funding.getFundingsId());
@@ -191,6 +190,8 @@ public class FundingsService {
             dto.setLikeCount(funding.getLikeCount());
             dto.setGoalAmount(funding.getGoalAmount());
             dto.setCategoryId(funding.getCategoryId()); // 추가
+            dto.setCategoryId(funding.getCategoryId()); // 추가
+            dto.setExistsFlag(funding.getExistsFlag()); // 좋아요 상태 설정
 
             int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
                 .mapToInt(FundingJoin::getFundingAmount).sum();
@@ -204,24 +205,22 @@ public class FundingsService {
     }
 
     // 좋아요 기능
-    public boolean likeFunding(Long fundingsId) {
-        // 예시 사용자 ID (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함)
-        String userId = "exampleUserId";
-        String userFundingsKey = userId + "-" + fundingsId;
-
-        if (userLikes.contains(userFundingsKey)) {
-            return false; // 이미 좋아요를 누른 경우
-        }
-
-        userLikes.add(userFundingsKey);
-
-        Fundings fundings = fundingsMapper.findById(fundingsId)
-            .orElseThrow(() -> new IllegalArgumentException("Invalid fundingsId"));
-
-        fundings.setLikeCount(fundings.getLikeCount() + 1);
-        fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount());
-        return true;
-    }
+	/*
+	 * public boolean likeFunding(Long fundingsId) { // 예시 사용자 ID (실제 구현에서는 세션이나 인증
+	 * 정보를 통해 사용자 ID를 가져와야 함) String userId = "exampleUserId"; String
+	 * userFundingsKey = userId + "-" + fundingsId;
+	 * 
+	 * if (userLikes.contains(userFundingsKey)) { return false; // 이미 좋아요를 누른 경우 }
+	 * 
+	 * userLikes.add(userFundingsKey);
+	 * 
+	 * Fundings fundings = fundingsMapper.findById(fundingsId) .orElseThrow(() ->
+	 * new IllegalArgumentException("Invalid fundingsId"));
+	 * 
+	 * fundings.setLikeCount(fundings.getLikeCount() + 1);
+	 * fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount()); return
+	 * true; }
+	 */
 
     // 카테고리별 목록
     public List<FundingsDTO> getFundingsByCategory(Long categoryId, String sortBy) {
@@ -249,9 +248,37 @@ public class FundingsService {
         }).collect(Collectors.toList());
     }
 
+   
+    // 진행 중인 펀딩 목록 조회 (카테고리별)
+    public List<FundingsDTO> getInProgressFundingsByCategory(Long categoryId) {
+        List<FundingsDTO> fundingsList = fundingsMapper.getInProgressFundingsByCategory(categoryId);
+        return mapToFundingsDTO(fundingsList);
+    }
+    
+    // 공통 메서드로 DTO 매핑
+    private List<FundingsDTO> mapToFundingsDTO(List<FundingsDTO> fundingsList) {
+        return fundingsList.stream().map(funding -> {
+            FundingsDTO dto = new FundingsDTO();
+            dto.setFundingsId(funding.getFundingsId());
+            dto.setTitle(funding.getTitle());
+            dto.setContent(funding.getContent());
+            dto.setStatusFlag(funding.getStatusFlag());
+            dto.setLikeCount(funding.getLikeCount());
+            dto.setGoalAmount(funding.getGoalAmount());
+            dto.setCategoryId(funding.getCategoryId());
+            int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
+                .mapToInt(FundingJoin::getFundingAmount).sum();
+            dto.setCurrentAmount(currentAmount);
+            List<String> imageUrls = funding.getImageUrls();
+            dto.setImageUrls(imageUrls);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+    
+    
     // 진행 중인 펀딩 목록 조회
-    public List<FundingsDTO> getInProgressFundings(String sortBy) {
-        List<FundingsDTO> fundingsList = fundingsMapper.getInProgressFundings(sortBy);
+    public List<FundingsDTO> getInProgressFundings(String sortBy, Long userId) {
+        List<FundingsDTO> fundingsList = fundingsMapper.getInProgressFundings(sortBy, userId);
         return fundingsList.stream().map(funding -> {
             FundingsDTO dto = new FundingsDTO();
             dto.setFundingsId(funding.getFundingsId());
@@ -272,22 +299,19 @@ public class FundingsService {
             return dto;
         }).collect(Collectors.toList());
     }
+
+
     
     // 좋아요 기능 수정
-    public boolean toggleLikeFunding(Long fundingsId, String userId) {
-        String userFundingsKey = userId + "-" + fundingsId;
-
-        if (userLikes.contains(userFundingsKey)) {
-            // 이미 좋아요를 누른 경우, 좋아요 취소
-            userLikes.remove(userFundingsKey);
-            fundingsMapper.decrementLikeCount(fundingsId);
-            return false; // 좋아요 취소됨
-        } else {
-            // 좋아요 추가
-            userLikes.add(userFundingsKey);
-            fundingsMapper.incrementLikeCount(fundingsId);
-            return true; // 좋아요 추가됨
-        }
-    }
+	/*
+	 * public boolean toggleLikeFunding(Long fundingsId, String userId) { String
+	 * userFundingsKey = userId + "-" + fundingsId;
+	 * 
+	 * if (userLikes.contains(userFundingsKey)) { // 이미 좋아요를 누른 경우, 좋아요 취소
+	 * userLikes.remove(userFundingsKey);
+	 * fundingsMapper.decrementLikeCount(fundingsId); return false; // 좋아요 취소됨 }
+	 * else { // 좋아요 추가 userLikes.add(userFundingsKey);
+	 * fundingsMapper.incrementLikeCount(fundingsId); return true; // 좋아요 추가됨 } }
+	 */
 
 }

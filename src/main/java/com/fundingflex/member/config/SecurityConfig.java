@@ -53,7 +53,7 @@ public class SecurityConfig {
 		        .authorizeHttpRequests(auth -> auth
 //		            .requestMatchers("/api/signup", "/", "/api/signin").permitAll()
 //		            .requestMatchers("/admin").hasRole("ADMIN")
-		            .requestMatchers("/api/signup", "/", "/api/signin").permitAll()  // /api/signin 경로 명시적 허용
+		            .requestMatchers("/api/signup", "/", "/api/signin", "/api/home").permitAll()  // /api/signin 경로 명시적 허용
 		            .anyRequest().permitAll())
 //		        .addFilterBefore(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class)
 		        .addFilterBefore(new LoginFilter(authenticationManager, jwtUtil), UsernamePasswordAuthenticationFilter.class)

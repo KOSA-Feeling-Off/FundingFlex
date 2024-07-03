@@ -45,13 +45,33 @@ public class CategoriesController {
     }
 
     // 카테고리별 펀딩 목록 ajax
+	/*
+	 * @GetMapping("/{categoryId}/list")
+	 * 
+	 * @ResponseBody public ResponseEntity<List<FundingsDTO>>
+	 * getCategoryFundings(@PathVariable("categoryId") Long categoryId,
+	 * 
+	 * @RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy) {
+	 * log.debug("=>>>>>>>>>>>>>> Fetching fundings for category ID: {}",
+	 * categoryId); List<FundingsDTO> fundingsList =
+	 * fundingsService.getFundingsByCategory(categoryId, sortBy);
+	 * 
+	 * log.debug("=>>>>>>>>>>>>>> Fetched fundings: {}", fundingsList); return
+	 * ResponseEntity.ok(fundingsList); }
+	 */
+    
+    // 카테고리별 펀딩 목록 ajax
     @GetMapping("/{categoryId}/list")
     @ResponseBody
     public ResponseEntity<List<FundingsDTO>> getCategoryFundings(@PathVariable("categoryId") Long categoryId,
                                                                  @RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy) {
         log.debug("=>>>>>>>>>>>>>> Fetching fundings for category ID: {}", categoryId);
-        List<FundingsDTO> fundingsList = fundingsService.getFundingsByCategory(categoryId, sortBy);
-        
+        List<FundingsDTO> fundingsList;
+        if ("inProgress".equals(sortBy)) {
+            fundingsList = fundingsService.getInProgressFundingsByCategory(categoryId);
+        } else {
+            fundingsList = fundingsService.getFundingsByCategory(categoryId, sortBy);
+        }
         log.debug("=>>>>>>>>>>>>>> Fetched fundings: {}", fundingsList);
         return ResponseEntity.ok(fundingsList);
     }

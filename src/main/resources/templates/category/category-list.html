@@ -33,7 +33,7 @@
         fundingsList.forEach(funding => {
             const fundingItem = document.createElement('a');
             fundingItem.className = 'funding-item';
-            fundingItem.href = `/fundingJoin?fundingsId=${funding.fundingsId}`;
+            fundingItem.href = `/api/fundings/${funding.categoryId}/details/${funding.fundingsId}`;
 
             const title = document.createElement('div');
             title.className = 'funding-title';
@@ -117,7 +117,7 @@
         slides[currentIndex].classList.add('active');
     }
 
- // 좋아요 기능
+    // 좋아요 기능
     async function handleLike(fundingsId, likeButton, likeCountElement) {
         try {
             const response = await fetch(`/api/fundings/like/${fundingsId}`, {
@@ -159,7 +159,7 @@
             <div class="section-container">
                 <h2 th:text="${categoryName}">카테고리별 펀딩</h2>
                 <input type="hidden" id="categoryId" th:value="${categoryId}">
-                <select id="sortBy">
+                <select class="form-select form-select-sm" id="sortBy">
                     <option value="createdDate">개설순</option>
                     <option value="inProgress">진행중</option>
                     <option value="likes">좋아요순</option>

@@ -29,8 +29,8 @@ public class FundingJoinService {
 		}
 
 		FundingJoin fundingJoin = FundingJoin.of(requestDto.getFundingsId(), requestDto.getUserId(),
-				requestDto.getFundingAmount(), requestDto.getNameUndisclosed() == 'Y',
-				requestDto.getAmountUndisclosed() == 'Y', "createdByUser" // Replace with actual user info
+				requestDto.getFundingAmount(), requestDto.getNameUndisclosed(),
+				requestDto.getAmountUndisclosed(), "createdByUser" // Replace with actual user info
 		);
 
 		fundingsMapper.insertFundingJoin(fundingJoin);

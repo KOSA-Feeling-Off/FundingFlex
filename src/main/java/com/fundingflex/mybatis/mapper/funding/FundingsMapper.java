@@ -47,15 +47,21 @@ public interface FundingsMapper {
 
     Optional<FundingJoin> findFundingJoinById(@Param("fundingJoinId") Long fundingJoinId);
 
-    List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy);
+    // List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy);
+    List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy, @Param("userId") Long userId);
+    
     List<FundingJoin> findFundingJoinsByFundingsId(@Param("fundingsId") Long fundingsId);
     List<Images> findImagesByFundingsIdOrderBySeqAsc(Long fundingsId);
 
     // 카테고리별 목록
     List<FundingsDTO> getFundingsByCategory(@Param("categoryId") Long categoryId, @Param("sortBy") String sortBy);
 
-    // 진행중이 펀딩 조회
-    List<FundingsDTO> getInProgressFundings(@Param("sortBy") String sortBy);
+    // 진행중인 펀딩 조회
+    List<FundingsDTO> getInProgressFundings(@Param("sortBy") String sortBy, @Param("userId") Long userId);
+    
+    // 진행 중인 펀딩 목록 조회 (카테고리별)
+    List<FundingsDTO> getInProgressFundingsByCategory(@Param("categoryId") Long categoryId);
+
 
     int insertFunding(Fundings fundings);
     int insertImages(List<Images> images);
@@ -69,14 +75,30 @@ public interface FundingsMapper {
     int deleteFundingJoin(Long fundingJoinId);
     
     // 좋아요 수 증가
-    void incrementLikeCount(@Param("fundingsId") Long fundingsId);
+    //void incrementLikeCount(@Param("fundingsId") Long fundingsId);
 
     // 좋아요 수 감소
-    void decrementLikeCount(@Param("fundingsId") Long fundingsId);
+    //void decrementLikeCount(@Param("fundingsId") Long fundingsId);
 
     // 사용자가 이미 좋아요를 눌렀는지 확인
     Optional<Fundings> findById(@Param("fundingsId") Long fundingsId);
 
     // 좋아요 수 업데이트
     int updateLikeCount(@Param("fundingsId") Long fundingsId, @Param("likeCount") int likeCount);
+    
+    
+    // 좋아요 존재 여부 확인
+    int existsLike(@Param("fundingsId") Long fundingsId, @Param("userId") Long userId);
+
+    // 좋아요 추가
+    void insertLike(@Param("fundingsId") Long fundingsId, @Param("userId") Long userId);
+
+    // 좋아요 삭제
+    void deleteLike(@Param("fundingsId") Long fundingsId, @Param("userId") Long userId);
+
+    // 좋아요 수 증가
+    void incrementLikeCount(@Param("fundingsId") Long fundingsId);
+
+    // 좋아요 수 감소
+    void decrementLikeCount(@Param("fundingsId") Long fundingsId);
 }

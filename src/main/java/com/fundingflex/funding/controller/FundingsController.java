@@ -3,7 +3,6 @@ package com.fundingflex.funding.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -129,13 +128,7 @@ public class FundingsController {
     }
 
 
-    // 펀딩 목록 화면 조회
-    @GetMapping("/list-view")
-    public String getFundingsPage() {
-        return "/funding/fundings.html"; // static 폴더 내의 HTML 파일 이름
-    }
-
-
+    /*
     // 펀딩 목록 ajax
     @GetMapping("/list")
     @ResponseBody
@@ -154,16 +147,39 @@ public class FundingsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+    */
+    
+    @GetMapping("/list")
+    @ResponseBody
+    public ResponseEntity<List<FundingsDTO>> getAllFundings(
+            @RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy,
+            @RequestParam(name = "userId") Long userId) {
+        try {
+            List<FundingsDTO> fundingsList;
+            if ("inProgress".equals(sortBy)) {
+                fundingsList = fundingsService.getInProgressFundings(sortBy, userId);
+            } else {
+                fundingsList = fundingsService.getAllFundings(sortBy, userId);
+            }
+            return ResponseEntity.ok(fundingsList);
+        } catch (Exception e) {
+            // 로그 출력
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     
     // 좋아요 처리
-    @PostMapping("/like/{fundingsId}")
-    @ResponseBody
-    public ResponseEntity<?> toggleLikeFunding(@PathVariable("fundingsId") Long fundingsId) {
-        // 예시 사용자 ID (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함)
-        String userId = "exampleUserId";
-        boolean liked = fundingsService.toggleLikeFunding(fundingsId, userId);
-        return ResponseEntity.ok(Map.of("liked", liked));
-    }
+	/*
+	 * @PostMapping("/like/{fundingsId}")
+	 * 
+	 * @ResponseBody public ResponseEntity<?>
+	 * toggleLikeFunding(@PathVariable("fundingsId") Long fundingsId) { // 예시 사용자 ID
+	 * (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함) String userId = "exampleUserId";
+	 * boolean liked = fundingsService.toggleLikeFunding(fundingsId, userId); return
+	 * ResponseEntity.ok(Map.of("liked", liked)); }
+	 */
     
     
 }
