@@ -14,9 +14,4 @@ public class FundingRequestDTO {
 	private int fundingAmount;
 	private char nameUndisclosed;
 	private char amountUndisclosed;
-	
-	public void setUserId(String currentUserName) {
-		// TODO Auto-generated method stub
-		
-	}
 }
