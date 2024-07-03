@@ -1,24 +1,5 @@
 package com.fundingflex.funding.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fundingflex.category.domain.entity.Categories;
@@ -32,8 +13,18 @@ import com.fundingflex.funding.domain.form.FundingsForm;
 import com.fundingflex.funding.service.FundingsService;
 import com.fundingflex.funding.service.ImageService;
 import com.fundingflex.member.domain.dto.CustomUserDetails;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/fundings")
@@ -47,12 +38,12 @@ public class FundingsController {
 
     // 펀딩 개설
     @GetMapping
-    public String showFundingForm(Model model) {
-    	
-//    	@AuthenticationPrincipal CustomUserDetails userDetails
-//    	if(userDetails == null) {
-//    		return "redirect:/api/login";
-//    	}
+    public String showFundingForm(Model model, 
+    		@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+    	if(userDetails == null) {
+    		return "redirect:/api/login";
+    	}
     	
         List<Categories> categoryList = categoriesService.selectAllCategories();
         
@@ -66,12 +57,15 @@ public class FundingsController {
     // 개설 펀딩 저장
     @PostMapping
     public String createFunding(@ModelAttribute("fundingsForm") FundingsForm fundingsForm,
-            @RequestParam("images") MultipartFile[] images) {
-        
-    	//  @AuthenticationPrincipal UserDetails currentUser
-    	Long id = 1L;
+            @RequestParam("images") MultipartFile[] images, 
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+    	
+    	if(userDetails == null) {
+    		return "redirect:/api/login";
+    	}
+    	
         FundingIdsDTO fundingsDto =
-        		fundingsService.saveFundings(fundingsForm, images, id);
+        		fundingsService.saveFundings(fundingsForm, images, userDetails.getUserId());
         
         return "redirect:/api/fundings/" + fundingsDto.getCategoryId()
                     + "/details/" + fundingsDto.getFundingsId();
@@ -81,7 +75,13 @@ public class FundingsController {
     // 펀딩 수정 form
     @GetMapping("/{category-id}/{funding-id}")
     public String showFundingModifyForm(@PathVariable(name = "category-id") Long categoryId,
-            @PathVariable(name = "funding-id") Long fundingId, Model model) {
+            @PathVariable(name = "funding-id") Long fundingId, 
+            Model model,
+            @AuthenticationPrincipal CustomUserDetails userDetails) {
+    	
+    	if(userDetails == null) {
+    		return "redirect:/api/login";
+    	}
 
         List<Categories> categoryList = categoriesService.selectAllCategories();
 
@@ -107,16 +107,20 @@ public class FundingsController {
         @RequestParam("images") MultipartFile[] images,
         @RequestParam("imageArray") String imageArrayJson,
         @PathVariable("category-id") Long categoryId,
-        @PathVariable("funding-id") Long fundingId) throws IOException {
+        @PathVariable("funding-id") Long fundingId,
+        @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
 
+    	if(userDetails == null) {
+    		return "redirect:/api/login";
+    	}
+    	
 
         // JSON 문자열을 객체로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<ImageData> imageArray =
             objectMapper.readValue(imageArrayJson, new TypeReference<ArrayList<ImageData>>(){});
 
-        //  @AuthenticationPrincipal UserDetails currentUser
-    	Long id = 1L;
+        
         FundingIdsDTO fundingsDto =
         		fundingsService.updateFunding(fundingsForm, imageArray, categoryId, fundingId);
 
@@ -138,23 +142,18 @@ public class FundingsController {
     }
 
 
-    // 펀딩 목록 화면 조회
-    @GetMapping("/list-view")
-    public String getFundingsPage() {
-        return "/funding/fundings.html"; // static 폴더 내의 HTML 파일 이름
-    }
-
-
     // 펀딩 목록 ajax
     @GetMapping("/list")
     @ResponseBody
-    public ResponseEntity<List<FundingsDTO>> getAllFundings(@RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy) {
+    public ResponseEntity<List<FundingsDTO>> getAllFundings(
+            @RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy,
+            @RequestParam(name = "userId") Long userId) {
         try {
             List<FundingsDTO> fundingsList;
             if ("inProgress".equals(sortBy)) {
-                fundingsList = fundingsService.getInProgressFundings(sortBy);
+                fundingsList = fundingsService.getInProgressFundings(sortBy, userId);
             } else {
-                fundingsList = fundingsService.getAllFundings(sortBy);
+                fundingsList = fundingsService.getAllFundings(sortBy, userId);
             }
             return ResponseEntity.ok(fundingsList);
         } catch (Exception e) {
@@ -163,15 +162,4 @@ public class FundingsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-    
-    
-    // 좋아요 처리
-    @PostMapping("/like/{fundingsId}")
-    @ResponseBody
-    public ResponseEntity<?> likeFunding(@PathVariable("fundingsId") Long fundingsId) {
-        boolean liked = fundingsService.likeFunding(fundingsId);
-        return ResponseEntity.ok(Map.of("liked", liked));
-    }
-    
-    
 }

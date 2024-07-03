@@ -1,8 +1,14 @@
 package com.fundingflex.funding.service;
 
+import com.fundingflex.member.domain.entity.Members;
+import com.fundingflex.mybatis.mapper.member.MembersMapper;
+import groovy.util.logging.Slf4j;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import org.apache.ibatis.javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -19,22 +25,34 @@ import com.fundingflex.notification.service.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class FundingJoinService {
 
+   private static final Logger log = LoggerFactory.getLogger(FundingJoinService.class);
    private final FundingsMapper fundingsMapper;
    private final NotificationService notificationService;
+   private final MembersMapper membersMapper;
 
 
    // 펀딩 참여하기
-   public FundingResponseDTO joinFunding(FundingRequestDTO requestDtos) {
+	public FundingResponseDTO joinFunding(FundingRequestDTO requestDtos) throws Exception {
+		
+		Fundings fundings = fundingsMapper.findById(requestDtos.getFundingsId())
+				.orElseThrow(() -> new RuntimeException("펀딩 정보가 없습니다."));
+		
+		// 펀딩 상태 완료인지 확인
+		if(fundings.getStatusFlag() == FundingsStatusEnum.COMPLETED) {
+			throw new RuntimeException("완료된 펀딩입니다.");
+		}
+		
+		// 큐에 작업 추가
+        FundingResponseDTO responseDto = processTask(requestDtos);
+        FundingUpdateQueue.addFundingUpdate(requestDtos);
 
-      // 큐에 작업 추가
-      FundingUpdateQueue.addFundingUpdate(requestDtos);
-
-      return null;
-   }
+        return responseDto;
+	}
 
 
    @Async
@@ -47,80 +65,99 @@ public class FundingJoinService {
          task = FundingUpdateQueue.takeFundingUpdate();
       }
    }
-   
+
 
    @Transactional
-   public void processTask(FundingRequestDTO task) throws Exception {
+   public FundingResponseDTO processTask(FundingRequestDTO task) throws Exception {
 
-      // 펀딩 참여 금액 확인
-      validateFundingAmount(task.getFundingAmount());
+      try {
 
-      // 펀딩
-      Long fundingId = task.getFundingsId();
+         // 펀딩 참여 금액 확인
+         validateFundingAmount(task.getFundingAmount());
 
-      // 펀딩 정보 조회
-      Fundings fundings = fundingsMapper.findById(fundingId)
-          .orElseThrow(() -> new NotFoundException("펀딩 정보가 없습니다."));
-      
-      // 펀딩 참여 금액
-      int amount = task.getFundingAmount();
+         Members member = membersMapper.findById(task.getUserId());
 
-      // 펀딩 자금조달 조회
-      FundingConditions fundingConditions =
-          fundingsMapper.findFundingConditionsByFundingsId(fundingId);
+         if (member == null) {
+            throw new NotFoundException("유저 정보를 찾을 수 없습니다.");
+         }
 
-      /* 새로운 자금 계산 */
-      // 모은금액 계산
-      int newCollectedAmount = fundingConditions.getCollectedAmount() + amount;
-      // 퍼센트 계산
-      int newPercentage =
-    		  calculatePercent(newCollectedAmount, fundingConditions.getGoalAmount());
-      // 100% 여부
-      char hundredPercentFlag = fundingConditions.getHundredPercentFlag();
+         // 펀딩
+         Long fundingId = task.getFundingsId();
 
-      
-      // 100% 도달 시 -> 퍼센트, 플래그 업데이트, 알림 테이블 INSERT
-      if (newPercentage >= 100 && hundredPercentFlag == 'N') {
+         // 펀딩 정보 조회
+         Fundings fundings = fundingsMapper.findById(fundingId)
+             .orElseThrow(() -> new NotFoundException("펀딩 정보가 없습니다."));
+
+         // 펀딩 참여 금액
+         int amount = task.getFundingAmount();
+
+         // 펀딩 자금조달 조회
+         FundingConditions fundingConditions =
+             fundingsMapper.findFundingConditionsByFundingsId(fundingId);
+
+         if (fundingConditions == null) {
+            throw new NotFoundException("펀딩 조건을 찾을 수 없습니다.");
+         }
+
+         /* 새로운 자금 계산 */
+         // 모은금액 계산
+         int newCollectedAmount = fundingConditions.getCollectedAmount() + amount;
+         // 퍼센트 계산
+         int newPercentage =
+             calculatePercent(newCollectedAmount, fundingConditions.getGoalAmount());
+         // 100% 여부
+         char hundredPercentFlag = fundingConditions.getHundredPercentFlag();
+
+         // 100% 도달 시 -> 퍼센트, 플래그 업데이트, 알림 테이블 INSERT
+         if (newPercentage >= 100 && hundredPercentFlag == 'N') {
+
+            // 펀딩 status '완료'로 업데이트
+            fundings.setStatusFlag(FundingsStatusEnum.COMPLETED);
+            fundingsMapper.updateFundinsStatusFlag(fundings, member.getNickname());
+
+            // 알림 테이블 insert
+            notificationService.insertNotification(
+                fundingConditions.getFcId(),
+                fundings.getUserId(),
+                "'" + fundings.getTitle() + "'" + "의 펀딩이 완료되었습니다.");
+         }
+
+         // 펀딩 참여 저장
+         FundingJoin fundingJoin =
+             FundingJoin.of(fundingId, member.getUserId(), task.getFundingAmount(),
+                 task.getNameUndisclosed(), task.getAmountUndisclosed(), member.getNickname(), 'N');
+         fundingsMapper.insertFundingJoin(fundingJoin);
+
+         // 저장 후 아이디 받아옴
+         Long fundingJoinId = fundingJoin.getFundingJoinId();
+
 
          // 펀딩 자금조달 테이블 UPDATE
          fundingConditions.setCollectedAmount(newCollectedAmount);
          fundingConditions.setPercent(newPercentage);
-         fundingConditions.setHundredPercentFlag('Y');
-         fundingsMapper.updateFundingConditions(fundingConditions);
+         fundingConditions.setHundredPercentFlag((newPercentage >= 100 ? 'Y' : 'N'));
+         int saveFlag = fundingsMapper.updateFundingConditions(fundingConditions);
+         if(saveFlag <= 0) {
+            throw new SQLException("펀딩 자금 조달 업데이트 오류");
+         }
 
-         // 펀딩 status '완료'로 업데이트
-         fundings.setStatusFlag(FundingsStatusEnum.COMPLETED);
-         fundingsMapper.updateFundinsStatusFlag(fundings);
-         
-         // 알림 테이블 insert
-         notificationService.insertNotification(
-        		 task.getFundingsId(), 
-        		 task.getUserId(),
-        		 "'" + fundings.getTitle() + "'" + "의 펀딩이 완료되었습니다.");
+          return FundingResponseDTO.builder()
+             .fundingJoinId(fundingJoinId)
+             .build();
+
+      } catch (NotFoundException e) {
+         log.error("NotFoundException: {}", e.getMessage());
+         throw e;
+
+      } catch (Exception e) {
+         log.error("Exception: {}", e.getMessage());
+         throw e;
       }
-
-      // 펀딩 참여 저장
-      FundingJoin fundingJoin =
-    		  FundingJoin.of(fundingId, task.getUserId(), task.getFundingAmount(), task.getNameUndisclosed(), task.getAmountUndisclosed(), 'N');
-      fundingsMapper.insertFundingJoin(fundingJoin);
-//
-//
-//      FundingConditions fundingConditions = getOrCreateFundingConditions(
-//          requestDto.getFundingsId());
-//      int goalAmount = fundingConditions.getGoalAmount();
-//
-//      FundingJoin fundingJoin = FundingJoin.of(requestDto.getFundingsId(), requestDto.getUserId(),
-//          requestDto.getFundingAmount(), requestDto.getNameUndisclosed() == 'Y',
-//          requestDto.getAmountUndisclosed() == 'Y', "createdByUser" // 로그인 닉네임으로
-//      );
-//
-//
-//      updateFundingConditions(requestDto.getFundingsId());
-
-//      return new FundingResponseDTO(fundingJoin.getFundingJoinId());
    }
 
 
+   
+   
    // 펀딩 참여 수정
    public FundingResponseDTO updateFunding(FundingRequestDTO requestDto) {
       validateFundingAmount(requestDto.getFundingAmount());
@@ -183,10 +220,13 @@ public class FundingJoinService {
    // 펀딩 자금조달 업데이트
    private void updateFundingConditions(Long fundingsId) {
       FundingConditions fundingConditions = fundingsMapper.findFundingConditionsByFundingsId(fundingsId);
+      
       int newCollectedAmount = fundingsMapper.findFundingJoinsByFundingsId(fundingsId).stream()
             .mapToInt(FundingJoin::getFundingAmount).sum();
+      
       fundingConditions.setCollectedAmount(newCollectedAmount);
       fundingConditions.setPercent(calculatePercent(newCollectedAmount, fundingConditions.getGoalAmount()));
+      
       fundingsMapper.updateFundingConditions(fundingConditions);
    }
 

@@ -158,26 +158,46 @@ function validateForm() {
 		{ id: 'category', errorId: 'categoryError', errorMessage: '카테고리를 선택하세요' },
         { id: 'title', errorId: 'titleError', errorMessage: '제목을 입력해주세요' },
         { id: 'content', errorId: 'contentError', errorMessage: '내용을 입력해주세요' },
-        { id: 'goalAmount', errorId: 'amountError', errorMessage: '금액을 입력해주세요' }
+        { id: 'goalAmount', errorId: 'amountError', errorMessage: '금액을 입력해주세요' },
+		    { id: 'imageUploadContainer', errorId: 'imageError', errorMessage: '이미지를 최소 하나 이상 업로드해주세요.' }
     ];
 
     let isValid = true;
 
-    fields.forEach(function(field) {
-        let input = document.getElementById(field.id);
+	fields.forEach(function(field) {
+		let input = document.getElementById(field.id);
         let error = document.getElementById(field.errorId);
 
-        console.log(input);
-        if (input.value.trim() === '' || input.value === "0") {
-            error.textContent = field.errorMessage;
-            error.style.display = 'block';
-            isValid = false;
-
-            console.log(field.id);
+        if (field.id === 'imageUploadContainer') {
+            // 이미지 유효성 검사
+            let imageInputs = document.querySelectorAll('#imageUploadContainer input[type="file"]');
+            let isImageValid = Array.from(imageInputs).some(input => input.files.length > 0);
+            
+            if (!isImageValid) {
+                error.textContent = field.errorMessage;
+                error.style.display = 'block';
+                isValid = false;
+            } else {
+                error.style.display = 'none';
+            }
         } else {
-            error.style.display = 'none';
+            // 일반 유효성 검사
+            if (input.value.trim() === '' || input.value === "0") {
+                error.textContent = field.errorMessage;
+                error.style.display = 'block';
+                isValid = false;
+				
+            } else {
+                error.style.display = 'none';
+            }
+			
+			// 목표 금액 5000원 단위
+			if (field.id === 'goalAmount') {
+				isValid = (input.value % 5000 === 0);
+			}
         }
     });
+		
     return isValid;
 }
 

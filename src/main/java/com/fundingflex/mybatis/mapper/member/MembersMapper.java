@@ -16,4 +16,7 @@ public interface MembersMapper {
 
 	// 닉네임 중복 확인
 	boolean existsByNickname(String nickname);
+
+	Members findById(Long userId);
+	
 }

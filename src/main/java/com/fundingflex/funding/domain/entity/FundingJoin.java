@@ -26,23 +26,28 @@ public class FundingJoin {
 	private String createdBy;			// 생성자
 	private LocalDateTime updatedAt;	// 수정일
 	private String updatedBy;			// 수정자
+	
+	
+	
+	
 	private char isDeleted;				// 삭제 여부
 	
 	private int goalAmount;
-	
-	
-	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed, char amountUndisclosed, char deletedFlg) {
-        return FundingJoin.builder()
-                .fundingsId(fundingsId)
-                .userId(userId)
-                .fundingAmount(fundingAmount)
-                .nameUndisclosed(nameUndisclosed)
-                .amountUndisclosed(amountUndisclosed)
-                .createdBy("이너프")
-                .isDeleted(deletedFlg)
-                .build();
-    }
 
-   
+
+	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed,
+								 char amountUndisclosed, String createdBy, char deletedFlg) {
+
+		return FundingJoin.builder()
+				.fundingsId(fundingsId)
+				.userId(userId)
+				.fundingAmount(fundingAmount)
+				.nameUndisclosed(nameUndisclosed)
+				.amountUndisclosed(amountUndisclosed)
+				.createdBy(createdBy)
+				.isDeleted(deletedFlg)
+				.build();
+	}
+
 }
 

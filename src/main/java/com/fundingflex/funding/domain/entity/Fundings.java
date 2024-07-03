@@ -38,16 +38,16 @@ public class Fundings {
     
     
     
-    public static Fundings of(FundingsForm fundingsForm, Long userId, String categoryName) {
+    public static Fundings of(FundingsForm fundingsForm, Long userId, String categoryName, String nickName) {
     	return Fundings.builder()
     			.categoryId(fundingsForm.getCategoryId())
     			.userId(userId)
     			.categoryName(categoryName)
     			.title(fundingsForm.getTitle())
     			.content(fundingsForm.getContent())
-    			.statusFlag(FundingsStatusEnum.WAITING)
+    			.statusFlag(FundingsStatusEnum.IN_PROGRESS)
     			.goalAmount(fundingsForm.getGoalAmount())
-    			.createdBy("이너프")
+    			.createdBy(nickName)
     			.isDeleted(DeleteFlagEnum.N)
     			.build();
     }

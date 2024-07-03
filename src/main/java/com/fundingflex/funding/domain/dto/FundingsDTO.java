@@ -27,4 +27,6 @@ public class FundingsDTO {
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
     }
+    
+    private String existsFlag; 
 }
