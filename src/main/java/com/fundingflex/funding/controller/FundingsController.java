@@ -3,17 +3,10 @@ package com.fundingflex.funding.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-<<<<<<< HEAD
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-=======
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
->>>>>>> origin/feat_kmj_01
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,10 +30,6 @@ import com.fundingflex.funding.domain.entity.Images;
 import com.fundingflex.funding.domain.form.FundingsForm;
 import com.fundingflex.funding.service.FundingsService;
 import com.fundingflex.funding.service.ImageService;
-<<<<<<< HEAD
-import com.fundingflex.member.domain.dto.CustomUserDetails;
-=======
->>>>>>> origin/feat_kmj_01
 
 import lombok.RequiredArgsConstructor;
 
@@ -167,18 +156,4 @@ public class FundingsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-<<<<<<< HEAD
-    
-    
-    // 좋아요 처리
-    @PostMapping("/like/{fundingsId}")
-    @ResponseBody
-    public ResponseEntity<?> likeFunding(@PathVariable("fundingsId") Long fundingsId) {
-        boolean liked = fundingsService.likeFunding(fundingsId);
-        return ResponseEntity.ok(Map.of("liked", liked));
-    }
-    
-    
-=======
->>>>>>> origin/feat_kmj_01
 }

@@ -38,23 +38,20 @@ public interface FundingsMapper {
 
 
 
-<<<<<<< HEAD
+
     // 펀딩 조회 (fundingsId 기준 전체 컬럼 조회)
-    Optional<Fundings> findById(@Param("fundingsId") Long fundingsId);
+//    Optional<Fundings> findById(@Param("fundingsId") Long fundingsId);
 
     List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy);
-    
-=======
+
     // 펀딩 상태 저장
     void insertFundingConditions(FundingConditions fundingConditions);
 
-    Optional<FundingJoin> findFundingJoinById(@Param("fundingJoinId") Long fundingJoinId);
 
     // List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy);
     List<FundingsDTO> getAllFundings(@Param("sortBy") String sortBy, @Param("userId") Long userId);
     
-    List<FundingJoin> findFundingJoinsByFundingsId(@Param("fundingsId") Long fundingsId);
->>>>>>> origin/feat_kmj_01
+
     List<Images> findImagesByFundingsIdOrderBySeqAsc(Long fundingsId);
 
     
@@ -62,23 +59,14 @@ public interface FundingsMapper {
     List<FundingsDTO> getFundingsByCategory(@Param("categoryId") Long categoryId
         , @Param("sortBy") String sortBy);
 
-<<<<<<< HEAD
-    // 진행중이 펀딩 조회
-    List<FundingsDTO> getInProgressFundings(@Param("sortBy") String sortBy);
 
-
-
-    int insertFunding(Fundings fundings);
-    int insertImages(List<Images> images);
-=======
     // 진행중인 펀딩 조회
     List<FundingsDTO> getInProgressFundings(@Param("sortBy") String sortBy, @Param("userId") Long userId);
     
     // 진행 중인 펀딩 목록 조회 (카테고리별)
     List<FundingsDTO> getInProgressFundingsByCategory(@Param("categoryId") Long categoryId);
->>>>>>> origin/feat_kmj_01
 
-	
+
 
 
     // 펀딩 참여 등록
@@ -111,23 +99,13 @@ public interface FundingsMapper {
     
     // 펀딩 자금조달 테이블 수정
     int updateFundingConditions(FundingConditions fundingConditions);
-<<<<<<< HEAD
     
-
-
-    // 위시리스트 테이블 수정
-    int updateLikeCount(@Param("fundingsId") Long fundingsId, @Param("likeCount") int likeCount);
 
     
     // 펀딩 StatusFlag 업데이트 
 	void updateFundinsStatusFlag(Fundings fundings);
 
 
-=======
-    int insertFundingJoin(FundingJoin fundingJoin);
-    int updateFundingJoin(FundingJoin fundingJoin);
-    int deleteFundingJoin(Long fundingJoinId);
-    
     // 좋아요 수 증가
     //void incrementLikeCount(@Param("fundingsId") Long fundingsId);
 
@@ -155,5 +133,5 @@ public interface FundingsMapper {
 
     // 좋아요 수 감소
     void decrementLikeCount(@Param("fundingsId") Long fundingsId);
->>>>>>> origin/feat_kmj_01
+
 }

@@ -54,7 +54,6 @@ public class FundingsService {
 	public FundingIdsDTO saveFundings(FundingsForm fundingsForm, MultipartFile[] images, Long userId) {
 
 		try {
-<<<<<<< HEAD
             // 유저 정보 가져오기
 
 
@@ -94,43 +93,6 @@ public class FundingsService {
         	log.error("=>>>>>> 펀딩 저장 실패: {}" , ex.getMessage());
             throw new RuntimeException("펀딩 저장 실패: " + ex.getMessage(), ex);
         }
-=======
-	            // 유저 정보 가져오기
-	
-	
-	
-	            // 폴더 경로 생성
-	            imageService.createDirectoriesIfNotExists();
-	
-	            // 카테고리 정보
-	            Categories categoriesDto =
-	            		categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
-	
-	
-	            // Fundings 객체 저장
-	            Fundings newFundings =
-	            		Fundings.of(fundingsForm, userId, categoriesDto.getCategoryName());
-	            fundingsMapper.insertFundings(newFundings);
-	
-	            // 저장 후 id 받아옴
-	            Long fundingsId = newFundings.getFundingsId();
-	
-	
-	            // 이미지 처리 및 Images 객체 생성
-	            List<Images> imageList = imageService.processImages(images, fundingsId);
-	
-	
-	            // Images 객체 저장
-	            imageService.saveImages(imageList);
-	
-	
-	            return FundingIdsDTO.of(categoriesDto.getCategoryId(), fundingsId);
-	
-	        } catch (Exception ex) {
-	        	log.error("=>>>>>> 펀딩 저장 실패: {}" , ex.getMessage());
-	            throw new RuntimeException("펀딩 저장 실패: " + ex.getMessage(), ex);
-	        }
->>>>>>> origin/feat_kmj_01
 	}
 
 
@@ -256,7 +218,6 @@ public class FundingsService {
         }).collect(Collectors.toList());
     }
 
-<<<<<<< HEAD
 
     // 좋아요 기능
     public boolean likeFunding(Long fundingsId) {
@@ -277,8 +238,6 @@ public class FundingsService {
         fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount());
         return true;
     }
-=======
->>>>>>> origin/feat_kmj_01
 
 
     // 카테고리별 목록
