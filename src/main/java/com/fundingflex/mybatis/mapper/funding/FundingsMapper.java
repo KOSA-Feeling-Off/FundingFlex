@@ -62,10 +62,7 @@ public interface FundingsMapper {
     // 진행 중인 펀딩 목록 조회 (카테고리별)
     List<FundingsDTO> getInProgressFundingsByCategory(@Param("categoryId") Long categoryId);
 
-
-    int insertFunding(Fundings fundings);
-    int insertImages(List<Images> images);
-
+	
 
     FundingConditions findFundingConditionsByFundingsId(Long fundingsId);
 
