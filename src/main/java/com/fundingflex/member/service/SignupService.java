@@ -47,52 +47,47 @@ public class SignupService {
 	}
 
 	@Transactional
-	public Members signup(MemberResisterForm resisterForm, MultipartFile profileImage) {
-	    String encodedPassword = passwordEncoder.encode(resisterForm.getPassword1());
+	public Members signup(MemberResisterForm resisterForm) {
+		createDirectoriesIfNotExists();
+		String encodedPassword = passwordEncoder.encode(resisterForm.getPassword1());
 
-	    String profileUrl = null;
-	    if (profileImage != null && !profileImage.isEmpty()) {
-	        profileUrl = saveProfileImage(profileImage, resisterForm.getEmail());
-	    }
+		String profileImageUrl = null;
+		if (resisterForm.getProfileImage() != null && !resisterForm.getProfileImage().isEmpty()) {
+			profileImageUrl = saveProfileImage(resisterForm.getProfileImage(), resisterForm.getEmail());
+		}
+		
+		Members newMember = Members.builder().email(resisterForm.getEmail()).nickname(resisterForm.getNickname())
+				.password(encodedPassword).profileUrl(profileImageUrl) // 이미지 URL 바로 할당
+				.createdAt(new Date()).createdBy(resisterForm.getNickname()).role("USER").build();
 
-	    Members newMember = Members.builder()
-	            .email(resisterForm.getEmail())
-	            .nickname(resisterForm.getNickname())
-	            .password(encodedPassword)
-	            .profileUrl(profileUrl) // 이미지 URL 바로 할당
-	            .createdAt(new Date())
-	            .createdBy(resisterForm.getNickname())
-	            .role("USER")
-	            .build();
-
-	    membersMapper.insertMember(newMember);
-	    return newMember;
+		membersMapper.insertMember(newMember);
+		return newMember;
 	}
-	
+
 	private String extractUUID(String fileName) {
-        // UUID 형식 추출: 8-4-4-4-12
-        String uuidRegex = "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
-        Pattern pattern = Pattern.compile(uuidRegex);
-        Matcher matcher = pattern.matcher(fileName);
-        if (matcher.find()) {
-            return matcher.group();
+		// UUID 형식 추출: 8-4-4-4-12
+		String uuidRegex = "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+		Pattern pattern = Pattern.compile(uuidRegex);
+		Matcher matcher = pattern.matcher(fileName);
+		if (matcher.find()) {
+			return matcher.group();
 
-        } else {
-            throw new IllegalArgumentException("Invalid UUID format in file name: " + fileName);
-        }
-    }
-	
-	private String saveProfileImage(MultipartFile file, String userEmail) {
-	    try {
-	        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename().replace(" ", "_");
-	        Path targetLocation = this.fundingImgPath.resolve(fileName);
-	        Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-	        return targetLocation.toString();
-	    } catch (IOException ex) {
-	        throw new RuntimeException("이미지 파일 저장 실패: " + ex.getMessage(), ex);
-	    }
+		} else {
+			throw new IllegalArgumentException("Invalid UUID format in file name: " + fileName);
+		}
 	}
-	
+
+	private String saveProfileImage(MultipartFile file, String userEmail) {
+		try {
+			String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename().replace(" ", "_");
+			Path targetLocation = this.fundingImgPath.resolve(fileName);
+			Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+			return targetLocation.toString();
+		} catch (IOException ex) {
+			throw new RuntimeException("이미지 파일 저장 실패: " + ex.getMessage(), ex);
+		}
+	}
+
 	public boolean existsByEmail(String email) {
 		return membersMapper.existsByEmail(email);
 	}

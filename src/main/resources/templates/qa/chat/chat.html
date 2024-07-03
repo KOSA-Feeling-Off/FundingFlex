@@ -22,7 +22,7 @@
     </nav>
     
     <div class="my-qa-center">
-        <button class="btn btn-primary my-qa-ask-btn" onclick="window.open('/qa/chat-window', 'ChatWindow', 'width=400,height=580')">상담사 연결하기</button>
-        <button class="btn btn-primary my-qa-ask-btn" onclick="window.open('/qa/chat-reply-window', 'ChatReplyWindow', 'width=400,height=580')">고객과 연결하기</button>
+        <button sec:authorize="hasRole('ROLE_USER')" class="btn btn-primary my-qa-ask-btn" onclick="window.open('/qa/chat-window', 'ChatWindow', 'width=400,height=580')">상담사 연결하기</button>
+        <button sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary my-qa-ask-btn" onclick="window.open('/qa/chat-reply-window', 'ChatReplyWindow', 'width=400,height=580')">고객과 연결하기</button>
     </div>
 </div></div></div></div></body></html>

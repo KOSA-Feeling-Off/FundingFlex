@@ -130,34 +130,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		    SecurityContextHolder.getContext().setAuthentication(authentication);
 		    response.sendRedirect("/api/home");
-		
-//		// CustomUserDetails 객체를 가져옵니다. 이는 인증된 사용자 정보를 포함합니다.
-//		CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-//		// 사용자 이름을 CustomUserDetails 객체에서 가져옵니다.
-//		String email = customUserDetails.getUsername(); // email
-//		log.info("######################email" + email);
-//		// 인증된 사용자의 권한(role)을 가져옵니다.
-//		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-//		Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-//		GrantedAuthority auth = iterator.next();
-//		// 첫 번째 권한의 이름(역할)을 가져옵니다.
-//		String role = auth.getAuthority();
-//		// JWT 토큰을 생성합니다. 토큰은 사용자 이름과 역할, 유효 기간을 포함합니다.
-//		String token = jwtUtil.createJwt(email, role, 60 * 60 * 10L); // 10시간
-//		// 생성된 JWT 토큰을 HTTP 응답 헤더에 추가합니다.
-////		response.addHeader("Authorization", "Bearer " + token);
-//		
-//		String encodedToken = Base64.getEncoder().encodeToString(("Bearer " + token).getBytes(StandardCharsets.UTF_8));
-//		Cookie cookie = new Cookie("Authorization", encodedToken);
-//	    cookie.setHttpOnly(true);
-//	    cookie.setSecure(true); // HTTPS로만 전달되도록 설정
-//	    cookie.setPath("/"); // 애플리케이션의 모든 경로에서 유효하도록 설정
-//	    cookie.setMaxAge(3600); // 쿠키의 만료 시간 설정 (초 단위, 3600초는 1시간)
-//
-//	    response.addCookie(cookie);
-//		
-//	    SecurityContextHolder.getContext().setAuthentication(authentication);
-
 	}
 
 	// 로그인 실패시 처리
