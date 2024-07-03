@@ -48,14 +48,13 @@
 							</div>
 						</div>
 	
-						<button type="submit" class="btn btn-primary" th:onclick="'location.href=\'/api/fundings/fundingJoin\''"
-										th:classappend="${responseFundingInfo.fundingsInfoDto.statusFlag == 0 || responseFundingInfo.fundingsInfoDto.statusFlag == 3 || responseFundingInfo.fundingsInfoDto.statusFlag == 4} ? 'disabled' : ''">
+						<button type="submit" class="btn btn-primary" th:onclick="'location.href=\'/api/fundings/' + ${responseFundingInfo.fundingsInfoDto.fundingsId} + '/fundingJoin\''"
+										th:classappend="${responseFundingInfo.fundingsInfoDto.statusFlag == 0 || responseFundingInfo.fundingsInfoDto.statusFlag == 2 || responseFundingInfo.fundingsInfoDto.statusFlag == 3} ? 'disabled' : ''">
 							<span th:switch="${responseFundingInfo.fundingsInfoDto.statusFlag}">
 									<span th:case="0">펀딩 오픈 예정</span>
 									<span th:case="1">펀딩 참여하기</span>
-									<span th:case="2">펀딩 참여하기</span>
-									<span th:case="3">펀딩 완료</span>
-									<span th:case="4">펀딩 취소</span>
+									<span th:case="2">펀딩 완료</span>
+									<span th:case="3">펀딩 취소</span>
 									<span th:case="*">펀딩 참여하기</span> <!-- 기본 값 -->
 							</span>
 						</button>
