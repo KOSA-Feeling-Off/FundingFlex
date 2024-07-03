@@ -11,4 +11,5 @@ public class ResponseFundingInfoDTO {
 
     private FundingsInfoDTO fundingsInfoDto;
     private List<Images> imagesList;
+    private Long fundingJoinUserId;
 }

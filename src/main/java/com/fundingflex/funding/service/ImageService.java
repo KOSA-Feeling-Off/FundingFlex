@@ -21,6 +21,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -79,6 +81,7 @@ public class ImageService {
 	
 	
 	// 이미지 저장
+    @Transactional
 	public void saveImages(List<Images> imageList) {
         try {
             int insertCount = imagesMapper.insertFundingsImages(imageList);
@@ -106,6 +109,7 @@ public class ImageService {
 
     
     // 이미지 전체 Insert (수정)
+    @Transactional
     public void updateImageAll(List<ImageData> images, Long fundingId) throws IOException {
 
         List<Images> updateImageList = new ArrayList<>();
@@ -174,7 +178,8 @@ public class ImageService {
 
         throw new FileNotFoundException("File with UUID " + uuid+ " not found in " + fundingImgPath);
     }
-
+    
+    // UUID 추출
     private String extractUUID(String fileName) {
         // UUID 형식 추출: 8-4-4-4-12
         String uuidRegex = "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
