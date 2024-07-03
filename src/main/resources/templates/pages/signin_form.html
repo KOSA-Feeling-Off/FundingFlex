@@ -1,70 +1,39 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{common/layouts/layout}"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{common/layouts/layout}"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>Login</title>
+<meta charset="UTF-8">
+<title>Login</title>
 </head>
 <body>
-<div layout:fragment="content" class="container my-3">
-    <div>
-        <div class="login-title">로그인</div>
-        <form th:action="@{/api/signin}" method="post" class="form-horizontal" th:object="${memberLoginForm}">
-            <div class="form-group login-row">
-                <label for="email" class="signin-label">  이메일</label>
-                <div class="input-row">
-                    <input type="text" name="email" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요" th:value="${memberLoginForm.email}">
-                </div>
-            </div>
-            <div class="form-group login-row">
-                <label for="password" class="signin-label">비밀번호</label>
-                <div class="input-row">
-                    <input type="password" name="password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요" th:value="${memberLoginForm.password}">
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="signin-button">
-                    <button type="submit" class="btn btn-primary signin-buttons">로그인</button>
-                    <button type="reset" class="btn btn-secondary signin-buttons">취소</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-<script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // 기본 폼 제출 방지
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            const requestData = {
-                email: email,
-                password: password
-            };
-
-            fetch('/api/signin', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Success:', data);
-                // 로그인 성공 후 처리
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                // 로그인 실패 후 처리
-            });
-        });
-    </script>
+	<div layout:fragment="content" class="content">
+		<div class="container-body">
+			<div class="text-body">
+				<div class="form-make-body col-md-7">
+					<h2 class="text-center my-4">로그인</h2>
+					<form th:action="@{/api/signin}" method="post" th:object="${memberLoginForm}">
+						<div class="form-group mt-4">
+							<label for="email"> 이메일</label>
+							<input type="text" class="form-control" name="email" id="signin-email" th:field="*{email}" placeholder="이메일을 입력하세요" th:value="${memberLoginForm.email}">
+							<div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">이메일을 입력해주세요.</div>
+						</div>
+						<div class="form-group mt-4">
+							<label for="password">비밀번호</label>
+							<input type="password" name="password" id="signin-password" th:field="*{password}" class="form-control" placeholder="비밀번호를 입력하세요" th:value="${memberLoginForm.password}">
+							<div class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">비밀번호 에러</div>
+						</div>
+						<div class="form-group text-center mt-4">
+						<div th:if="${error != null}" class="alert alert-danger" th:text="${error}"><!-- 에러 메시지가 여기에 표시됩니다 --></div>
+						<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+						<div th:if="${param.authError}" class="alert alert-danger">로그인 후 이용 가능합니다!</div>
+							<button type="submit" class="btn btn-primary signin-buttons">로그인</button>
+							<button type="reset" class="btn btn-secondary signin-buttons" onclick="location.href='/api/home'">취소</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

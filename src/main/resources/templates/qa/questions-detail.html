@@ -46,7 +46,7 @@
         </div>
 
         <div class="back-link" th:if="${question.isReply == 'N'}">
-            <a class="btn btn-primary" th:href="@{/qa/reply/{id}(id=${question.counsulId})}">답변 하기</a>
+            <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-primary" th:href="@{/qa/reply/{id}(id=${question.counsulId})}">답변 하기</a>
         </div>
 
         <div class="back-link ">

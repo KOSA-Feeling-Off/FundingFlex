@@ -11,11 +11,14 @@ import com.fundingflex.member.domain.entity.Members;
 
 public class CustomUserDetails implements UserDetails {
 
-	private final Members members; // 인증된 사용자 정보를 저장하는 UserEntity객체
-	
+//	private final Members members; // 인증된 사용자 정보를 저장하는 UserEntity객체
+	private final Members members;
+	private final Collection<? extends GrantedAuthority> authorities;
+
 	public CustomUserDetails(Members members) {
-        this.members = members;
-    }
+		this.members = members;
+		this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + members.getRole()));
+	}
 
 //	@Override
 //	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -30,10 +33,14 @@ public class CustomUserDetails implements UserDetails {
 //		});
 //		return collection;
 //	}
-	 @Override
-	    public Collection<? extends GrantedAuthority> getAuthorities() {
-	        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + members.getRole()));
-	    }
+	
+	public Long getUserId() {
+        return members.getUserId();
+    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + members.getRole()));
+	}
 
 	@Override
 	public String getPassword() {
@@ -69,5 +76,10 @@ public class CustomUserDetails implements UserDetails {
 	public boolean isEnabled() {
 		// 계정이 활성화되었음
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "CustomUserDetails{" + "userId=" + members.getUserId() + ", email='" + members.getEmail() + '\'' + ", role='" + members.getRole() + '}';
 	}
 }

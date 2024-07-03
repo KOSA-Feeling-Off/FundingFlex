@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{common/layouts/layout}">
+
+<head>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/mainpage.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mypage.css}">
+</head>
+
+<div layout:fragment="content" class="content">
+    <div class="content-wrapper">
+        <div class="section-container">
+            <!-- 프로필 섹션 -->
+            <div class="profile-section">
+                <div class="profile-info">
+                    <div class="profile-img">
+                        <img src="/path/to/profile-image" alt="프로필 이미지">
+                    </div>
+                    <div class="profile-details">
+                        <h2>닉네임</h2>
+                        <p>1 참여</p>
+                        <p>2 개설</p>
+                        <p>3 좋아요</p>
+                        <button class="edit-profile-btn">프로필 편집</button>
+                    </div>
+                    <!-- 탭 섹션 -->
+            <div class="tabs">
+                <button class="tablink" onclick="openTab(event, 'participated')">참여한</button>
+                <button class="tablink" onclick="openTab(event, 'created')">개설한</button>
+                <button class="tablink" onclick="openTab(event, 'liked')">좋아요</button>
+            </div>
+
+            <!-- 탭 콘텐츠 섹션 -->
+            <div id="participated" class="tabcontent">
+                <div class="funding-item">
+                    <!-- 펀딩 아이템 디자인 -->
+                    <div class="funding-images">
+                        <img src="/path/to/image" alt="펀딩 이미지" class="active">
+                    </div>
+                    <div class="funding-title">펀딩 제목</div>
+                    <div class="funding-details">펀딩 세부 정보</div>
+                    <div class="funding-progress">
+                        <div class="funding-progress-bar" style="width: 66%;"></div>
+                        <div class="funding-progress-text">66%</div>
+                    </div>
+                </div>
+                <!-- 추가 펀딩 아이템들 -->
+            </div>
+
+            <div id="created" class="tabcontent">
+                <!-- 개설한 펀딩 아이템들 -->
+            </div>
+
+            <div id="liked" class="tabcontent">
+                <!-- 좋아요한 펀딩 아이템들 -->
+            </div>
+        </div>
+    </div>
+</div>
+                </div>
+              </div>
+
+
+            <!-- <!-- 탭 섹션 -->
+            <div class="tabs">
+                <button class="tablink" onclick="openTab(event, 'participated')">참여한</button>
+                <button class="tablink" onclick="openTab(event, 'created')">개설한</button>
+                <button class="tablink" onclick="openTab(event, 'liked')">좋아요</button>
+            </div>
+
+            탭 콘텐츠 섹션
+            <div id="participated" class="tabcontent">
+                <div class="funding-item">
+                    펀딩 아이템 디자인
+                    <div class="funding-images">
+                        <img src="/path/to/image" alt="펀딩 이미지" class="active">
+                    </div>
+                    <div class="funding-title">펀딩 제목</div>
+                    <div class="funding-details">펀딩 세부 정보</div>
+                    <div class="funding-progress">
+                        <div class="funding-progress-bar" style="width: 66%;"></div>
+                        <div class="funding-progress-text">66%</div>
+                    </div>
+                </div>
+                추가 펀딩 아이템들
+            </div>
+
+            <div id="created" class="tabcontent">
+                개설한 펀딩 아이템들
+            </div>
+
+            <div id="liked" class="tabcontent">
+                좋아요한 펀딩 아이템들
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<script>
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+</html>
