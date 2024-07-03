@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Result</title>
+    <script>
+        let countdown = 3;
+
+        function updateCountdown() {
+            document.getElementById('countdown').innerText = countdown + "초 후 창이 사라집니다.";
+            countdown--;
+
+            if (countdown < 0) {
+                closeWindowAndRefreshParent();
+            }
+        }
+
+        function closeWindowAndRefreshParent() {
+            // 현재 창 닫기
+            window.close();
+        }
+
+        window.onload = function() {
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        };
+
+        window.onunload = function() {
+            // 창이 닫힐 때 부모 창을 새로고침
+            if (window.opener != null && !window.opener.closed) {
+                window.opener.location.reload();
+            }
+        };
+    </script>
+</head>
+<body>
+    <h1 class="my-qa-main-title">결제 완료</h1>
+    <div id="payment-details">
+        <p id="countdown"></p>
+    </div>
+</body>
+</html>

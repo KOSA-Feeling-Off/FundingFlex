@@ -66,6 +66,11 @@ dependencies {
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
 	
+	// Jackson JSON 라이브러리
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    
+    //포트원 - 토스페이먼츠를 위한 인증용
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0'
 }
 
 tasks.named('test') {

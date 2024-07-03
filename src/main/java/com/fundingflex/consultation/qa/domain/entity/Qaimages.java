@@ -13,11 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
 @Entity
 @Table(name = "QAIMAGES") // 테이블 이름 지정
 public class Qaimages {
@@ -28,6 +24,7 @@ public class Qaimages {
 	@Column(length = 500)
 	private String qaImageUrl;
 	
+	@Column(nullable = false)
 	private int seq;						// 이미지 순서
 	
     @ManyToOne(fetch = FetchType.LAZY)
