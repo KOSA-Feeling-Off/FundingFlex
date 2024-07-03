@@ -1,4 +1,4 @@
-package com.fundingflex.member.domain.dto;
+package com.fundingflex.mypage.domain.dto;
 
 import java.util.List;
 

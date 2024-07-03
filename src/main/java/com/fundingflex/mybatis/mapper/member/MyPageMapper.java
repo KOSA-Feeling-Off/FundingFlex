@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.fundingflex.funding.domain.dto.FundingsDTO;
-import com.fundingflex.member.domain.dto.MyPageDTO;
+import com.fundingflex.mypage.domain.dto.MyPageDTO;
 
 @Mapper
 public interface MyPageMapper {

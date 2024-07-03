@@ -4,7 +4,7 @@
 <mapper namespace="com.fundingflex.mybatis.mapper.member.MyPageMapper">
 
     <!-- 사용자 정보 조회 -->
-    <select id="findMemberInfo" resultType="com.fundingflex.member.domain.dto.MyPageDTO">
+    <select id="findMemberInfo" resultType="com.fundingflex.mypage.domain.dto.MyPageDTO">
         SELECT email, nickname, profile_url as profileUrl
         FROM members
         WHERE user_id = #{userId}
