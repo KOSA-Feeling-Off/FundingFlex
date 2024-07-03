@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -44,10 +45,10 @@ public class SecurityConfig {
 		return configuration.getAuthenticationManager();
 	}
 	
-//	@Bean
-//    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
-//        return new CustomAuthenticationEntryPoint();
-//    }
+	@Bean
+    public CustomAuthenticationEntryPoint customAuthenticationEntryPoint() {
+        return new CustomAuthenticationEntryPoint();
+    }
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,24 +57,22 @@ public class SecurityConfig {
 		    	.formLogin(form -> form
 		    			.loginPage("/api/login")
 		    			.loginProcessingUrl("/api/signin")
-//		    			.successHandler(new CustomAuthenticationSuccessHandler())
+		    			.successHandler(new CustomAuthenticationSuccessHandler())
 		    			.permitAll())
 		        .httpBasic(basic -> basic.disable())
 		        .authorizeHttpRequests(auth -> auth
 		            .requestMatchers("/css/**", "/fonts/**", "/img/**", "/js/**", "/images/**").permitAll()  // 정적 리소스 접근 허용
 		            .requestMatchers("/", "api/home", "/api/login", "/api/signin", "/api/signup"
 		            		, "/qa/fqa", "api/categories/**", "/api/fundings/*/details/*").permitAll()
-		            .anyRequest().permitAll())
-//		            .anyRequest().authenticated())  // 그 외의 모든 요청은 인증을 요구
-//		        .exceptionHandling(exception -> exception
-//		                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/api/login?authError=true"))) // 인증 실패 처리기
+//		            .anyRequest().permitAll())
+		            .anyRequest().authenticated())  // 그 외의 모든 요청은 인증을 요구
 		        .addFilterBefore(new LoginFilter(authenticationManager, jwtUtil), UsernamePasswordAuthenticationFilter.class)
 		        .addFilterAfter(new JWTFilter(jwtUtil, customUserDetailsService), LoginFilter.class)
 		        .sessionManagement(session -> session
 		            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		        .logout((logout) -> logout
 		                .logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-//		                .logoutSuccessHandler(new CustomLogoutSuccessHandler())  // 로그아웃 성공 핸들러 지정
+		                .logoutSuccessHandler(new CustomLogoutSuccessHandler())  // 로그아웃 성공 핸들러 지정
 		                .invalidateHttpSession(true));
 		    return http.build();
 	}

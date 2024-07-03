@@ -35,4 +35,20 @@
 		COUNT(*) > 0 THEN 1 ELSE 0 END AS result
 		FROM members WHERE nickname = #{nickname}
 	</select>
+	
+	<select id="findMemberInfoById" resultType="com.fundingflex.member.domain.entity.Members">
+        SELECT 
+            user_id AS userId,
+            email,
+            nickname,
+            password,
+            profile_url AS profileUrl,
+            created_at AS createdAt,
+            created_by AS createdBy,
+            updated_at AS updatedAt,
+            updated_by AS updatedBy,
+            role
+        FROM members
+        WHERE user_id = #{userId}
+    </select>
 </mapper>

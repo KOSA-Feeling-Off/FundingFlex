@@ -57,7 +57,7 @@
         </div>
 
         <!-- "FQA 등록하기" 버튼 -->
-        <div class="my-qa-center">
+        <div sec:authorize="hasRole('ROLE_ADMIN')" class="my-qa-center">
             <a class="btn btn-primary" href="/qa/fqa/add">FQA 등록하기</a>
         </div>
     </div>

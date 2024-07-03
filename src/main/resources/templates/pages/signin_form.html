@@ -26,6 +26,7 @@
 						<div class="form-group text-center mt-4">
 						<div th:if="${error != null}" class="alert alert-danger" th:text="${error}"><!-- 에러 메시지가 여기에 표시됩니다 --></div>
 						<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+						<div th:if="${param.authError}" class="alert alert-danger">로그인 후 이용 가능합니다!</div>
 							<button type="submit" class="btn btn-primary signin-buttons">로그인</button>
 							<button type="reset" class="btn btn-secondary signin-buttons" onclick="location.href='/api/home'">취소</button>
 						</div>
