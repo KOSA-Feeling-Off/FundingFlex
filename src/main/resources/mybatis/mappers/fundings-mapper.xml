@@ -24,8 +24,7 @@
 	<insert id="insertFundings"
 		parameterType="com.fundingflex.funding.domain.entity.Fundings">
 
-		INSERT
-<<<<<<< HEAD
+		INSERT 
 		  INTO
 	  FUNDINGS ( category_id
 			   , user_id
@@ -50,36 +49,6 @@
 			   , '이너프'
 		 	   , #{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=VARCHAR}
 		       )
-=======
-		INTO
-		FUNDINGS ( category_id
-		, user_id
-		, category_name
-		, title
-		, content
-		, status_flag
-		, goal_amount
-		, created_at
-		, created_by
-		, is_deleted
-		)
-		VALUES (
-		#{categoryId}
-		, #{userId}
-		, #{categoryName}
-		, #{title}
-		, #{content}
-		, #{statusFlag,
-		typeHandler=com.fundingflex.common.util.EnumTypeHandler,
-		jdbcType=NUMERIC}
-		, #{goalAmount}
-		, CURRENT_TIMESTAMP
-		, '이너프'
-		,
-		#{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler,
-		jdbcType=VARCHAR}
-		)
->>>>>>> origin/feat_kmj_01
 
 		<!-- 방금 삽입된 row의 ID 가져오기 -->
 		<selectKey keyProperty="fundingsId" resultType="long" order="AFTER">
@@ -199,7 +168,6 @@
 		SELECT * FROM fundings WHERE fundings_id = #{fundingsId}
 	</select>
 
-<<<<<<< HEAD
 
 	<!-- 펀딩 자금조달 insert -->
 	<insert id="insertFundingConditions">
@@ -211,14 +179,6 @@
 	<!-- 펀딩 자금조달 조회 (fundingsId 기준) -->
 	<select id="findFundingConditionsByFundingsId" parameterType="long" resultType="com.fundingflex.funding.domain.entity.FundingConditions">
 		SELECT * FROM funding_conditions WHERE fundings_id = #{fundingsId}
-=======
-	<!-- 펀딩 상태 조회 -->
-	<select id="findFundingConditionsByFundingsId"
-		parameterType="long"
-		resultType="com.fundingflex.funding.domain.entity.FundingConditions">
-		SELECT * FROM funding_conditions WHERE fundings_id =
-		#{fundingsId}
->>>>>>> origin/feat_kmj_01
 	</select>
 
 	<!-- 펀딩 참여 조회 -->
@@ -227,11 +187,7 @@
 		SELECT * FROM funding_joins WHERE fundings_id = #{fundingsId}
 	</select>
 
-<<<<<<< HEAD
 	<!-- 펀딩 자금조달 업데이트 -->
-=======
-	<!-- 펀딩 상태 업데이트 -->
->>>>>>> origin/feat_kmj_01
 	<update id="updateFundingConditions">
 		UPDATE funding_conditions
 		   SET collected_amount = #{collectedAmount}
