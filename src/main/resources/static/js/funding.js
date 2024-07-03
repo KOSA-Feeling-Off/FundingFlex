@@ -21,6 +21,16 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
+    // 좋아요 버튼 클릭 이벤트
+    const heartButton = document.getElementById('heartButton');
+    if (heartButton) {
+        // 좋아요 버튼 클릭 이벤트
+        heartButton.addEventListener('click', () => {
+            heartButton.classList.toggle('clicked');
+        });
+    }
+
+
 	  // 금액 천단위 표시
     function formatNumberWithCommas(number) {
         return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -93,16 +103,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const collectedAmountValue = parseInt(collectedAmountElement.textContent.replace(/[^0-9]/g, ''));
         animateValue(collectedAmountElement, 0, collectedAmountValue, 1000, ' 원 달성');
     }
-	
-	
-	  // 좋아요 버튼 클릭 이벤트
-    const heartButton = document.getElementById('heartButton');
-    if (heartButton) {
-        heartButton.addEventListener('click', () => {
-            heartButton.classList.toggle('clicked');
-        });
-    }
-
 });
 
 
