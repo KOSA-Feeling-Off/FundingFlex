@@ -54,41 +54,41 @@ public class FundingsService {
 	public FundingIdsDTO saveFundings(FundingsForm fundingsForm, MultipartFile[] images, Long userId) {
 
 		try {
-            // 유저 정보 가져오기
-
-
-
-            // 폴더 경로 생성
-            imageService.createDirectoriesIfNotExists();
-
-            // 카테고리 정보
-            Categories categoriesDto =
-            		categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
-
-
-            // Fundings 객체 저장
-            Fundings newFundings =
-            		Fundings.of(fundingsForm, userId, categoriesDto.getCategoryName());
-            fundingsMapper.insertFundings(newFundings);
-
-            // 저장 후 id 받아옴
-            Long fundingsId = newFundings.getFundingsId();
-
-
-            // 이미지 처리 및 Images 객체 생성
-            List<Images> imageList = imageService.processImages(images, fundingsId);
-
-
-            // Images 객체 저장
-            imageService.saveImages(imageList);
-
-
-            return FundingIdsDTO.of(categoriesDto.getCategoryId(), fundingsId);
-
-        } catch (Exception ex) {
-        	log.error("=>>>>>> 펀딩 저장 실패: {}" , ex.getMessage());
-            throw new RuntimeException("펀딩 저장 실패: " + ex.getMessage(), ex);
-        }
+	            // 유저 정보 가져오기
+	
+	
+	
+	            // 폴더 경로 생성
+	            imageService.createDirectoriesIfNotExists();
+	
+	            // 카테고리 정보
+	            Categories categoriesDto =
+	            		categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
+	
+	
+	            // Fundings 객체 저장
+	            Fundings newFundings =
+	            		Fundings.of(fundingsForm, userId, categoriesDto.getCategoryName());
+	            fundingsMapper.insertFundings(newFundings);
+	
+	            // 저장 후 id 받아옴
+	            Long fundingsId = newFundings.getFundingsId();
+	
+	
+	            // 이미지 처리 및 Images 객체 생성
+	            List<Images> imageList = imageService.processImages(images, fundingsId);
+	
+	
+	            // Images 객체 저장
+	            imageService.saveImages(imageList);
+	
+	
+	            return FundingIdsDTO.of(categoriesDto.getCategoryId(), fundingsId);
+	
+	        } catch (Exception ex) {
+	        	log.error("=>>>>>> 펀딩 저장 실패: {}" , ex.getMessage());
+	            throw new RuntimeException("펀딩 저장 실패: " + ex.getMessage(), ex);
+	        }
 	}
 
 
@@ -204,23 +204,6 @@ public class FundingsService {
         }).collect(Collectors.toList());
     }
 
-    // 좋아요 기능
-	/*
-	 * public boolean likeFunding(Long fundingsId) { // 예시 사용자 ID (실제 구현에서는 세션이나 인증
-	 * 정보를 통해 사용자 ID를 가져와야 함) String userId = "exampleUserId"; String
-	 * userFundingsKey = userId + "-" + fundingsId;
-	 * 
-	 * if (userLikes.contains(userFundingsKey)) { return false; // 이미 좋아요를 누른 경우 }
-	 * 
-	 * userLikes.add(userFundingsKey);
-	 * 
-	 * Fundings fundings = fundingsMapper.findById(fundingsId) .orElseThrow(() ->
-	 * new IllegalArgumentException("Invalid fundingsId"));
-	 * 
-	 * fundings.setLikeCount(fundings.getLikeCount() + 1);
-	 * fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount()); return
-	 * true; }
-	 */
 
     // 카테고리별 목록
     public List<FundingsDTO> getFundingsByCategory(Long categoryId, String sortBy) {
@@ -299,19 +282,4 @@ public class FundingsService {
             return dto;
         }).collect(Collectors.toList());
     }
-
-
-    
-    // 좋아요 기능 수정
-	/*
-	 * public boolean toggleLikeFunding(Long fundingsId, String userId) { String
-	 * userFundingsKey = userId + "-" + fundingsId;
-	 * 
-	 * if (userLikes.contains(userFundingsKey)) { // 이미 좋아요를 누른 경우, 좋아요 취소
-	 * userLikes.remove(userFundingsKey);
-	 * fundingsMapper.decrementLikeCount(fundingsId); return false; // 좋아요 취소됨 }
-	 * else { // 좋아요 추가 userLikes.add(userFundingsKey);
-	 * fundingsMapper.incrementLikeCount(fundingsId); return true; // 좋아요 추가됨 } }
-	 */
-
 }
