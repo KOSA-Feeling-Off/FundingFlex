@@ -128,27 +128,7 @@ public class FundingsController {
     }
 
 
-    /*
     // 펀딩 목록 ajax
-    @GetMapping("/list")
-    @ResponseBody
-    public ResponseEntity<List<FundingsDTO>> getAllFundings(@RequestParam(name = "sortBy", defaultValue = "createdDate") String sortBy) {
-        try {
-            List<FundingsDTO> fundingsList;
-            if ("inProgress".equals(sortBy)) {
-                fundingsList = fundingsService.getInProgressFundings(sortBy);
-            } else {
-                fundingsList = fundingsService.getAllFundings(sortBy);
-            }
-            return ResponseEntity.ok(fundingsList);
-        } catch (Exception e) {
-            // 로그 출력
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-    */
-    
     @GetMapping("/list")
     @ResponseBody
     public ResponseEntity<List<FundingsDTO>> getAllFundings(
@@ -168,18 +148,4 @@ public class FundingsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-    
-    // 좋아요 처리
-	/*
-	 * @PostMapping("/like/{fundingsId}")
-	 * 
-	 * @ResponseBody public ResponseEntity<?>
-	 * toggleLikeFunding(@PathVariable("fundingsId") Long fundingsId) { // 예시 사용자 ID
-	 * (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함) String userId = "exampleUserId";
-	 * boolean liked = fundingsService.toggleLikeFunding(fundingsId, userId); return
-	 * ResponseEntity.ok(Map.of("liked", liked)); }
-	 */
-    
-    
 }
