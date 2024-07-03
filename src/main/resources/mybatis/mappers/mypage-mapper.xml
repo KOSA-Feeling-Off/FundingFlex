@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fundingflex.mypage.mapper.MypageMapper">
+
+    <resultMap id="FundingsDTOResult" type="com.fundingflex.funding.domain.dto.FundingsDTO">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="details" property="details" />
+        <result column="progress" property="progress" />
+        <result column="image_url" property="imageUrl" />
+    </resultMap>
+
+    <select id="findByEmail" resultType="com.fundingflex.member.domain.entity.Members">
+        SELECT * FROM members WHERE email = #{email}
+    </select>
+
+    <select id="findParticipatedFundingsByUserId" resultType="com.fundingflex.funding.domain.dto.FundingsDTO">
+        SELECT * FROM fundings 
+        WHERE funding_id IN 
+        (SELECT funding_id FROM funding_joins WHERE user_id = #{userId})
+    </select>
+
+    <select id="findCreatedFundingsByUserId" resultMap="FundingsDTOResult">
+        SELECT * FROM funding_items WHERE creator_id = #{userId}
+    </select>
+
+    <select id="findLikedFundingsByUserId" resultMap="FundingsDTOResult">
+        SELECT * FROM funding_items WHERE funding_id IN (SELECT funding_id FROM likes WHERE user_id = #{userId})
+    </select>
+</mapper>

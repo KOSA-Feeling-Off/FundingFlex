@@ -30,19 +30,28 @@ public class FundingJoin {
 	
 	private int goalAmount;
 	
+<<<<<<< HEAD
 	
 	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed, char amountUndisclosed, char deletedFlg) {
+=======
+	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed, char amountUndisclosed, String createdBy) {
+>>>>>>> origin/feat_kmj_01
         return FundingJoin.builder()
                 .fundingsId(fundingsId)
                 .userId(userId)
                 .fundingAmount(fundingAmount)
                 .nameUndisclosed(nameUndisclosed)
                 .amountUndisclosed(amountUndisclosed)
+<<<<<<< HEAD
                 .createdBy("이너프")
                 .isDeleted(deletedFlg)
+=======
+                .createdAt(LocalDateTime.now())
+                .createdBy(createdBy)
+                .isDeleted('N')
+>>>>>>> origin/feat_kmj_01
                 .build();
     }
 
-   
 }
 

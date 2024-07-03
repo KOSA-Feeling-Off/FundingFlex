@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.javassist.NotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FundingsService {
 
+	private static final Logger logger = LoggerFactory.getLogger(FundingsService.class);
+	
 	private final FundingsMapper fundingsMapper;
 	private final ImageService imageService;
 
@@ -43,14 +47,14 @@ public class FundingsService {
 
 	// 사용자별 좋아요 상태를 저장하기 위한 Set (실제 서비스에서는 데이터베이스를 사용)
 	private final Set<String> userLikes = new HashSet<>();
-
-
+	
 
 	// 저장
 	@Transactional
 	public FundingIdsDTO saveFundings(FundingsForm fundingsForm, MultipartFile[] images, Long userId) {
 
 		try {
+<<<<<<< HEAD
             // 유저 정보 가져오기
 
 
@@ -90,6 +94,43 @@ public class FundingsService {
         	log.error("=>>>>>> 펀딩 저장 실패: {}" , ex.getMessage());
             throw new RuntimeException("펀딩 저장 실패: " + ex.getMessage(), ex);
         }
+=======
+	            // 유저 정보 가져오기
+	
+	
+	
+	            // 폴더 경로 생성
+	            imageService.createDirectoriesIfNotExists();
+	
+	            // 카테고리 정보
+	            Categories categoriesDto =
+	            		categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
+	
+	
+	            // Fundings 객체 저장
+	            Fundings newFundings =
+	            		Fundings.of(fundingsForm, userId, categoriesDto.getCategoryName());
+	            fundingsMapper.insertFundings(newFundings);
+	
+	            // 저장 후 id 받아옴
+	            Long fundingsId = newFundings.getFundingsId();
+	
+	
+	            // 이미지 처리 및 Images 객체 생성
+	            List<Images> imageList = imageService.processImages(images, fundingsId);
+	
+	
+	            // Images 객체 저장
+	            imageService.saveImages(imageList);
+	
+	
+	            return FundingIdsDTO.of(categoriesDto.getCategoryId(), fundingsId);
+	
+	        } catch (Exception ex) {
+	        	log.error("=>>>>>> 펀딩 저장 실패: {}" , ex.getMessage());
+	            throw new RuntimeException("펀딩 저장 실패: " + ex.getMessage(), ex);
+	        }
+>>>>>>> origin/feat_kmj_01
 	}
 
 
@@ -190,8 +231,8 @@ public class FundingsService {
 
     // 펀딩 리스트 조회
     @Transactional
-    public List<FundingsDTO> getAllFundings(String sortBy) {
-        List<FundingsDTO> fundingsList = fundingsMapper.getAllFundings(sortBy);
+    public List<FundingsDTO> getAllFundings(String sortBy, Long userId) {
+        List<FundingsDTO> fundingsList = fundingsMapper.getAllFundings(sortBy, userId);
         return fundingsList.stream().map(funding -> {
             FundingsDTO dto = new FundingsDTO();
             dto.setFundingsId(funding.getFundingsId());
@@ -201,6 +242,8 @@ public class FundingsService {
             dto.setLikeCount(funding.getLikeCount());
             dto.setGoalAmount(funding.getGoalAmount());
             dto.setCategoryId(funding.getCategoryId()); // 추가
+            dto.setCategoryId(funding.getCategoryId()); // 추가
+            dto.setExistsFlag(funding.getExistsFlag()); // 좋아요 상태 설정
 
             int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
                 .mapToInt(FundingJoin::getFundingAmount).sum();
@@ -213,6 +256,7 @@ public class FundingsService {
         }).collect(Collectors.toList());
     }
 
+<<<<<<< HEAD
 
     // 좋아요 기능
     public boolean likeFunding(Long fundingsId) {
@@ -233,35 +277,15 @@ public class FundingsService {
         fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount());
         return true;
     }
+=======
+>>>>>>> origin/feat_kmj_01
 
 
     // 카테고리별 목록
     public List<FundingsDTO> getFundingsByCategory(Long categoryId, String sortBy) {
+        logger.debug("Getting fundings for category ID: {} with sort by: {}", categoryId, sortBy);
         List<FundingsDTO> fundingsList = fundingsMapper.getFundingsByCategory(categoryId, sortBy);
-        return fundingsList.stream().map(funding -> {
-            FundingsDTO dto = new FundingsDTO();
-            dto.setFundingsId(funding.getFundingsId());
-            dto.setTitle(funding.getTitle());
-            dto.setContent(funding.getContent());
-            dto.setStatusFlag(funding.getStatusFlag());
-            dto.setLikeCount(funding.getLikeCount());
-            dto.setGoalAmount(funding.getGoalAmount());
-            dto.setCategoryId(funding.getCategoryId()); // 추가
-
-            int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
-                .mapToInt(FundingJoin::getFundingAmount).sum();
-            dto.setCurrentAmount(currentAmount);
-
-            List<String> imageUrls = funding.getImageUrls();
-            dto.setImageUrls(imageUrls);
-
-            return dto;
-        }).collect(Collectors.toList());
-    }
-
-    // 진행 중인 펀딩 목록 조회
-    public List<FundingsDTO> getInProgressFundings(String sortBy) {
-        List<FundingsDTO> fundingsList = fundingsMapper.getInProgressFundings(sortBy);
+        logger.debug("Fundings list retrieved: {}", fundingsList);
         return fundingsList.stream().map(funding -> {
             FundingsDTO dto = new FundingsDTO();
             dto.setFundingsId(funding.getFundingsId());
@@ -283,4 +307,55 @@ public class FundingsService {
         }).collect(Collectors.toList());
     }
 
+   
+    // 진행 중인 펀딩 목록 조회 (카테고리별)
+    public List<FundingsDTO> getInProgressFundingsByCategory(Long categoryId) {
+        List<FundingsDTO> fundingsList = fundingsMapper.getInProgressFundingsByCategory(categoryId);
+        return mapToFundingsDTO(fundingsList);
+    }
+    
+    // 공통 메서드로 DTO 매핑
+    private List<FundingsDTO> mapToFundingsDTO(List<FundingsDTO> fundingsList) {
+        return fundingsList.stream().map(funding -> {
+            FundingsDTO dto = new FundingsDTO();
+            dto.setFundingsId(funding.getFundingsId());
+            dto.setTitle(funding.getTitle());
+            dto.setContent(funding.getContent());
+            dto.setStatusFlag(funding.getStatusFlag());
+            dto.setLikeCount(funding.getLikeCount());
+            dto.setGoalAmount(funding.getGoalAmount());
+            dto.setCategoryId(funding.getCategoryId());
+            int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
+                .mapToInt(FundingJoin::getFundingAmount).sum();
+            dto.setCurrentAmount(currentAmount);
+            List<String> imageUrls = funding.getImageUrls();
+            dto.setImageUrls(imageUrls);
+            return dto;
+        }).collect(Collectors.toList());
+    }
+    
+    
+    // 진행 중인 펀딩 목록 조회
+    public List<FundingsDTO> getInProgressFundings(String sortBy, Long userId) {
+        List<FundingsDTO> fundingsList = fundingsMapper.getInProgressFundings(sortBy, userId);
+        return fundingsList.stream().map(funding -> {
+            FundingsDTO dto = new FundingsDTO();
+            dto.setFundingsId(funding.getFundingsId());
+            dto.setTitle(funding.getTitle());
+            dto.setContent(funding.getContent());
+            dto.setStatusFlag(funding.getStatusFlag());
+            dto.setLikeCount(funding.getLikeCount());
+            dto.setGoalAmount(funding.getGoalAmount());
+            dto.setCategoryId(funding.getCategoryId());
+
+            int currentAmount = fundingsMapper.findFundingJoinsByFundingsId(funding.getFundingsId()).stream()
+                .mapToInt(FundingJoin::getFundingAmount).sum();
+            dto.setCurrentAmount(currentAmount);
+
+            List<String> imageUrls = funding.getImageUrls();
+            dto.setImageUrls(imageUrls);
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
 }
