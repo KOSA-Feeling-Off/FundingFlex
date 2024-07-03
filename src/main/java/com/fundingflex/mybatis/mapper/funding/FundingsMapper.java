@@ -103,7 +103,8 @@ public interface FundingsMapper {
 
     
     // 펀딩 StatusFlag 업데이트 
-	void updateFundinsStatusFlag(Fundings fundings);
+	void updateFundinsStatusFlag(@Param("fundings") Fundings fundings,
+        @Param("nickName") String nickName);
 
 
     // 좋아요 수 증가

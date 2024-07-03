@@ -15,7 +15,7 @@
                  <!-- 카테고리 -->
                  <div class="form-group mt-4">
                      <label for="category">카테고리</label>
-                     <select id="category" th:field="*{categoryId}" class="form-control" onchange="updateCategoryName()">
+                     <select id="category" th:field="*{categoryId}" class="form-control" >
                          <option value="" selected>카테고리를 선택하세요</option>
                          <option th:each="category : ${categoryList}"
                              th:value="${category.categoryId}"
@@ -38,7 +38,7 @@
                  </div>
                  
                  <div class="form-group mt-4">
-                     <label for="goalAmount">목표 금액 설정</label>
+                     <label for="goalAmount">목표 금액 설정 (5000원 단위)</label>
                      <input type="number" id="goalAmount" th:field="*{goalAmount}" class="form-control" min="0" step="5000" />
                      <div id="amountError" class="text-danger mt-1" style="display: none;">목표 금액을 입력해주세요</div>
                  </div>
@@ -68,6 +68,7 @@
                              <img src="#">
                          </div>
                      </div>
+                     <div id="imageError" class="text-danger mt-1" style="display: none;">이미지를 넣어주세요</div>
                  </div>
                  
                  <div class="form-group text-center mt-4">

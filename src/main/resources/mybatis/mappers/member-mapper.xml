@@ -23,6 +23,12 @@
 		resultType="com.fundingflex.member.domain.entity.Members">
 		SELECT * FROM members WHERE email = #{email}
 	</select>
+	
+	<select id="findById"
+		resultType="com.fundingflex.member.domain.entity.Members">
+		SELECT * FROM members WHERE user_id = #{userId}
+	</select>
+	
 
 	<select id="existsByNickname" resultType="boolean">
 		SELECT CASE WHEN

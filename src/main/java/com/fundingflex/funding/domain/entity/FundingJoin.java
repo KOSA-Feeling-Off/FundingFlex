@@ -33,21 +33,21 @@ public class FundingJoin {
 	private char isDeleted;				// 삭제 여부
 	
 	private int goalAmount;
-	
 
-	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed, char amountUndisclosed, String createdBy) {
 
-        return FundingJoin.builder()
-                .fundingsId(fundingsId)
-                .userId(userId)
-                .fundingAmount(fundingAmount)
-                .nameUndisclosed(nameUndisclosed)
-                .amountUndisclosed(amountUndisclosed)
-                .createdAt(LocalDateTime.now())
-                .createdBy(createdBy)
-                .isDeleted('N')
-                .build();
-    }
+	public static FundingJoin of(Long fundingsId, Long userId, int fundingAmount, char nameUndisclosed,
+								 char amountUndisclosed, String createdBy, char deletedFlg) {
+
+		return FundingJoin.builder()
+				.fundingsId(fundingsId)
+				.userId(userId)
+				.fundingAmount(fundingAmount)
+				.nameUndisclosed(nameUndisclosed)
+				.amountUndisclosed(amountUndisclosed)
+				.createdBy(createdBy)
+				.isDeleted(deletedFlg)
+				.build();
+	}
 
 }
 

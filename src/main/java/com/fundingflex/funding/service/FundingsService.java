@@ -25,8 +25,10 @@ import com.fundingflex.funding.domain.entity.FundingJoin;
 import com.fundingflex.funding.domain.entity.Fundings;
 import com.fundingflex.funding.domain.entity.Images;
 import com.fundingflex.funding.domain.form.FundingsForm;
+import com.fundingflex.member.domain.entity.Members;
 import com.fundingflex.mybatis.mapper.category.CategoriesMapper;
 import com.fundingflex.mybatis.mapper.funding.FundingsMapper;
+import com.fundingflex.mybatis.mapper.member.MembersMapper;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +46,8 @@ public class FundingsService {
 
 	private final CategoriesService categoriesService;
 	private final CategoriesMapper categoriesMapper;
+	private final MembersMapper membersMapper;
+	
 
 	// 사용자별 좋아요 상태를 저장하기 위한 Set (실제 서비스에서는 데이터베이스를 사용)
 	private final Set<String> userLikes = new HashSet<>();
@@ -55,8 +59,7 @@ public class FundingsService {
 
 		try {
             // 유저 정보 가져오기
-
-
+			Members member = membersMapper.findById(userId);
 
             // 폴더 경로 생성
             imageService.createDirectoriesIfNotExists();
@@ -65,10 +68,9 @@ public class FundingsService {
             Categories categoriesDto =
             		categoriesService.selectCategoriesById(fundingsForm.getCategoryId());
 
-
             // Fundings 객체 저장
             Fundings newFundings =
-            		Fundings.of(fundingsForm, userId, categoriesDto.getCategoryName());
+            		Fundings.of(fundingsForm, userId, categoriesDto.getCategoryName(), member.getNickname());
             fundingsMapper.insertFundings(newFundings);
 
             // 저장 후 id 받아옴

@@ -1,9 +1,18 @@
 package com.fundingflex.funding.controller;
 
+import com.fundingflex.funding.domain.dto.FundingRequestDTO;
+import com.fundingflex.funding.domain.dto.FundingResponseDTO;
+import com.fundingflex.funding.domain.entity.FundingConditions;
+import com.fundingflex.funding.service.FundingJoinService;
+import com.fundingflex.member.domain.dto.CustomUserDetails;
 import java.util.Optional;
-
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,27 +22,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fundingflex.funding.domain.dto.FundingRequestDTO;
-import com.fundingflex.funding.domain.dto.FundingResponseDTO;
-import com.fundingflex.funding.domain.entity.FundingConditions;
-import com.fundingflex.funding.service.FundingJoinService;
-import com.fundingflex.funding.service.FundingsService;
-import com.fundingflex.mybatis.mapper.funding.FundingsMapper;
-
-import lombok.RequiredArgsConstructor;
-
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/api/fundings")
 public class FundingJoinController {
 
+	private static final Logger log = LoggerFactory.getLogger(FundingJoinController.class);
 	private final FundingJoinService fundingJoinService;
-	private final FundingsService fundingsService;
 
 	
+	
 	// 펀딩 참여 form 호출
-	@GetMapping("/fundingJoin")
-	public String getFundingJoinPage() {
+	@GetMapping("/{fundings-id}/fundingJoin")
+	public String getFundingJoinPage(@PathVariable("fundings-id") Long fundingsId,
+			Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		
+		if(userDetails == null) {
+    		return "redirect:/api/login";
+    	}
+		
+		model.addAttribute("fundingsId", fundingsId);
+		model.addAttribute("userId", userDetails.getUserId());
+		
         return "funding/fundingJoin";
     }
 	
@@ -41,17 +51,24 @@ public class FundingJoinController {
 	// 펀딩 참여하기
 	@PostMapping("/join")
 	@ResponseBody
-	public ResponseEntity<Object> joinFunding(@RequestBody FundingRequestDTO requestDto) {
+	public ResponseEntity<Object> joinFunding(@RequestBody FundingRequestDTO requestDto,
+			@AuthenticationPrincipal CustomUserDetails userDetails) {
 		try {
 			
+			if(userDetails == null) {
+				return ResponseEntity.status(401).body("");
+	    	}
+			
 			FundingResponseDTO responseDto = fundingJoinService.joinFunding(requestDto);
-			// /api/pay/{joinid}
+		
 			return ResponseEntity.ok(responseDto);
 			
 		} catch (IllegalArgumentException e) {
+			log.error(">>>>>>>>>>>> IllegalArgumentException: {}", e.getMessage());
 			return ResponseEntity.status(400).body(e.getMessage());
 			
 		} catch (Exception e) {
+			log.error(">>>>>>>>>>>> Exception: {}", e.getMessage());
 			return ResponseEntity.status(500).body("Failed to join funding: " + e.getMessage());
 		}
 	}
