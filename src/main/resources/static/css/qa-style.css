@@ -45,6 +45,13 @@
 	padding-top: 0px;
 }
 
+.my-qa-w-size{
+	width: 90% !important;
+}
+.my-qa-w-size2{
+	margin-left: 15px !important;
+}
+
 /*nav쪽*/
 .my-qa-top-link{
 	text-align: center;
@@ -310,4 +317,77 @@ tr:nth-child(even) {
 #waiting-message {
     color: red;
     display: none;
+}
+
+/*pay-select-type*/
+.my-pay-select-type-body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.my-pay-select-type-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.my-pay-select-type-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.my-pay-select-type-button {
+    display: flex;
+    flex-direction: column; /* Arrange children in a column */
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 48%; /* Adjust width to fit 2x2 layout */
+    height: 100px; /* Increase height to allow space for image and text */
+    box-sizing: border-box; /* Include padding and border in the width */
+    text-align: center; /* Center-align text */
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.my-pay-select-type-button img {
+    max-width: 100% !important; /* Make sure the image doesn't exceed the button's width */
+    max-height: 80% !important; /* Make sure the image doesn't exceed the button's height */
+    object-fit: contain !important; /* Maintain aspect ratio and fit within the container */
+    width: auto !important; /* Allow the image to scale properly */
+    height: auto !important; /* Allow the image to scale properly */
+    margin-bottom: 5px !important; /* Space between image and text */
+}
+
+.my-pay-select-type-button span {
+    font-size: 14px !important; /* Adjust font size as needed */
+    color: #333 !important; /* Adjust text color as needed */
+    display: block; /* Ensure span takes up the full width available */
+}
+.my-pay-select-type-button:hover {
+    background-color: #f0f0f0;
+}
+
+.my-pay-select-type-button img {
+    width: 40px;
+    height: 40px;
+}
+
+#my-pay-select-type-form-container {
+    margin-top: 20px;
 }

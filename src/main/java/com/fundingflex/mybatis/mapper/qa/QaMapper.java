@@ -22,4 +22,6 @@ public interface QaMapper {
     void update(QaDTO qaDTO);
 
     void deleteById(@Param("id") Long id);
+
+	List<QaDTO> findByAllQuestions(@Param("startRow") int startRow, @Param("endRow") int endRow);
 }

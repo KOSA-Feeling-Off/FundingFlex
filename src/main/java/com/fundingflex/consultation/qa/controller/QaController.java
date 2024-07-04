@@ -3,12 +3,14 @@ package com.fundingflex.consultation.qa.controller;
 import com.fundingflex.consultation.qa.domain.dto.QaDTO;
 import com.fundingflex.consultation.qa.domain.form.QaForm;
 import com.fundingflex.consultation.qa.service.QaService;
+import com.fundingflex.member.domain.dto.CustomUserDetails;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,15 +31,23 @@ public class QaController {
 
     @GetMapping("/myquestions")
     public String getUserQuestions(@RequestParam(value = "page", defaultValue = "0") int page,
-                                   Model model) {
-        Long userId = 10L; 
-        
+                                   Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        Long userId = userDetails.getUserId(); 
         
         int size = 10;
-        int totalElements = qaService.countUserQuestions(userId);
+    	int totalElements;
+    	List<QaDTO> questions;
+        
+        String Role = userDetails.getUserRole();
+        if(Role.equals("ADMIN")) {
+        	questions = qaService.getUQuestions(page, size);
+        	totalElements = questions.size();
+        }
+        else {        	
+        	totalElements= qaService.countUserQuestions(userId);
+        	questions = qaService.getUserQuestions(userId, page, size);
+        }
         int totalPages = (totalElements + size - 1) / size;
-
-        List<QaDTO> questions = qaService.getUserQuestions(userId, page, size);
 
         model.addAttribute("questionsPage", questions);
         model.addAttribute("currentPage", page);
@@ -61,11 +71,11 @@ public class QaController {
 
     @PostMapping("/ask")
     public String askSubmitQuestion(@Valid QaForm qaForm, BindingResult bindingResult,
-                                    @RequestParam("images") MultipartFile[] images) {
+                                    @RequestParam("images") MultipartFile[] images, @AuthenticationPrincipal CustomUserDetails userDetails) {
         if (bindingResult.hasErrors()) {
             return "qa/ask";
         }
-        qaService.qaCreate(qaForm.getTitle(), qaForm.getContent(), images);
+        qaService.qaCreate(userDetails.getUserId(), qaForm.getTitle(), qaForm.getContent(), images);
         return "redirect:/qa/myquestions";
     }
 

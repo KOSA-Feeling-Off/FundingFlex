@@ -8,4 +8,12 @@ public class Enums {
 	public enum Delete{
 		Y, N;
 	}
+	
+	public enum PayType{
+		CARD, BANK, VBANK, PHONE, EASY_PAY;
+	}
+	
+	public enum EasyPayType{
+		KAKAOPAY, NAVERPAY, TOSSPAY, PAYCO;
+	}
 }

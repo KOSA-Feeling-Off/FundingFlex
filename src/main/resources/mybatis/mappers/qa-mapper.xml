@@ -33,6 +33,19 @@
     ]]> 
 </select>
 
+
+<select id="findByAllQuestions" resultMap="QaDTOResult">
+    <![CDATA[
+    SELECT * 
+    FROM (
+        SELECT p.*, ROW_NUMBER() OVER (ORDER BY p.created_at DESC) AS row_num
+        FROM CONSULTATIONS p
+        WHERE 1 = 1
+    )
+    WHERE row_num BETWEEN #{startRow} AND #{endRow}
+    ]]> 
+</select>
+
 <select id="countByMembersUserId" resultType="int">
     SELECT COUNT(*)
     FROM CONSULTATIONS

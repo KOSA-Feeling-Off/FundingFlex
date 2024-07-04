@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <meta name="payMethod" th:content="${payMethod}">
+    <meta name="easyPayProvider" th:content="${easyPayProvider}">
+    <meta name="orderName" th:content="${orderName}">
+    <meta name="totalAmount" th:content="${totalAmount}">
+    <meta name="storeId" th:content="${storeId}">
+    <meta name="channelKey" th:content="${channelKey}">
+    <meta name="joinId" th:content="${joinId}">
+    <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
+    <script src="/js/pay.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/qa-style.css">
+    
+</head>
+<body class="my-pay-select-type-body">
+        <div class="my-pay-select-type-container">
+    <h1 class="my-qa-main-title">결제 정보 확인</h1>
+        <p>주문명: <span th:text="${orderName}"></span></p>
+        <p>결제 금액: <span th:text="${totalAmount}"></span> 원</p>
+	 	<p>결제 수단: <span th:if="${easyPayProvider == 'null'}" th:text="${payMethod}"></span>
+    	<span th:unless="${easyPayProvider == 'null'}" th:text="${easyPayProvider}"></span></p>
+        <button onclick="requestPayment()">결제하기</button>
+    </div>
+</body>
+</html>
