@@ -28,7 +28,7 @@ public class QaService {
     private final Path qaImgPath = Paths.get("src/main/resources/static/images/qa");
 
     @Transactional
-    public void qaCreate(String title, String content, MultipartFile[] images) {
+    public void qaCreate(Long userId, String title, String content, MultipartFile[] images) {
 
         if (!Files.exists(qaImgPath)) {
             try {
@@ -37,8 +37,6 @@ public class QaService {
                 throw new RuntimeException("폴더 생성 실패: " + ex.getMessage());
             }
         }
-
-        Long userId = 10L;
 
         QaDTO qaDTO = new QaDTO();
         qaDTO.setTitle(title);
@@ -116,4 +114,9 @@ public class QaService {
         qaDTO.setReply(content);
         qaMapper.update(qaDTO);
     }
+
+	public List<QaDTO> getUQuestions(int page, int size) {
+		int offset = page * size;
+        return qaMapper.findByAllQuestions(offset + 1, offset + size);
+	}
 }

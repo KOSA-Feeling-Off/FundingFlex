@@ -1,4 +1,4 @@
-package com.fundingflex.member.controller;
+package com.fundingflex.mypage.controller;
 
 
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.fundingflex.funding.domain.dto.FundingsDTO;
 import com.fundingflex.member.domain.dto.CustomUserDetails;
-import com.fundingflex.member.domain.dto.MyPageDTO;
-import com.fundingflex.member.service.MyPageService;
+import com.fundingflex.mypage.domain.dto.MyPageDTO;
+import com.fundingflex.mypage.service.MyPageService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

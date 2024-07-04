@@ -13,10 +13,13 @@
     <meta name="joinId" th:content="${joinId}">
     <script src="https://cdn.portone.io/v2/browser-sdk.js"></script>
     <script src="/js/pay.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/css/qa-style.css">
+    
 </head>
-<body>
+<body class="my-pay-select-type-body">
+        <div class="my-pay-select-type-container">
     <h1 class="my-qa-main-title">결제 정보 확인</h1>
-    <div id="payment-details">
         <p>주문명: <span th:text="${orderName}"></span></p>
         <p>결제 금액: <span th:text="${totalAmount}"></span> 원</p>
 	 	<p>결제 수단: <span th:if="${easyPayProvider == 'null'}" th:text="${payMethod}"></span>

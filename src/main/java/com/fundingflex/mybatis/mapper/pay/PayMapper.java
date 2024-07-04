@@ -17,4 +17,5 @@ public interface PayMapper {
             "VALUES (#{fundingJoinId}, #{userId}, #{payAmount}, #{payUuid}, #{payTime,jdbcType=TIMESTAMP},  #{isDeleted})")
 	public void save(PayDTO payDTO);
 	public void updatePaymentsIsDeleted(Long fundingJoinsId);
+	public void updateFundingJoinsIsDeleted(Long fundingJoinsId);
 }

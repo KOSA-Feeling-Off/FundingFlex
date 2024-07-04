@@ -1,12 +1,12 @@
-package com.fundingflex.member.service;
+package com.fundingflex.mypage.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.fundingflex.funding.domain.dto.FundingsDTO;
-import com.fundingflex.member.domain.dto.MyPageDTO;
 import com.fundingflex.mybatis.mapper.member.MyPageMapper;
+import com.fundingflex.mypage.domain.dto.MyPageDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

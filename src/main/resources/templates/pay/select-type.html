@@ -5,34 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Selection</title>
     <link rel="stylesheet" href="styles.css">
+    
+    <script>
+		function resizeWindow(width, height) {
+   	 	window.resizeTo(width, height);
+		}
+	</script>
+    
 </head>
 <body class="my-pay-select-type-body">
     <div class="my-pay-select-type-container">
         <h1 class="my-qa-main-title">간편 방식 선택</h1>
         <div class="my-pay-select-type-options">
-            <a class="my-pay-select-type-button" th:href="@{/pay/CARD/{joinId}(joinId=${joinId})}">
-                <img src="card_icon.png" alt="카드 결제">
+            <a class="my-pay-select-type-button" th:href="@{/pay/CARD/{joinId}(joinId=${joinId})}" onclick="resizeWindow(700, 750)">
+                <img th:src="@{/images/pay/card.png}" alt="카드 결제">
+                <span>카드 결제</span>
             </a>
-            <a class="my-pay-select-type-button" th:href="@{/pay/BANK/{joinId}(joinId=${joinId})}">
-                <img src="bank_transfer_icon.png" alt="계좌 입금">
+            <a class="my-pay-select-type-button" th:href="@{/pay/BANK/{joinId}(joinId=${joinId})}" >
+                <img th:src="@{/images/pay/tong.png}" alt="계좌 입금">
+                <span>계좌 입금</span>
             </a>
-            <a class="my-pay-select-type-button" th:href="@{/pay/VBANK/{joinId}(joinId=${joinId})}">
-                <img src="virtual_account_icon.png" alt="무통장 입금">
+            <a class="my-pay-select-type-button" th:href="@{/pay/VBANK/{joinId}(joinId=${joinId})}" >
+                <img th:src="@{/images/pay/vbank.jpeg}" alt="무통장 입금">
+                <span>무통장 입금</span>
             </a>
-            <a class="my-pay-select-type-button" th:href="@{/pay/PHONE/{joinId}(joinId=${joinId})}">
-                <img src="virtual_account_icon.png" alt="핸드폰 결제">
+            <a class="my-pay-select-type-button" th:href="@{/pay/PHONE/{joinId}(joinId=${joinId})}" >
+                <img th:src="@{/images/pay/phone.png}" alt="핸드폰 결제">
+                <span>핸드폰 결제</span>
             </a>
-            <a class="my-pay-select-type-button" th:href="@{/pay/KAKAOPAY/{joinId}(joinId=${joinId})}">
-                <img src="easy_pay_icon.png" alt="카카오페이 결제">
+            <a class="my-pay-select-type-button" th:href="@{/pay/KAKAOPAY/{joinId}(joinId=${joinId})}" onclick="resizeWindow(600, 400)">
+                <img th:src="@{/images/pay/kakao.png}" alt="카카오페이 결제">
+                <span>카카오페이 결제</span>
             </a>
             <a class="my-pay-select-type-button" th:href="@{/pay/NAVERPAY/{joinId}(joinId=${joinId})}">
-                <img src="easy_pay_icon.png" alt="네이버페이 결제">
+                <img th:src="@{/images/pay/naver.png}" alt="네이버페이 결제">
+                <span>네이버페이 결제</span>
             </a>
-            <a class="my-pay-select-type-button" th:href="@{/pay/TOSSPAY/{joinId}(joinId=${joinId})}">
-                <img src="easy_pay_icon.png" alt="토스페이 결제">
+            <a class="my-pay-select-type-button" th:href="@{/pay/TOSSPAY/{joinId}(joinId=${joinId})}" onclick="resizeWindow(600, 400)">
+                <img th:src="@{/images/pay/toss.png}" alt="토스페이 결제">
+                <span>토스페이 결제</span>
             </a>
-            <a class="my-pay-select-type-button" th:href="@{/pay/PAYCO/{joinId}(joinId=${joinId})}">
-                <img src="easy_pay_icon.png" alt="페이코 결제">
+            <a class="my-pay-select-type-button" th:href="@{/pay/PAYCO/{joinId}(joinId=${joinId})}" onclick="resizeWindow(600, 400)">
+                <img th:src="@{/images/pay/payco.png}" alt="페이코 결제">
+                <span>페이코 결제</span>
             </a>
         </div>
     </div>

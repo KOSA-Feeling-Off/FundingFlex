@@ -14,20 +14,21 @@ import jakarta.persistence.Table;
 public class Chat {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "chat_id")
     private Long chatId;
 	
-	@Column(nullable = false)
+	@Column(name = "chat_number", nullable = false)
 	private Long chatNumber;
     
-    @Column(columnDefinition = "NVARCHAR2(255)")
+    @Column(name = "content",columnDefinition = "NVARCHAR2(255)")
     private String content;
     
-    @Column(nullable = false)
+    @Column(name = "created_at",nullable = false)
     private Date createdAt;
     
-    @Column(nullable = false)
+    @Column(name = "user_id",nullable = false)
     private Long userId;
 
-    @Column(nullable = false, columnDefinition = "CHAR(1) DEFAULT 'N'")
+    @Column(name = "is_admin",nullable = false, columnDefinition = "CHAR(1) DEFAULT 'N'")
     private String isAdmin;
 }

@@ -40,9 +40,6 @@ public class PaymentService {
     @Autowired
     private PayMapper payMapper;
     
-    @Autowired
-    private FundingsMapper fundingsMapper;
-    
     public String getApiKey() {
     	return apiKey;
     }
@@ -116,6 +113,7 @@ public class PaymentService {
 		payDTO.setPayUuid(payUuid);
 		payDTO.setUserId(1L);
 		payDTO.setIsDeleted(Delete.N.name());
+		
 		payMapper.save(payDTO);
 	}
 
@@ -127,7 +125,7 @@ public class PaymentService {
 	}
 
 	public void cancelPay(PayCancelDTO payCancelDTO)  {
-		fundingsMapper.deleteFundingJoin(payCancelDTO.getFundingJoinsId());
+		payMapper.updateFundingJoinsIsDeleted(payCancelDTO.getFundingJoinsId());
 		payMapper.updatePaymentsIsDeleted(payCancelDTO.getFundingJoinsId());
 	}
 }

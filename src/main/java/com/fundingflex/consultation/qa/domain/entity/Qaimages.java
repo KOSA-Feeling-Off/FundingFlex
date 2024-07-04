@@ -19,12 +19,13 @@ import jakarta.persistence.Table;
 public class Qaimages {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "qa_image_id")
 	private Long qaImageId;
 	
-	@Column(length = 500)
+	@Column(name = "qa_image_url", length = 500)
 	private String qaImageUrl;
 	
-	@Column(nullable = false)
+	@Column(name = "seq", nullable = false)
 	private int seq;						// 이미지 순서
 	
     @ManyToOne(fetch = FetchType.LAZY)
@@ -32,5 +33,6 @@ public class Qaimages {
     private Consultations consultations;
 	
 	@CreatedDate
+    @Column(name = "created_at")
 	private Date createdAt;		// 생성일지
 }

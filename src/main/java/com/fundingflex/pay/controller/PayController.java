@@ -126,6 +126,7 @@ public class PayController {
     @ResponseBody
     public ResponseEntity<String> completePayment (@RequestBody Map<String, Object> paymentData, Model model) {
     	//String fundingName = (String) paymentData.get("orderName");
+    	System.out.println("강훈 :" + paymentData);
     	Long amount = Long.parseLong( (String) paymentData.get("totalAmount"));
     	Long joinId = Long.parseLong( (String) paymentData.get("joinId"));
     	String payUuid = (String) paymentData.get("paymentId");
@@ -148,15 +149,17 @@ public class PayController {
 	}
     
     @GetMapping("/cancel/{joinid}")
-    public void cancelPay(@PathVariable("joinid") Long joinId) {
+    public String cancelPay(@PathVariable("joinid") Long joinId) {
 		paymentService.cancelPay(paymentService.createPayCancelDTO(joinId));
+		return "pay/cancel";
     }
-    
-    @GetMapping("/edit/{joinid}")
-    public String editPay(@PathVariable("joinid") Long joinId) {
-    	paymentService.cancelPay(paymentService.createPayCancelDTO(joinId));
-    	return "pay/ready/" + joinId;
-    }
+
+//    @GetMapping("/edit/{joinid}")
+//    public String editPay(@PathVariable("joinid") Long joinId) {
+//    	paymentService.cancelPay(paymentService.createPayCancelDTO(joinId));
+//    	
+//    	return "pay/ready/" + joinId;
+//    }
     
     
 //카카오 페이 결제    

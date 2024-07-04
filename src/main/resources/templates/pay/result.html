@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Result</title>
-    <script>
+   <script>
         let countdown = 3;
 
         function updateCountdown() {
@@ -27,9 +27,12 @@
         };
 
         window.onunload = function() {
-            // 창이 닫힐 때 부모 창을 새로고침
+            // 창이 닫힐 때 부모 창을 뒤로 가기 후 새로고침
             if (window.opener != null && !window.opener.closed) {
-                window.opener.location.reload();
+                window.opener.history.back(); // 부모 창을 뒤로 가기
+                setTimeout(function() {
+                    window.opener.location.reload(); // 뒤로 간 후 새로고침
+                }, 100); // 약간의 지연을 준 후 새로고침
             }
         };
     </script>

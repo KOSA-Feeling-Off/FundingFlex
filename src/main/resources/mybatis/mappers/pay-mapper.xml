@@ -25,5 +25,11 @@
         SET is_deleted = 'Y'
         WHERE funding_join_id = #{fundingJoinId}
     </update>
+    
+    <update id="updateFundingJoinsIsDeleted" parameterType="Long">
+        UPDATE funding_joins
+        SET is_deleted = 'Y'
+        WHERE funding_join_id = #{fundingJoinId}
+    </update>
 
 </mapper>
