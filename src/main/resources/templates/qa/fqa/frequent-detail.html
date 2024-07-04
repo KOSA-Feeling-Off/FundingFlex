@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{common/layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>자주 문의한 내역</title>
+    <link rel="stylesheet" href="/css/qa-style.css">
+    
+</head>
+<body>
+<div layout:fragment="content" class="content">
+<div class="container-body">
+        <div class="text-body">
+        	<div class="form-make-body col-md-8">
+    <h2 class="text-center my-4">FQA 상세 내역</h2>
+    <nav class="my-qa-top-link">
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <a href="/qa/myquestions">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    
+    <div id="my-qa-questions-detail-content">
+        <div class="question-de-header">
+            <div class="my-qa-de-title" th:text="${fqa.title}">질문 제목</div>
+            <div class="meta">
+				<div class="my-qa-left-text">
+                    <strong>등록일:</strong>
+                    <span th:text="${#dates.format(fqa.createdAt, 'yyyy-MM-dd')}">2024-06-24</span>
+                </div>
+            </div>
+        </div>
+        <div class="question-content">
+            <p th:text="${fqa.content}">질문 내용</p>
+        </div>
+        <div class="question-reply" th:classappend="${1 == 1 ? 'visible' : ''}">
+            <strong>답변:</strong>
+            <p th:text="${fqa.reply}">질문 답변</p>
+        </div>
+        <div class="back-link">
+             <a th:href="@{/qa/fqa}">목록으로 돌아가기</a>
+        </div>
+    </div>
+</div></div></div></div></body></html>

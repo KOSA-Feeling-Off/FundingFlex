@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+ 		xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="UTF-8">
+  	<meta name="referrer" content="no-referrer-when-downgrade" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/funding-style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/elegant-icons.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/mainpage.css}">
+
+  	<link rel="stylesheet" href="/css/qa-style.css">
+  
+    <title>FundingFlex</title>
+</head>
+<body>
+    <header th:replace="~{@{common/fragments/header} :: headerFragment}"></header>
+    <!-- 템플릿 안에 삽입될 내용 시작 -->
+    <th:block layout:fragment="content"></th:block>
+    <!-- 템플릿 안에 삽입될 내용 끝 -->
+
+    <!-- footer -->
+    <footer th:replace="~{@{common/fragments/footer} :: footerFragment}"></footer>
+
+    <!-- JavaScript files -->
+    <script type="text/javascript" th:src="@{/js/Sortable.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/Swap.js}"></script>
+    <script type="text/javascript" th:src="@{/js/funding.js}"></script>
+</body>
+</html>

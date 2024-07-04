@@ -1,0 +1,393 @@
+/* 공통쓰 */
+
+.my-qa-html, .my-qa-body {
+	overflow: hidden;
+	height: 100%;
+	margin: 0;
+}
+
+#my-qa-content {
+	width: 100%;
+	margin: 0 auto;
+}
+
+.my-qa-main-title{
+	text-align: center;
+	font-weight: bold;
+}
+
+.my-qa-center{
+	text-align: center;
+}
+
+.my-qa-margin-top{
+	margin-top: 20px;
+}
+
+.my-qa-margin-bottom{
+	margin-top: 20px; 
+	padding-bottom: 10px;
+}
+
+.my-qa-no-margin-top{
+	margin-top: 0px; 
+}
+
+.my-qa-no-margin-bottom{
+	margin-bottom: 0px;
+}
+
+.my-qa-no-padding-bottom{
+	padding-bottom: 0px;
+}
+
+.my-qa-no-padding-top{
+	padding-top: 0px;
+}
+
+.my-qa-w-size{
+	width: 90% !important;
+}
+.my-qa-w-size2{
+	margin-left: 15px !important;
+}
+
+/*nav쪽*/
+.my-qa-top-link{
+	text-align: center;
+	margin: 30px 0 30px 0;
+}
+
+.my-qa-top-link a {
+	margin: 0 15px;
+	text-decoration: none;
+	color: #000;
+}
+
+.my-qa-top-link a:hover {
+    color: #007ef0; /* 호버 시 색 변경 예시 */
+}
+
+.my-qa-select-top-tap {
+    font-size: 1.2em; /* 글씨 크기를 좀 더 크게 설정 */
+    font-weight: bold; /* 글씨를 진하게 설정 */
+     color:black;
+}
+
+.my-qa-select-top-tap:hover {
+    color: black !important; /* 호버 시에도 원래 색상을 유지 */
+}
+
+.number-column {
+	background-color: #f2f2f2;
+	width: 12.5%;
+}
+
+.title-column {
+	background-color: #f2f2f2;
+	width: 52.5%;
+}
+
+.date-column {
+	background-color: #f2f2f2;
+	width: 17.5%;
+}
+
+.status-column {
+	background-color: #f2f2f2;
+	width: 17.5%;
+}
+
+
+
+/* myquestions.html css */
+
+.my-qa-pagination {
+	text-align: center;
+}
+
+.pagination a {
+	margin: 0 5px;
+	text-decoration: none;
+	color: #000;
+}
+
+.my-qa-table{
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+.my-qa-thead:nth-child(even),
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.my-qa-thtd{
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+
+/* questions-detail.html css */
+#my-qa-questions-detail-content{
+	background-color: rgb(249, 249, 249);
+}
+
+.question-de-header {
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+}
+
+.my-qa-de-title {
+	font-size: 2.5em;
+	font-weight: bold;
+	margin: 20px 0 15px 20px;
+	padding-top: 15px; /* 상단 패딩 추가 */
+}
+
+.question-de-header .meta {
+	display: flex;
+	justify-content: space-between;
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 10px;
+}
+
+.question-de-header .meta div {
+	flex: 1;
+	border-right: 1px solid #ddd;
+	padding: 5px;
+}
+
+.question-de-header .meta div:last-child {
+	border-right: none;
+}
+
+.question-content, .question-reply {
+	margin-left : 30px;
+	margin-bottom: 20px;
+	padding-bottom: 10px;
+}
+
+.question-reply {
+	display: none; /* 기본적으로 숨김 */
+}
+
+.question-reply.visible {
+	display: block; /* visible 클래스가 추가되면 보이게 함 */
+}
+
+.question-reply strong {
+  font-size: 1.5em; /* 글씨 크기를 좀 더 크게 설정 */
+    font-weight: bold; /* 글씨를 진하게 설정 */
+}
+
+.question-reply p {
+	margin-top : 15px;
+    margin-left: 10px; /* 강조된 텍스트와 span 사이의 여백을 생성 */
+}
+
+
+.back-link {
+	display: block;
+	text-align: center;
+	margin-top: 30px;
+	margin-bottom: 10px;
+	padding-bottom: 15px; /* 하단 패딩 추가 */
+}
+
+.back-link a {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+.back-link a:hover {
+	text-decoration: underline;
+}
+
+.image-gallery {
+	margin-left : 15px;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.image-gallery img {
+	max-width: 200px;
+	margin: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+
+.image-gallery+.question-reply {
+	margin-top: 20px;
+	padding-top: 20px;
+}
+
+.my-qa-left-text {
+    display: flex; /* 부모 요소를 플렉스 박스로 설정 */
+    justify-content: flex-end; /* 자식 요소를 오른쪽 끝으로 정렬 */
+    align-items: center; /* 세로 가운데 정렬 */
+}
+
+.my-qa-left-text strong {
+    margin-right: 5px; /* 강조된 텍스트와 span 사이의 여백을 생성 */
+}
+
+.my-qa-left-text span {
+    margin-left: 5px; /* 날짜와 strong 사이의 여백을 생성 */
+	margin-right: 30px;
+}
+
+/* ask.html */
+
+#my-qa-ask-input {
+	width: 86%;
+	margin: auto;
+}
+
+.qa-ask-content {
+	margin: auto;
+	height: 17.0em;
+	resize : none;
+}
+
+.my-qa-ask-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.my-qa-ask-form-title{
+	padding-left:50px;
+	font-size: 1.5em;
+	font-weight: bold;
+	margin-top: 30px;
+}
+
+.my-qa-ask-btn {
+	align-self: center;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	margin-top: 20px;
+}
+
+/* fqa */
+.my-fqa-search-container {
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.my-fqa-search-container form {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: row;
+}
+
+.my-fqa-search-container select {
+	margin-left: 80px;
+	margin-right: 10px;
+	flex: 1;
+}
+
+.my-fqa-search-container input {
+	margin-right: 10px;
+	flex: 7;
+}
+
+.my-fqa-search-container button {
+	margin-right: 80px;
+	flex: 0.8;
+}
+
+/* chat */
+#chat-box {
+	height: 400px; /* 고정 높이 설정 */
+	width: 100%; /* 고정 너비 설정 (부모 요소 기준) */
+	overflow-y: scroll; /* 세로 스크롤바 추가 */
+	overflow-x: hidden; /* 가로 스크롤바 숨김 */
+	border: 1px solid #ccc;
+	padding: 10px;
+}
+
+/*reply*/
+/* 상담원 전용 스타일 */
+#waiting-message {
+    color: red;
+    display: none;
+}
+
+/*pay-select-type*/
+.my-pay-select-type-body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.my-pay-select-type-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    text-align: center;
+}
+
+.my-pay-select-type-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+}
+
+.my-pay-select-type-button {
+    display: flex;
+    flex-direction: column; /* Arrange children in a column */
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 48%; /* Adjust width to fit 2x2 layout */
+    height: 100px; /* Increase height to allow space for image and text */
+    box-sizing: border-box; /* Include padding and border in the width */
+    text-align: center; /* Center-align text */
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.my-pay-select-type-button img {
+    max-width: 100% !important; /* Make sure the image doesn't exceed the button's width */
+    max-height: 80% !important; /* Make sure the image doesn't exceed the button's height */
+    object-fit: contain !important; /* Maintain aspect ratio and fit within the container */
+    width: auto !important; /* Allow the image to scale properly */
+    height: auto !important; /* Allow the image to scale properly */
+    margin-bottom: 5px !important; /* Space between image and text */
+}
+
+.my-pay-select-type-button span {
+    font-size: 14px !important; /* Adjust font size as needed */
+    color: #333 !important; /* Adjust text color as needed */
+    display: block; /* Ensure span takes up the full width available */
+}
+.my-pay-select-type-button:hover {
+    background-color: #f0f0f0;
+}
+
+.my-pay-select-type-button img {
+    width: 40px;
+    height: 40px;
+}
+
+#my-pay-select-type-form-container {
+    margin-top: 20px;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko" class="my-qa-html">
+<head>
+    <meta charset="UTF-8">
+    <title>실시간 상담</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Kakao Talk Clone Chat Page">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="stylesheet" href="/css/chat/CSS/chat-room.css">
+    <link rel="stylesheet" href="/css/chat/CSS/general.css">
+    <link rel="stylesheet" href="fontello/css/fontello.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap">
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/funding-style.css">
+    <link rel="stylesheet" type="text/css" href="/css/elegant-icons.css">
+    <link rel="stylesheet" href="/css/qa-style.css">
+</head>
+<body class="my-qa-body">
+    <div id="chat-body">
+        <header class="my-qa-no-margin-bottom my-qa-no-padding-bottom my-qa-no-padding-top">
+            <img class="profile-img" src="/images/chat/pic/agent.png" alt="백설 상담사">
+            <div class="profile-col">
+                <span class="profile-name">백설 상담사</span>
+                <div class="sub-menu">
+                    <i class="icon-box" title="채팅방 서랍"></i>
+                    <i class="icon-search" title="검색"></i>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div id="waiting-message" class="notice-bar my-qa-no-padding-top">고객을 기다리고 있습니다...</div>
+            <div class="chat-content" id="chat-box">
+                <div class="date-line" id="date-line">
+                    <time datetime=""></time>
+                </div>
+            </div>        
+
+            <button id="ready-agent" class="btn btn-primary my-qa-ask-btn my-qa-center">상담 시작</button>
+            
+            <div class="insert-content my-qa-margin-top my-qa-margin-bottom ">
+                <form id="chat-form">
+                    <input id="chat-input" type="text" name="chat-insert" placeholder="메세지 입력" required>
+                    <button class="btn btn-primary" type="submit" value="전송">전송</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="/js/chat-reply.js"></script>
+</body>
+</html>

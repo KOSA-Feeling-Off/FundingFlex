@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>펀딩 삭제하기</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        input[type="number"],
+        input[type="checkbox"],
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="checkbox"] {
+            width: auto;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .checkbox-group label {
+            margin: 0 0 0 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #c82333;
+        }
+    </style>
+    <script>
+        async function deleteFunding() {
+            const deleteForm = document.getElementById("deleteForm");
+            const fundingJoinId = parseInt(deleteForm.fundingJoinId.value);
+
+            try {
+                const response = await fetch(`/api/fundings/delete/${fundingJoinId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    alert("펀딩 삭제 성공!");
+                } else {
+                    const errorText = await response.text();
+                    alert("펀딩 삭제 실패: " + errorText);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert("펀딩 삭제 중 오류 발생!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>펀딩 삭제하기</h1>
+        <form id="deleteForm" onsubmit="event.preventDefault(); deleteFunding();">
+            <label for="fundingJoinId">참여 ID:</label>
+            <input type="number" id="fundingJoinId" name="fundingJoinId" required>
+
+            <button type="submit" class="delete">펀딩 삭제하기</button>
+        </form>
+    </div>
+</body>
+</html>

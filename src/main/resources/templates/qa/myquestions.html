@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
+      layout:decorate="~{common/layouts/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>내가 문의한 내역</title>
+    
+</head>
+<body>
+<div layout:fragment="content" class="content">
+<div class="container-body">
+        <div class="text-body">
+        <div class="form-make-body col-md-8">
+    <h2 class="text-center my-4">문의 내역</h2>
+    <nav class="my-qa-top-link">
+        <a href="/qa/fqa">자주 문의한 내역</a>
+        <!--  href="/qa/myquestions" -->
+        <a class="my-qa-select-top-tap">내가 문의한 내역</a>
+        <a href="/qa/ask">문의 하기</a>
+        <a href="/qa/chat">1:1 실시간 상담</a>
+    </nav>
+    <div id="my-qa-content">
+        <table class="my-qa-table">
+            <thead class="my-qa-thead">
+                <tr>
+                    <th class="number-column my-qa-thtd">번호</th>
+                    <th class="title-column my-qa-thtd">제목</th>
+                    <th class="date-column my-qa-thtd">등록일</th>
+                    <th class="status-column my-qa-thtd">상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="question, iterStat : ${questionsPage}">
+                    <td class="my-qa-thtd" th:text="${totalElements - (currentPage * 10) - iterStat.index}"></td>
+                    <td class="my-qa-thtd"><a th:href="@{/qa/detail/{id}(id=${question.counsulId})}" th:text="${question.title}">질문 제목</a></td>
+                    <td class="my-qa-thtd" th:text="${#dates.format(question.createdAt, 'yyyy-MM-dd')}">등록일</td>
+                    <td class="my-qa-thtd" th:text="${question.isReply == 'Y' ? '답변 완료' : '답변 대기'}"></td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Pagination -->
+        <div class="my-qa-pagination">
+            <a th:href="@{/qa/myquestions(page=${currentPage - 1}, size=${questionsPage.size})}" 
+               th:if="${currentPage > 0}">이전</a>
+            <span th:text="${currentPage + 1}">페이지</span> / <span th:text="${totalPages}">총 페이지</span>
+            <a th:href="@{/qa/myquestions(page=${currentPage + 1}, size=${questionsPage.size})}" 
+               th:if="${currentPage < totalPages - 1}">다음</a>
+        </div>
+    </div> </div> </div> </div></div>
+</body>
+</html>
