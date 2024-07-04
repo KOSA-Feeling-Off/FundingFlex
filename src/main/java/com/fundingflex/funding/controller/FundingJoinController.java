@@ -42,7 +42,7 @@ public class FundingJoinController {
     	}
 		
 		model.addAttribute("fundingsId", fundingsId);
-		model.addAttribute("userId", userDetails.getUserId());
+		model.addAttribute("joinUserId", userDetails.getUserId());
 		
         return "funding/fundingJoin";
     }

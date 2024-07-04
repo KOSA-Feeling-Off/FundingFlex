@@ -161,7 +161,7 @@ public class FundingsService {
 
 
 	// 상세 정보 전체 조회
-	public ResponseFundingInfoDTO selectFundinsInfo(Long categoryId, Long fundingId) {
+	public ResponseFundingInfoDTO selectFundinsInfo(Long categoryId, Long fundingId, Long userId) {
 
 		try {
 			// fundingId, categoryId 확인
@@ -179,12 +179,17 @@ public class FundingsService {
 
 			// 펀딩 정보 조회
 			FundingsInfoDTO fundingsInfoDto =
-					fundingsMapper.selectFundingInfo(categoryId, fundingId);
+					fundingsMapper.selectFundingInfo(categoryId, fundingId, userId);
+
+            // 펀딩을 한 사람인지 조회 (userId 만 조회)
+            Long fundingJoinUserId = fundingsMapper.existsJoinByFundingsId(fundingId, userId);
+            log.info("fundingJoinUserId {}", fundingJoinUserId);
 
 
 			return ResponseFundingInfoDTO.builder()
 					.fundingsInfoDto(fundingsInfoDto)
 					.imagesList(imagesList)
+                    .fundingJoinUserId(fundingJoinUserId)
 					.build();
 
 		} catch(Exception ex) {

@@ -3,10 +3,26 @@
 
 <mapper namespace="com.fundingflex.mybatis.mapper.notification.NotificationMapper">
 
-	<!-- 카테고리 모두 조회 -->
+	<!-- 알림 저장 -->
 	<insert id="insertNotification">
 		INSERT INTO notification (fc_id, user_id, message)
 		  VALUES (#{fcId}, #{userId}, #{message})
 	</insert>
+
+
+	<!-- 알림 조회 (userId 기준 최근 5개) -->
+	<select id="findByUserId">
+		SELECT noti_id
+			 , fc_id
+			 , user_id
+			 , message
+			 , created_at
+			 , is_read
+			 , read_at
+		FROM notification
+	   WHERE user_id = #{userId}
+    ORDER BY created_at 	DESC
+       FETCH FIRST 5 ROWS ONLY
+	</select>
 
 </mapper>

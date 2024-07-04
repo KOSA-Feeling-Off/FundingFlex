@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -34,8 +35,6 @@ import com.fundingflex.funding.service.FundingsService;
 import com.fundingflex.funding.service.ImageService;
 import com.fundingflex.member.domain.dto.CustomUserDetails;
 
-import lombok.RequiredArgsConstructor;
-
 @Controller
 @RequestMapping("/api/fundings")
 @RequiredArgsConstructor
@@ -48,7 +47,7 @@ public class FundingsController {
 
     // 펀딩 개설
     @GetMapping
-    public String showFundingForm(Model model, 
+    public String showFundingForm(Model model,
     		@AuthenticationPrincipal CustomUserDetails userDetails) {
 
     	if(userDetails == null) {
@@ -144,9 +143,19 @@ public class FundingsController {
     public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
             @PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
         
-       ResponseFundingInfoDTO fundingsInfo =
-    		   fundingsService.selectFundinsInfo(categoryId, fundingId);
+        // 공통으로 들어올 수 있기 때문에 CustomUserDetails를 사용
+        CustomUserDetails userDetails = null;
+        if (SecurityContextHolder.getContext().getAuthentication() != null &&
+                SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CustomUserDetails) {
+            userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
 
+        Long userId = (userDetails != null) ? userDetails.getUserId() : -1L;
+
+       ResponseFundingInfoDTO fundingsInfo =
+    		   fundingsService.selectFundinsInfo(categoryId, fundingId, userId);
+
+        model.addAttribute("loginUserId", userId);
         model.addAttribute("responseFundingInfo", fundingsInfo);
         return "funding/funding-details";
     }

@@ -28,7 +28,7 @@ public interface FundingsMapper {
 
     // 펀딩 정보 조회
     FundingsInfoDTO selectFundingInfo(@Param("categoryId") Long categoryId,
-        @Param("fundingsId") Long fundingsId);
+        @Param("fundingsId") Long fundingsId, @Param("userId") Long userId);
 
     // 펀딩 아이디 확인
     int existsById(Long fundingId);
@@ -159,8 +159,8 @@ public interface FundingsMapper {
     // 좋아요 수 감소
     void decrementLikeCount(@Param("fundingsId") Long fundingsId);
 
-   
-    
-    
+    // 펀딩 참여 여부 조회 (있으면 userId 반환)
+    Long existsJoinByFundingsId(@Param("fundingsId") Long fundingId,
+        @Param("userId") Long userId);
 
 }
