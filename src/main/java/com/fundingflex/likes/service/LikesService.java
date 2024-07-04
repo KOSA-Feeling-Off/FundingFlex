@@ -11,26 +11,30 @@ import com.fundingflex.mybatis.mapper.funding.FundingsMapper;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class LikesService {
 
-	private final FundingsMapper fundingsMapper;
+    private final FundingsMapper fundingsMapper;
 
-	private final CategoriesMapper categoriesMapper;
+    private final CategoriesMapper categoriesMapper;
 
-	// 사용자별 좋아요 상태를 저장하기 위한 Set (실제 서비스에서는 데이터베이스를 사용)
-	private final Set<String> userLikes = new HashSet<>();
-	
-	
-	// 좋아요 기능
+    // 사용자별 좋아요 상태를 저장하기 위한 Set (실제 서비스에서는 데이터베이스를 사용)
+    private final Set<String> userLikes = new HashSet<>();
+
+    // 좋아요 기능
     public boolean likeFunding(Long fundingsId) {
         // 예시 사용자 ID (실제 구현에서는 세션이나 인증 정보를 통해 사용자 ID를 가져와야 함)
         String userId = "exampleUserId";
         String userFundingsKey = userId + "-" + fundingsId;
 
+        log.info(">>>>>>>>>>>>>>>>>>>>Attempting to like funding. FundingsId: {}, UserId: {}", fundingsId, userId);
+
         if (userLikes.contains(userFundingsKey)) {
+            log.info(">>>>>>>>>>>>>>>>>>>>User has already liked this funding. FundingsId: {}, UserId: {}", fundingsId, userId);
             return false; // 이미 좋아요를 누른 경우
         }
 
@@ -41,8 +45,12 @@ public class LikesService {
 
         fundings.setLikeCount(fundings.getLikeCount() + 1);
         fundingsMapper.updateLikeCount(fundingsId, fundings.getLikeCount());
+
+        log.info(">>>>>>>>>>>>>>>>>>>>Successfully liked funding. FundingsId: {}, UserId: {}", fundingsId, userId);
         return true;
     }
+
+
     
     // 좋아요 기능 수정
     @Transactional
@@ -57,5 +65,4 @@ public class LikesService {
             return true; // 좋아요 추가됨
         }
     }
-	
 }

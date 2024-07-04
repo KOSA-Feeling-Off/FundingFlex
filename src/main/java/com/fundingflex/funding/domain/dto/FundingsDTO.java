@@ -4,10 +4,22 @@ import java.util.List;
 
 import com.fundingflex.funding.domain.enums.FundingsStatusEnum;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 
-@Data
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class FundingsDTO {
     private Long fundingsId;
     private String title;
@@ -17,6 +29,8 @@ public class FundingsDTO {
     private int goalAmount;
     private int currentAmount;
     private List<String> imageUrls;
+    private int percent; // 추가: 진행률 퍼센트
+    private String nickname;
     
     private Long categoryId;
     
