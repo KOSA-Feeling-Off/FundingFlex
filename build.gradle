@@ -47,9 +47,9 @@ dependencies {
 	
 	//오라클 클라우드 연결을 위한 의존성 추가 (종현이 클라우드)
 	runtimeOnly 'com.oracle.database.jdbc:ojdbc8'
-	//implementation 'com.oracle.database.security:osdt_cert'
-	//implementation 'com.oracle.database.security:oraclepki'
-	//implementation 'com.oracle.database.security:osdt_core'
+	implementation 'com.oracle.database.security:osdt_cert'
+	implementation 'com.oracle.database.security:oraclepki'
+	implementation 'com.oracle.database.security:osdt_core'
 	
 	//jwt 관련 의존성 - 종현
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'

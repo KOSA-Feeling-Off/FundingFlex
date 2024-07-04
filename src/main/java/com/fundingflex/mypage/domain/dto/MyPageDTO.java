@@ -8,10 +8,13 @@ import lombok.Data;
 
 @Data
 public class MyPageDTO {
-	private String email;
     private String nickname;
+    private String title;
+    private String content;
     private String profileUrl;
-    private List<FundingsDTO> createdFundings;
-    private List<FundingsDTO> joinedFundings;
-    private List<FundingsDTO> likedFundings;
+    private int goalAmount;
+    private Long fundingsId;
+    private String imageUrl;
+    private int percent;
+    private int collectedAmount;
 }

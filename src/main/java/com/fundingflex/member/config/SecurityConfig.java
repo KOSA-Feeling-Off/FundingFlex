@@ -62,11 +62,10 @@ public class SecurityConfig {
 		        .httpBasic(basic -> basic.disable())
 		        .authorizeHttpRequests(auth -> auth
 		            .requestMatchers("/css/**", "/fonts/**", "/img/**", "/js/**", "/images/**").permitAll()  // 정적 리소스 접근 허용
-						.requestMatchers("/", "/api/home", "/api/login", "/api/signin", "/api/signup",
-								"/qa/fqa", "/api/categories/**", "/api/fundings/*/details/*",
-								"/api/fundings/list/**").permitAll()
-		            .anyRequest().permitAll())
-//		            .anyRequest().authenticated())  // 그 외의 모든 요청은 인증을 요구
+		            .requestMatchers("/", "/api/home", "/api/login", "/api/signin", "/api/signup", "/api/fundings/list/**"
+		            		, "/qa/fqa", "/api/categories/**", "/api/fundings/*/details/*").permitAll()
+//		            .anyRequest().permitAll())
+		            .anyRequest().authenticated())  // 그 외의 모든 요청은 인증을 요구
 		        .addFilterBefore(new LoginFilter(authenticationManager, jwtUtil), UsernamePasswordAuthenticationFilter.class)
 		        .addFilterAfter(new JWTFilter(jwtUtil, customUserDetailsService), LoginFilter.class)
 		        .sessionManagement(session -> session
