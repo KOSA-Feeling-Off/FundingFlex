@@ -1,5 +1,109 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" th:fragment="headerFragment">
+<head>
+   <script>
+      document.addEventListener('DOMContentLoaded', async (event) => {
+         const userId = document.getElementById('userId').value;
+
+         // 초기 알림 가져오기
+         const notifications = await fetch(`/api/notifications/list`)
+                 .then(response => response.json())
+                 .then(data => data)
+                 .catch(error => console.error('Error fetching notifications:', error));
+
+         notifications.forEach(notification => addNotification(notification));
+
+         // 초기 알림 아이콘 상태 설정
+         const hasUnread = notifications.some(notification => notification.is_read === 'N');
+         updateNotificationIcon(hasUnread);
+
+         const eventSource = new EventSource('/api/notifications');
+
+         eventSource.addEventListener('notification', function(event) {
+            const notification = JSON.parse(event.data);
+            addNotification(notification);
+            updateNotificationIcon(true);
+         });
+
+         eventSource.onerror = function(event) {
+            console.error("EventSource failed:", event);
+         };
+
+         function addNotification(notification) {
+            const notificationList = document.querySelector('.notification-list');
+            const newNotification = document.createElement('li');
+            newNotification.innerHTML = `
+               <div>
+                  <span style="font-size: 10px;">${notification.message}</span>
+                  <input type="hidden" value="${notification.fcId}" />
+                  <input type="hidden" value="${notification.userId}" />
+               </div>
+            `;
+
+            // 가장 위에 새로운 알림 추가
+            notificationList.insertBefore(newNotification, notificationList.firstChild);
+
+            // 알림이 5개를 초과하면 가장 오래된 알림 제거
+            if (notificationList.childElementCount > 5) {
+               notificationList.removeChild(notificationList.lastChild);
+            }
+         }
+
+         function updateNotificationIcon(hasUnread) {
+            const notificationIcon = document.querySelector('.ui-icon-notice');
+            if (hasUnread) {
+               notificationIcon.classList.add('has-unread');
+            } else {
+               notificationIcon.classList.remove('has-unread');
+            }
+         }
+
+         // 알림 버튼 클릭 시 알림 목록 표시
+         document.querySelector('.ui-icon-notice').addEventListener('click', () => {
+            const notificationList = document.querySelector('.notification-list');
+            notificationList.style.display = notificationList.style.display === 'block' ? 'none' : 'block';
+         });
+      });
+   </script>
+   <style>
+      .ui-icon-notice {
+         position: relative;
+         cursor: pointer;
+      }
+      .ui-icon-notice::after {
+         content: '';
+         position: absolute;
+         top: 0;
+         right: 0;
+         width: 10px;
+         height: 10px;
+         border-radius: 50%;
+         background-color: gray; /* 기본 회색 */
+      }
+      .ui-icon-notice.has-unread::after {
+         background-color: red; /* 안 읽은 알림이 있을 경우 빨간색 */
+      }
+      .dropdown-content .notification-list {
+         display: none;
+         position: absolute;
+         background-color: #0d47a1;
+         min-width: 300px;
+         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+         z-index: 1;
+         list-style-type: none;
+         padding: 0;
+         margin: 0;
+      }
+      .notification-list li {
+         padding: 10px;
+         border-bottom: 1px solid #ddd;
+         min-width: 300px;
+      }
+      .notification-list li div {
+         color: white;
+      }
+   </style>
+</head>
 <div class="navbar">
    <div class="top-title">FundingFlex 공식 홈페이지입니다.</div>
 
@@ -16,8 +120,14 @@
               <li><a href="/qa/chat">1 : 1 상담</a></li>
           </ul>
       </div>
+      <!-- 알림 -->
+      <div class="dropdown">
+         <button sec:authorize="isAuthenticated()" class="ui-icon-notice">알림</button>
+         <ul class="dropdown-content notification-list">
+            <!-- 알림이 여기 추가됩니다 -->
+         </ul>
+      </div>
    </div>
-
 </div>
 
 <header>
@@ -54,4 +164,8 @@
 
    </div>
 </header>
+<!-- Hidden Inputs -->
+<input type="hidden" id="fundingId" th:value="${fundingId}">
+<input type="hidden" id="categoryId" th:value="${categoryId}">
+<input type="hidden" id="userId" th:value="${loginUserId}">
 </html>

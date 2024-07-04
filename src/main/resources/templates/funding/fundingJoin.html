@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://java.sun.com/JSP/Page"
-    layout:decorate="~{common/layouts/layout}">
+	  layout:decorate="~{common/layouts/layout}">
 <head>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/fundingJoin.css}">
-    <script>
-    
-    	// 금액 단위 확인
-        function isValidFundingAmount(amount) {
-            return amount % 5000 === 0;
-        }
+	<link rel="stylesheet" type="text/css" th:href="@{/css/fundingJoin.css}">
+	<script>
 
-        // 펀딩 참여 버튼 클릭
-        async function joinFunding(event) {
+		// 금액 단위 확인
+		function isValidFundingAmount(amount) {
+			return amount % 5000 === 0;
+		}
+
+		// 펀딩 참여 버튼 클릭
+		async function joinFunding(event) {
 			event.preventDefault();  // 이벤트 객체를 이용해 기본 동작을 막음
 
 			// 펀딩 아이디
 			const fundingsId = document.getElementById('fundingsId').value;
 
 			// 유저 아이디
-			const userId = document.getElementById('userId').value;
+			const userId = document.getElementById('joinUserId').value;
 
-            const fundingForm = document.getElementById("fundingForm");
-            const fundingAmount = parseInt(fundingForm.fundingAmount.value);
-            const nameUndisclosed = fundingForm.nameUndisclosed.checked ? 'Y' : 'N';
-            const amountUndisclosed = fundingForm.amountUndisclosed.checked ? 'Y' : 'N';
+			console.log(fundingsId);
+			console.log(userId);
 
-            
-            if (!isValidFundingAmount(fundingAmount)) {
-                alert("펀딩 금액은 5000원 단위여야 합니다.");
-                return;
-            }
+			const fundingForm = document.getElementById("fundingForm");
+			const fundingAmount = parseInt(fundingForm.fundingAmount.value);
+			const nameUndisclosed = fundingForm.nameUndisclosed.checked ? 'Y' : 'N';
+			const amountUndisclosed = fundingForm.amountUndisclosed.checked ? 'Y' : 'N';
 
-            const requestBody = {
-                fundingsId: fundingsId,
-                userId: userId,
-                fundingAmount: fundingAmount,
-                nameUndisclosed: nameUndisclosed,
-                amountUndisclosed: amountUndisclosed
-            };
 
-            try {
-                const response = await fetch('/api/fundings/join', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                });
+			if (!isValidFundingAmount(fundingAmount)) {
+				alert("펀딩 금액은 5000원 단위여야 합니다.");
+				return;
+			}
 
-                if (response.ok) {
-                    const result = await response.json();
-                    alert("펀딩에 참여하였습니다. 결제 페이지로 이동됩니다.");
+			const requestBody = {
+				fundingsId: fundingsId,
+				userId: userId,
+				fundingAmount: fundingAmount,
+				nameUndisclosed: nameUndisclosed,
+				amountUndisclosed: amountUndisclosed
+			};
+
+			try {
+				const response = await fetch('/api/fundings/join', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(requestBody)
+				});
+
+				if (response.ok) {
+					const result = await response.json();
+					alert("펀딩에 참여하였습니다. 결제 페이지로 이동됩니다.");
 
 					// 창 크기 설정
 					const width = 500;
@@ -62,54 +65,54 @@
 
 					// 새 창을 열어서 결제 페이지로 이동
 					window.open(`/pay/ready/${result.fundingJoinId}`, 'ChatWindow', `width=${width},height=${height},top=${top},left=${left}`);
-                    
-                } else {
-                    const errorText = await response.text();
-                    alert("펀딩 참여 실패: " + errorText);
-                    
-                    if(response.code === 401) {
-                    	window.location.href = "/api/login";
-                    }
-                }
-                
-            } catch (error) {
-                console.error('Error:', error);
-                alert("펀딩 참여 중 오류 발생!");
-            }
-        }
 
-			document.addEventListener('DOMContentLoaded', (event) => {
-				const fundingForm = document.getElementById('fundingForm');
-				fundingForm.addEventListener('submit', joinFunding);
-			});
-    </script>
+				} else {
+					const errorText = await response.text();
+					alert("펀딩 참여 실패: " + errorText);
+
+					if(response.code === 401) {
+						window.location.href = "/api/login";
+					}
+				}
+
+			} catch (error) {
+				console.error('Error:', error);
+				alert("펀딩 참여 중 오류 발생!");
+			}
+		}
+
+		document.addEventListener('DOMContentLoaded', (event) => {
+			const fundingForm = document.getElementById('fundingForm');
+			fundingForm.addEventListener('submit', joinFunding);
+		});
+	</script>
 </head>
-	<div layout:fragment="content" class="content">
+<div layout:fragment="content" class="content">
 	<div class="container-body">
 		<div class="text-body">
-	    <div class="funding-join-container">
-	        <form id="fundingForm" class="funding-join-form">
-	            <h1>펀딩 참여</h1>
-	            <input type="hidden" id="fundingsId" th:value="${fundingsId}">
-	            <input type="hidden" id="userId" th:value="${userId}">
-	            
-	            <label for="fundingAmount">펀딩 금액 (5000원 단위):</label>
-	            <input type="number" id="fundingAmount" name="fundingAmount" step="5000" required>
-	
-	            <div class="checkbox-group">
-	                <input type="checkbox" id="nameUndisclosed" name="nameUndisclosed">
-	                <label for="nameUndisclosed">이름 비공개</label>
-	            </div>
-	
-	            <div class="checkbox-group">
-	                <input type="checkbox" id="amountUndisclosed" name="amountUndisclosed">
-	                <label for="amountUndisclosed">금액 비공개</label>
-	            </div>
-	
-	            <button type="submit">펀딩 참여하기</button>
-	        </form>
-	    </div>
-	    </div>
+			<div class="funding-join-container">
+				<form id="fundingForm" class="funding-join-form">
+					<h1>펀딩 참여</h1>
+					<input type="hidden" id="fundingsId" th:value="${fundingsId}">
+					<input type="hidden" id="joinUserId" th:value="${joinUserId}">
+
+					<label for="fundingAmount">펀딩 금액 (5000원 단위):</label>
+					<input type="number" id="fundingAmount" name="fundingAmount" step="5000" required>
+
+					<div class="checkbox-group">
+						<input type="checkbox" id="nameUndisclosed" name="nameUndisclosed">
+						<label for="nameUndisclosed">이름 비공개</label>
+					</div>
+
+					<div class="checkbox-group">
+						<input type="checkbox" id="amountUndisclosed" name="amountUndisclosed">
+						<label for="amountUndisclosed">금액 비공개</label>
+					</div>
+
+					<button type="submit">펀딩 참여하기</button>
+				</form>
+			</div>
+		</div>
 	</div>
-    </div>
+</div>
 </html>
