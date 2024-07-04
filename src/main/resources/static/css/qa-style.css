@@ -240,8 +240,7 @@ tr:nth-child(even) {
 	margin: auto;
 }
 
-#my-qa-ask-textarea {
-	width: 86%;
+.qa-ask-content {
 	margin: auto;
 	height: 17.0em;
 	resize : none;

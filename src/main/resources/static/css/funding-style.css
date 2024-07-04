@@ -125,7 +125,7 @@
 
 .stats-bar .bar-line {
     height: 100%;
-    background: #28A745;
+    background: linear-gradient(to right, #caf0f8, #90e0ef, #00b4d8, #0077b6);
     border-radius: 7px;
     transition: width 0.4s ease;
 }

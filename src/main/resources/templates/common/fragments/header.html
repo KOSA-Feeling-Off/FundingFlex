@@ -4,10 +4,11 @@
    <div class="top-title">FundingFlex 공식 홈페이지입니다.</div>
 
    <div class="auth-buttons">
+   	  <div sec:authorize="isAuthenticated()" th:text="${#authentication.principal.nickname + '님 환영합니다'}"></div>
       <button sec:authorize="isAnonymous()" class="login-btn" th:attr="onclick='location.href=\'/api/login\''">로그인</button>
       <button sec:authorize="isAuthenticated()" class="login-btn" th:attr="onclick='location.href=\'/api/logout\''">로그아웃</button>
       <button sec:authorize="isAnonymous()" class="signup-btn" th:attr="onclick='location.href=\'/api/signup\''">회원 가입</button>
-	  <button sec:authorize="isAuthenticated()" class="signup-btn" th:href="@{/api/mypage/{userId}(userId=${loginUserId})}">마이페이지</button>      <!-- <button class="#">고객센터</button> -->
+	  <button sec:authorize="isAuthenticated()" class="signup-btn" th:attr="onclick='location.href=\'/api/mypage\''">마이페이지</button>      <!-- <button class="#">고객센터</button> -->
       <div class="dropdown">
           <button class="support-btn" th:attr="onclick='location.href=\'/qa\''">고객센터</button>
           <ul class="dropdown-content">
@@ -24,7 +25,7 @@
    <div class="header">
       <div class="logo">
          <a th:href="@{/api/home}">
-             <img th:src="@{/img/fundingflex.png}" alt="FundingFlex Logo">
+             <img th:src="@{/img/fundingflexLogo.png}" alt="FundingFlex Logo">
          </a>
       </div>
       <nav>

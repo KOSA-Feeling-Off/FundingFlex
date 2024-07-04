@@ -92,44 +92,23 @@
 
 	<!-- 펀딩 정보 상세 조회 -->
 	<select id="selectFundingInfo" resultType="com.fundingflex.funding.domain.dto.FundingsInfoDTO">
-		SELECT f.user_id
-		     , m.nickname
-		     , c.category_id
+		SELECT c.category_id
 			 , c.category_name
 			 , f.fundings_id
 			 , f.title
 			 , f.content
-		     , (CASE WHEN EXISTS(SELECT 1
-                                   FROM likes l
-                                  WHERE f.fundings_id = l.fundings_id
-                                    AND l.user_id = #{userId, jdbcType=BIGINT})
-		         	THEN 'Y'
-		            ELSE 'N'
-               END)		likesFlag
 			 , f.goal_amount
 			 , f.status_flag
 			 , NVL(fc.collected_amount, 0)
 			 , NVL(fc.percent,0)
 		  FROM fundings 			f
-	INNER JOIN members				m
-		    ON f.user_id			= m.user_id
 	INNER JOIN categories 			c
 			ON f.category_id 		= c.category_id
-	INNER JOIN funding_conditions 	fc
+	 LEFT JOIN funding_conditions 	fc
 			ON f.fundings_id 		= fc.fundings_id
 		 WHERE f.fundings_id 		= #{fundingsId}
 		   AND f.category_id 		= #{categoryId}
 		    
-	</select>
-
-
-	<!-- 펀딩 참여 여부 조회 (있으면 user_id 반환) -->
-	<select id="existsJoinByFundingsId" resultType="Long">
-		SELECT user_id
-		  FROM funding_joins
-		 WHERE fundings_id		= #{fundingsId}
-		   AND user_id 			= #{userId}
-		   AND is_deleted		= 'N'
 	</select>
 
 

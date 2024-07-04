@@ -53,6 +53,13 @@ public class CustomUserDetails implements UserDetails {
 		// UserEntity에서 사용자 이름을 가져와 반환합니다.
 		return members.getEmail();
 	}
+	public String getNickname() {
+		return members.getNickname();
+	}
+	
+	public String getProfile() {
+		return members.getProfileUrl();
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {

@@ -18,6 +18,6 @@ public class MainController {
 	// 메인 화면 조회
     @GetMapping("/api/home")
     public String getFundingsPage() {
-        return "/funding/fundings.html"; 
+        return "/funding/fundings.html";
     }
 }

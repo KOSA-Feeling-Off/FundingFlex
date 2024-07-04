@@ -1,5 +1,6 @@
 package com.fundingflex;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,6 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fundingflex.mypage.domain.dto.MyPageDTO;
+import com.fundingflex.mypage.service.MyPageService;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class SigninControllerTest {
@@ -20,6 +24,9 @@ public class SigninControllerTest {
 	private MockMvc mockMvc;
 	
 	private String validToken;
+	
+	@Autowired
+	private MyPageService myPageService;
 	
 	@BeforeEach
 	public void setUp() {
@@ -35,5 +42,13 @@ public class SigninControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string("user10@naver.com"));
+	}
+	
+	@Test
+	public void testFindMemberInfoByUserId() {
+	    Long userId = 7L; // 테스트할 사용자 ID
+	    MyPageDTO result = myPageService.findMemberInfoByUserId(userId);
+	    assertNotNull(result);
+	    // 결과 값에 대한 추가 검증 로직
 	}
 }

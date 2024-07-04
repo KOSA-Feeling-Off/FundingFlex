@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.fundingflex.funding.domain.dto.FundingsDTO;
-import com.fundingflex.mybatis.mapper.member.MyPageMapper;
+import com.fundingflex.mybatis.mapper.mypage.MypageMapper;
 import com.fundingflex.mypage.domain.dto.MyPageDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -16,24 +16,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MyPageService {
 	
-	private final MyPageMapper myPageMapper;
+	private final MypageMapper myPageMapper;
 
-	public MyPageDTO getMyPage(Long userId) {
-        return myPageMapper.selectMyPage(userId);
+	public MyPageDTO findMemberInfoByUserId(Long userId) {
+        return myPageMapper.findMemberInfoByUserId(userId);
 	}
 	
-	public List<FundingsDTO> getLikedFundings(Long userId) {
-        return myPageMapper.findLikedFundings(userId);
+	public List<FundingsDTO> findParticipatedFundingsByUserId(Long userId) {
+        return myPageMapper.findParticipatedFundingsByUserId(userId);
     }
 
-    public List<FundingsDTO> getMyFundings(Long userId) {
-        return myPageMapper.findMyFundings(userId);
+	public List<FundingsDTO> findCreatedFundingsByUserId(Long userId) {
+        return myPageMapper.findCreatedFundingsByUserId(userId);
     }
 
-    public List<FundingsDTO> getJoinedFundings(Long userId) {
-        return myPageMapper.findJoinedFundings(userId);
+    public List<FundingsDTO> findLikedFundingsByUserId(Long userId) {
+        return myPageMapper.findLikedFundingsByUserId(userId);
     }
-
-
-    
 }
