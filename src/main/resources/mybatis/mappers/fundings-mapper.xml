@@ -23,44 +23,46 @@
 	</resultMap>
 
 	<!-- 펀딩 정보 저장 후 id 반환 -->
-	<insert id="insertFundings" parameterType="com.fundingflex.funding.domain.entity.Fundings">
-		INSERT
-		  INTO
-	  FUNDINGS ( category_id
-			   , user_id
-			   , category_name
-			   , title
-			   , content
-			   , status_flag
-			   , goal_amount
-			   , created_at
-			   , is_deleted
-			   )
-		VALUES ( #{categoryId}
-			   , #{userId}
-			   , #{categoryName}
-			   , #{title}
-			   , #{content}
-			   , #{statusFlag, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=NUMERIC}
-			   , #{goalAmount}
-			   , CURRENT_TIMESTAMP
-		 	   , #{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=VARCHAR}
-		       )
+   <insert id="insertFundings" parameterType="com.fundingflex.funding.domain.entity.Fundings">
+      INSERT
+        INTO
+     FUNDINGS ( category_id
+            , user_id
+            , category_name
+            , title
+            , content
+            , status_flag
+            , goal_amount
+            , created_at
+            , created_by
+            , is_deleted
+            )
+      VALUES ( #{categoryId}
+            , #{userId}
+            , #{categoryName}
+            , #{title}
+            , #{content}
+            , #{statusFlag, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=NUMERIC}
+            , #{goalAmount}
+            , CURRENT_TIMESTAMP
+            , #{createdBy}
+             , #{isDeleted, typeHandler=com.fundingflex.common.util.EnumTypeHandler, jdbcType=VARCHAR}
+             )
 
-		<!-- 방금 삽입된 row의 ID 가져오기 -->
-		<selectKey keyProperty="fundingsId" resultType="long" order="AFTER">
-			SELECT fundings_id
-			  FROM ( SELECT fundings_id
-			           FROM FUNDINGS
-			          WHERE category_id 	= #{categoryId}
-			            AND user_id 		= #{userId}
-			            AND title 		= #{title}
-			       ORDER BY created_at DESC
-			       )
-			 WHERE ROWNUM = 1
-		</selectKey>
+      <!-- 방금 삽입된 row의 ID 가져오기 -->
+      <selectKey keyProperty="fundingsId" resultType="long" order="AFTER">
+         SELECT fundings_id
+           FROM ( SELECT fundings_id
+                    FROM FUNDINGS
+                   WHERE category_id    = #{categoryId}
+                     AND user_id       = #{userId}
+                     AND title       = #{title}
+                ORDER BY created_at DESC
+                )
+          WHERE ROWNUM = 1
+      </selectKey>
 
-	</insert>
+   </insert>
 
 
 	<!-- 펀딩 체크 -->
@@ -366,47 +368,6 @@
 		</choose>
 	</select>
 	
-
-    
-    <!-- 카테고리별 펀딩 리스트 조회 exist_flag-->
-	<!-- <select id="getFundingsByCategory" parameterType="map" resultMap="FundingsResultMap">
-    SELECT f.fundings_id, f.title, f.content, f.status_flag, f.like_count,
-           f.goal_amount, f.category_id,
-           i.img_id, i.fundings_id AS image_fundings_id, i.image_url, i.seq, i.is_deleted,
-           CASE 
-               WHEN EXISTS (
-                   SELECT 1
-                   FROM likes
-                   WHERE fundings_id = f.fundings_id AND user_id = #{userId}
-               ) THEN 'Y'
-               ELSE 'N'
-           END AS exists_flag
-    FROM fundings f
-    LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted = 'N'
-    WHERE f.category_id = #{categoryId} AND f.is_deleted = 'N'
-    ORDER BY
-    <choose>
-        <when test="sortBy == 'likes'">f.like_count DESC</when>
-        <when test="sortBy == 'inProgress'">f.status_flag DESC</when>
-        <otherwise>f.created_at DESC</otherwise>
-    </choose>
-</select> -->
-
-	<!-- 카테고리별 펀딩 리스트 조회 (옛날 버전)-->
-	<!-- <select id="getFundingsByCategory" resultMap="FundingsResultMap">
-		SELECT f.fundings_id, f.title, f.content, f.status_flag, f.like_count,
-		f.goal_amount, f.category_id,
-		i.img_id, i.fundings_id AS image_fundings_id, i.image_url, i.seq, i.is_deleted
-		FROM fundings f
-		LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted = 'N'
-		WHERE f.category_id = #{categoryId} AND f.is_deleted = 'N'
-		ORDER BY
-		<choose>
-			<when test="sortBy == 'likes'">f.like_count DESC</when>
-			<when test="sortBy == 'inProgress'">f.status_flag DESC</when>
-			<otherwise>f.created_at DESC</otherwise>
-		</choose>
-	</select> -->
 	
 	<!-- 카테고리별 펀딩 리스트 조회 -->
 	<select id="getFundingsByCategory" parameterType="map" resultMap="FundingsResultMap">
@@ -434,6 +395,7 @@
     </choose>
 </select>
 
+<!-- 비로그인 카테고리별 전체 목록 조회 -->
 <select id="getFundingsByCategoryForGuests" parameterType="map" resultMap="FundingsResultMap">
     SELECT f.fundings_id, f.title, f.content, f.status_flag, f.like_count,
            f.goal_amount, f.category_id,
@@ -452,16 +414,6 @@
     </choose>
 </select>
 	
-	<!-- 진행 중인 펀딩 목록 조회 (카테고리별) / 옛날 꺼-->
-    <!-- <select id="getInProgressFundingsByCategory" resultMap="FundingsResultMap">
-        SELECT f.fundings_id, f.title, f.content, f.status_flag, f.like_count,
-        f.goal_amount, f.category_id,
-        i.img_id, i.fundings_id AS image_fundings_id, i.image_url, i.seq, i.is_deleted
-        FROM fundings f
-        LEFT JOIN images i ON f.fundings_id = i.fundings_id AND i.is_deleted = 'N'
-        WHERE f.category_id = #{categoryId} AND f.status_flag = 1 AND f.is_deleted = 'N'
-        ORDER BY f.created_at DESC
-    </select> -->
     
     <!-- 로그인 상태에서 카테고리별 진행중인 펀딩 목록 조회 -->
     <select id="getInProgressFundingsByCategory" parameterType="map" resultMap="FundingsResultMap">
