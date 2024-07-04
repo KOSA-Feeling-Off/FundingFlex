@@ -10,7 +10,7 @@ import com.fundingflex.funding.domain.dto.FundingsDTO;
 import com.fundingflex.mypage.domain.dto.MyPageDTO;
 
 @Mapper
-public interface MypageMapper {
+public interface MyPageMapper {
 
     MyPageDTO findMemberInfoByUserId(@Param("userId") Long userId);
 
