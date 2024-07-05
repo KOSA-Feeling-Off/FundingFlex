@@ -27,7 +27,7 @@ public class NotificationController {
     private final NotificationService notificationService;
 
 
-    /// 알림 조회
+    // 알림 조회
     @GetMapping("/list")
     public ResponseEntity<List<Notification>> listNotifications(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
