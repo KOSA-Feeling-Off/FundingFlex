@@ -9,16 +9,15 @@
         <id property="counsulId" column="counsul_id" />
         <result property="title" column="title" />
         <result property="content" column="content" />
-        <result property="reply" column="reply" />
         <result property="createdAt" column="created_at" />
-        <result property="isReply" column="is_reply" />
-        <result property="membersUserId" column="members_user_id" />
-        <result property="adminUserId" column="admin_user_id" />
+        <result property="reply" column="reply" />
+        <result property="membersUserId" column="user_id" />
+        <result property="adminUserId" column="admin_id" />
     </resultMap>
 
     <!-- SQL 재사용을 위한 정의 -->
     <sql id="consultationColumns">
-        counsul_id, title, content, reply, created_at, is_reply, members_user_id, admin_user_id
+        counsul_id, title, content, reply, created_at, user_id, admin_id
     </sql>
 
 <select id="findByMembersUserId" resultMap="QaDTOResult">
@@ -27,7 +26,7 @@
     FROM (
         SELECT p.*, ROW_NUMBER() OVER (ORDER BY p.created_at DESC) AS row_num
         FROM CONSULTATIONS p
-        WHERE p.members_user_id = #{membersUserId}
+        WHERE p.user_id = #{membersUserId}
     )
     WHERE row_num BETWEEN #{startRow} AND #{endRow}
     ]]> 
@@ -49,7 +48,7 @@
 <select id="countByMembersUserId" resultType="int">
     SELECT COUNT(*)
     FROM CONSULTATIONS
-    WHERE members_user_id = #{membersUserId}
+    WHERE user_id = #{membersUserId}
 </select>
 
     <!-- 상담 ID로 검색 -->
@@ -62,22 +61,22 @@
     <select id="findLastByMembersUserId" resultMap="QaDTOResult">
         SELECT <include refid="consultationColumns"/>
     	FROM CONSULTATIONS
-    	WHERE members_user_id = #{membersUserId}
+    	WHERE user_id = #{membersUserId}
     	ORDER BY created_at DESC
     	FETCH FIRST 1 ROWS ONLY
     </select>
 
     <!-- 상담 저장 -->
     <insert id="save">
-        INSERT INTO CONSULTATIONS (title, content, reply, created_at, is_reply, members_user_id, admin_user_id)
-        VALUES (#{title}, #{content}, #{reply}, #{createdAt, jdbcType=TIMESTAMP}, #{isReply}, #{membersUserId}, #{adminUserId, jdbcType=NUMERIC})
+        INSERT INTO CONSULTATIONS (title, content, reply, created_at, user_id, admin_id)
+        VALUES (#{title}, #{content}, #{reply}, #{createdAt, jdbcType=TIMESTAMP}, #{membersUserId}, #{adminUserId, jdbcType=NUMERIC})
     </insert>
 
     <!-- 상담 업데이트 -->
     <update id="update">
         UPDATE CONSULTATIONS
         SET title = #{title}, content = #{content}, reply = #{reply}, created_at = #{createdAt},
-            is_reply = #{isReply}, members_user_id = #{membersUserId}, admin_user_id = #{adminUserId}
+           user_id = #{membersUserId}, admin_id = #{adminUserId}
         WHERE counsul_id = #{counsulId}
     </update>
 
