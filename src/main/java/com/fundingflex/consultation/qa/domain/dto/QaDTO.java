@@ -23,7 +23,7 @@ public class QaDTO {
     private String content;
     private String reply;
     private Date createdAt;
-    private String isReply;
+//    private String reply;
     private Long membersUserId;
     private Long adminUserId;
     private List<QaImagesDTO> images;

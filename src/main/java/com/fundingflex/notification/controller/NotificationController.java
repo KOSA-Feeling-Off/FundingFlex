@@ -26,30 +26,38 @@ public class NotificationController {
     private final SseEmitterService sseEmitterService;
     private final NotificationService notificationService;
 
-
-    /// 알림 조회
+    // 알림 조회
     @GetMapping("/list")
     public ResponseEntity<List<Notification>> listNotifications(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
-            return ResponseEntity.status(401).build();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // 조회
         try {
             List<Notification> notificationList = notificationService.selectNotification(userDetails.getUserId());
+            if (notificationList.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
             return ResponseEntity.ok(notificationList);
         } catch (Exception ex) {
-            log.error("Notification service error", ex);
-            return ResponseEntity.status(204).build();
+            log.error("Error fetching notifications for user: {}", userDetails.getUserId(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
     // 알림 browser 로 push
     @GetMapping
-    public SseEmitter streamNotifications(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<SseEmitter> streamNotifications(@AuthenticationPrincipal CustomUserDetails userDetails) {
         if (userDetails == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         }
-        return sseEmitterService.createEmitter(userDetails.getUserId());
+
+        try {
+            SseEmitter emitter = sseEmitterService.createEmitter(userDetails.getUserId());
+            return ResponseEntity.ok(emitter);
+        } catch (Exception ex) {
+            log.error("Error creating SSE emitter for user: {}", userDetails.getUserId(), ex);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

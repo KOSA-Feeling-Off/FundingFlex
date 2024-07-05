@@ -3,6 +3,7 @@ package com.fundingflex.notification.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fundingflex.notification.domain.entity.Notification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
@@ -13,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SseEmitterService {
 
     private final Map<Long, Map<String, SseEmitter>> userEmitters = new ConcurrentHashMap<>();
@@ -23,9 +25,18 @@ public class SseEmitterService {
         String emitterId = UUID.randomUUID().toString();
         userEmitters.computeIfAbsent(userId, k -> new ConcurrentHashMap<>()).put(emitterId, emitter);
 
-        emitter.onCompletion(() -> userEmitters.get(userId).remove(emitterId));
-        emitter.onTimeout(() -> userEmitters.get(userId).remove(emitterId));
-        emitter.onError(e -> userEmitters.get(userId).remove(emitterId));
+        emitter.onCompletion(() -> {
+            log.info("Emitter {} completed", emitterId);
+            removeEmitter(userId, emitterId);
+        });
+        emitter.onTimeout(() -> {
+            log.warn("Emitter {} timed out", emitterId);
+            removeEmitter(userId, emitterId);
+        });
+        emitter.onError(e -> {
+            log.error("Emitter {} error: {}", emitterId, e.getMessage());
+            removeEmitter(userId, emitterId);
+        });
 
         return emitter;
     }
@@ -39,8 +50,21 @@ public class SseEmitterService {
                     String json = new ObjectMapper().writeValueAsString(notification);
                     emitter.send(SseEmitter.event().name("notification").data(json));
                 } catch (IOException e) {
+                    log.error("Error sending notification to emitter: {}", e.getMessage());
                     emitter.completeWithError(e);
                 }
+            }
+        } else {
+            log.warn("No emitters found for user {}", userId);
+        }
+    }
+
+    private synchronized void removeEmitter(Long userId, String emitterId) {
+        Map<String, SseEmitter> emitters = userEmitters.get(userId);
+        if (emitters != null) {
+            emitters.remove(emitterId);
+            if (emitters.isEmpty()) {
+                userEmitters.remove(userId);
             }
         }
     }

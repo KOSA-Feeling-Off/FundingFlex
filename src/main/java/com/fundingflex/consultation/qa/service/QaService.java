@@ -43,7 +43,7 @@ public class QaService {
         qaDTO.setContent(content);
         qaDTO.setMembersUserId(userId);
         qaDTO.setCreatedAt(new Date());
-        qaDTO.setIsReply("N");
+//        qaDTO.setIsReply("N");
         qaDTO.setReply(" ");
         qaDTO.setAdminUserId(null);
         
@@ -110,7 +110,7 @@ public class QaService {
     public void replyCreate(Long memberId, Long adminId, String content) {
         QaDTO qaDTO = getQuestionDetail(memberId);
         qaDTO.setAdminUserId(adminId);
-        qaDTO.setIsReply("Y");
+//        qaDTO.setIsReply("Y");
         qaDTO.setReply(content);
         qaMapper.update(qaDTO);
     }

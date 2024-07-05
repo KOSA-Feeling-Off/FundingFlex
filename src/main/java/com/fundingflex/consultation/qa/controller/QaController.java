@@ -33,7 +33,7 @@ public class QaController {
     public String getUserQuestions(@RequestParam(value = "page", defaultValue = "0") int page,
                                    Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
         Long userId = userDetails.getUserId(); 
-        
+        System.out.print("강훈" + userId);
         int size = 10;
     	int totalElements;
     	List<QaDTO> questions;

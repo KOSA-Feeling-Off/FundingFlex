@@ -129,20 +129,15 @@ public class FundingsController {
         @RequestParam("images") MultipartFile[] images,
         @RequestParam("imageArray") String imageArrayJson,
         @PathVariable("category-id") Long categoryId,
-        @PathVariable("funding-id") Long fundingId,
-        @AuthenticationPrincipal CustomUserDetails userDetails) throws IOException {
+        @PathVariable("funding-id") Long fundingId) throws IOException {
 
-    	if(userDetails == null) {
-    		return "redirect:/api/login";
-    	}
-    	
 
         // JSON 문자열을 객체로 변환
         ObjectMapper objectMapper = new ObjectMapper();
         ArrayList<ImageData> imageArray =
             objectMapper.readValue(imageArrayJson, new TypeReference<ArrayList<ImageData>>(){});
 
-        
+
         FundingIdsDTO fundingsDto =
         		fundingsService.updateFunding(fundingsForm, imageArray, categoryId, fundingId);
 
@@ -150,15 +145,25 @@ public class FundingsController {
                     + "/details/" + fundingsDto.getFundingsId();
     }
 
-    
+
     // 펀딩 상세 조회
     @GetMapping("/{category-id}/details/{funding-id}")
     public String getFundingDetails(@PathVariable(name = "category-id") Long categoryId,
-            @PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
-        
-       ResponseFundingInfoDTO fundingsInfo =
-    		   fundingsService.selectFundinsInfo(categoryId, fundingId);
+        @PathVariable(name = "funding-id") Long fundingId, Model model) throws Exception {
 
+        // 공통으로 들어올 수 있기 때문에 CustomUserDetails를 사용
+        CustomUserDetails userDetails = null;
+        if (SecurityContextHolder.getContext().getAuthentication() != null &&
+            SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof CustomUserDetails) {
+            userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }
+
+        Long userId = (userDetails != null) ? userDetails.getUserId() : -1L;
+
+        ResponseFundingInfoDTO fundingsInfo =
+            fundingsService.selectFundinsInfo(categoryId, fundingId, userId);
+
+        model.addAttribute("loginUserId", userId);
         model.addAttribute("responseFundingInfo", fundingsInfo);
         return "funding/funding-details";
     }

@@ -28,7 +28,7 @@ public interface FundingsMapper {
 
     // 펀딩 정보 조회
     FundingsInfoDTO selectFundingInfo(@Param("categoryId") Long categoryId,
-        @Param("fundingsId") Long fundingsId);
+        @Param("fundingsId") Long fundingsId, @Param("userId") Long userId);
 
     // 펀딩 아이디 확인
     int existsById(Long fundingId);
