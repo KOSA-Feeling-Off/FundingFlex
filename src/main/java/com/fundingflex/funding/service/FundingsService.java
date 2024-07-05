@@ -160,38 +160,43 @@ public class FundingsService {
     }
 
 
-	// 상세 정보 전체 조회
-	public ResponseFundingInfoDTO selectFundinsInfo(Long categoryId, Long fundingId) {
+    // 상세 정보 전체 조회
+    public ResponseFundingInfoDTO selectFundinsInfo(Long categoryId, Long fundingId, Long userId) {
 
-		try {
-			// fundingId, categoryId 확인
-			if (categoriesMapper.existsById(categoryId) <= 0) {
-				throw new NotFoundException("해당 카테고리가 존재하지 않습니다.");
-			}
+        try {
+            // fundingId, categoryId 확인
+            if (categoriesMapper.existsById(categoryId) <= 0) {
+                throw new NotFoundException("해당 카테고리가 존재하지 않습니다.");
+            }
 
-			if (fundingsMapper.existsById(fundingId) <= 0) {
-				throw new NotFoundException("해당 펀딩이 존재하지 않습니다.");
-			}
+            if (fundingsMapper.existsById(fundingId) <= 0) {
+                throw new NotFoundException("해당 펀딩이 존재하지 않습니다.");
+            }
 
-			// 이미지 조회
-			List<Images> imagesList = imageService.selectImagesByFundingId(fundingId);
-
-
-			// 펀딩 정보 조회
-			FundingsInfoDTO fundingsInfoDto =
-					fundingsMapper.selectFundingInfo(categoryId, fundingId);
+            // 이미지 조회
+            List<Images> imagesList = imageService.selectImagesByFundingId(fundingId);
 
 
-			return ResponseFundingInfoDTO.builder()
-					.fundingsInfoDto(fundingsInfoDto)
-					.imagesList(imagesList)
-					.build();
+            // 펀딩 정보 조회
+            FundingsInfoDTO fundingsInfoDto =
+                fundingsMapper.selectFundingInfo(categoryId, fundingId, userId);
 
-		} catch(Exception ex) {
-			log.error("=>>>>>> 펀딩 상세 조회 실패: {}" , ex.getMessage());
+            // 펀딩을 한 사람인지 조회 (userId 만 조회)
+            Long fundingJoinUserId = fundingsMapper.existsJoinByFundingsId(fundingId, userId);
+            log.info("fundingJoinUserId {}", fundingJoinUserId);
+
+
+            return ResponseFundingInfoDTO.builder()
+                .fundingsInfoDto(fundingsInfoDto)
+                .imagesList(imagesList)
+                .fundingJoinUserId(fundingJoinUserId)
+                .build();
+
+        } catch(Exception ex) {
+            log.error("=>>>>>> 펀딩 상세 조회 실패: {}" , ex.getMessage());
             throw new RuntimeException("펀딩 상세 조회 실패: " + ex.getMessage(), ex);
-		}
-	}
+        }
+    }
     
 
 	// 전체 펀딩 목록 조회
