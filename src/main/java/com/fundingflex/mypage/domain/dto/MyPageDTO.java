@@ -17,4 +17,8 @@ public class MyPageDTO {
     private String imageUrl;
     private int percent;
     private int collectedAmount;
+    private int categoryId;
+    private int participatedCount;   // 참여한 펀딩 수
+    private int createdCount;        // 개설한 펀딩 수
+    private int likedCount;          // 좋아요 누른 펀딩 수
 }

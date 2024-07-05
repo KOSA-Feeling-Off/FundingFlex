@@ -15,6 +15,7 @@
 		SELECT
 		    f.fundings_id AS fundingsId,
 		    f.title AS title,
+		    f.category_id AS categoryId,
 		    f.goal_amount AS goalAmount,
 		    (SELECT SUM(fj.funding_amount) FROM funding_joins fj WHERE fj.fundings_id = f.fundings_id AND fj.is_deleted = 'N') AS collectedAmount,
 		    CASE 
@@ -35,39 +36,81 @@
 	</select>
 
     <!-- 내가 작성한 펀딩글 조회 -->
+	<!-- 내가 작성한 펀딩글 조회 -->
 	<select id="findCreatedFundingsByUserId" resultType="com.fundingflex.mypage.domain.dto.MyPageDTO">
-	     SELECT
-	        f.fundings_id AS fundingsId,
-	        f.title,
-	        f.content,
-	        f.like_count AS likeCount,
-	        f.goal_amount AS goalAmount,
-	        i.image_url AS imageUrl
-   		 FROM
-       		 fundings f
-   		 LEFT JOIN
-	        (SELECT fundings_id, image_url
-	         FROM images
-	         WHERE seq = 1) i ON f.fundings_id = i.fundings_id
-   		 WHERE
-      		  f.user_id = #{userId}
-	</select>
+		    SELECT
+		        f.fundings_id AS fundingsId,
+		        f.title,
+		        f.content,
+		        f.like_count AS likeCount,
+		        f.goal_amount AS goalAmount,
+		        i.image_url AS imageUrl,
+		        f.category_id AS categoryId,
+		        COALESCE(SUM(fj.funding_amount), 0) AS collectedAmount,
+		        CASE 
+		            WHEN f.goal_amount > 0 THEN ROUND((COALESCE(SUM(fj.funding_amount), 0) * 100.0) / f.goal_amount, 2)
+		            ELSE 0 
+		        END AS percent
+		    FROM
+		        fundings f
+		    LEFT JOIN
+		        images i ON f.fundings_id = i.fundings_id AND i.seq = 1
+		    LEFT JOIN
+		        funding_joins fj ON f.fundings_id = fj.fundings_id
+		    WHERE
+		        f.user_id = #{userId}
+		    GROUP BY
+		        f.fundings_id, f.title, f.content, f.like_count, f.goal_amount, i.image_url, f.category_id
+		</select>
 	
     <!-- 좋아요 누른 펀딩글 조회 -->
 	<select id="findLikedFundingsByUserId" resultType="com.fundingflex.mypage.domain.dto.MyPageDTO">
 	    SELECT
-	        f.fundings_id as fundingsId,
-	        f.title,
-	        f.content,
-	        f.like_count as likeCount,
-	        f.goal_amount as goalAmount
-	    FROM
-	        fundings f
-	    INNER JOIN
-	        likes l ON f.fundings_id = l.fundings_id
-	    WHERE
-	        l.user_id = #{userId}
+		    f.fundings_id AS fundingsId,
+		    f.title,
+		    f.content,
+		    f.goal_amount AS goalAmount,
+		    f.category_id AS categoryId,
+		    i.image_url AS imageUrl,
+		    COALESCE(SUM(fj.funding_amount), 0) AS collectedAmount,
+		    CASE
+		        WHEN f.goal_amount > 0 THEN ROUND((COALESCE(SUM(fj.funding_amount), 0) * 100.0) / f.goal_amount, 2)
+		        ELSE 0
+		    END AS percent
+		FROM
+		    fundings f
+		INNER JOIN
+		    likes l ON f.fundings_id = l.fundings_id
+		LEFT JOIN
+		    images i ON f.fundings_id = i.fundings_id AND i.seq = 1
+		LEFT JOIN
+		    funding_joins fj ON f.fundings_id = fj.fundings_id
+		WHERE
+		    l.user_id = #{userId}
+		GROUP BY
+		    f.fundings_id, f.title, f.content, f.goal_amount, f.category_id, i.image_url
 	</select>
+	
+	<!-- 참여한 펀딩 수 -->
+    <select id="countParticipatedFundingsByUserId" resultType="int" parameterType="long">
+        SELECT COUNT(*)
+        FROM funding_joins
+        WHERE user_id = #{userId} AND is_deleted = 'N'
+    </select>
+    
+    <!-- 개설한 펀딩 수 -->
+    <select id="countCreatedFundingsByUserId" resultType="int" parameterType="long">
+        SELECT COUNT(*)
+        FROM fundings
+        WHERE user_id = #{userId} AND is_deleted = 'N'
+    </select>
+    
+    <!-- 좋아요 누른 펀딩 수 -->
+    <select id="countLikedFundingsByUserId" resultType="int" parameterType="long">
+        SELECT COUNT(*)
+        FROM likes
+        WHERE user_id = #{userId}
+    </select>
 
 
 
