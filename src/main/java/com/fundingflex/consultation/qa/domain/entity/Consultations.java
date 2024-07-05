@@ -34,10 +34,10 @@ public class Consultations {
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "member_user_id", nullable = false)
     private Long membersUserId;
 
-    @Column(name = "admin_id", columnDefinition = "NUMBER(19, 0)")
+    @Column(name = "admin_user_id", columnDefinition = "NUMBER(19, 0)")
     @ColumnDefault("NULL")
     private Long adminUserId;
 
