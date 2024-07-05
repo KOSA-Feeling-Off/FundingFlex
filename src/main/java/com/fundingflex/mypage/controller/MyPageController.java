@@ -31,13 +31,14 @@ public class MyPageController {
         if (members != null) {
             model.addAttribute("members", members);
             
-            // 프로필 이미지 URL 처리
+         // 프로필 이미지 URL 처리
             if (members.getProfileUrl() != null && !members.getProfileUrl().isEmpty()) {
-                // DB에서 가져온 URL을 변환
-                String webPath = members.getProfileUrl().replace("src/main/resources/static", "");
-                members.setProfileUrl(webPath);
-               System.out.println(webPath);
-               
+                // DB에서 가져온 URL을 웹 접근 가능 경로로 변환
+                String basePath = "src/main/resources/static/images/members/";
+                int basePathLength = basePath.length();
+                String fileName = members.getProfileUrl().substring(basePathLength);
+                members.setProfileUrl("/images/members/" + fileName);
+                System.out.println("Processed profile URL: " + members.getProfileUrl());
             } else {
                 // 기본 이미지 설정
                 members.setProfileUrl("/images/default-profile-image.png");
