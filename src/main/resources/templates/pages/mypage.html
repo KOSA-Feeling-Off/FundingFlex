@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" layout:decorate="~{common/layouts/layout}">
+<html xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{common/layouts/layout}">
 <head>
 <meta charset="UTF-8">
 <title>MyPage</title>
@@ -9,58 +10,125 @@
 	<div layout:fragment="content" class="content">
 		<div class="container-body">
 			<div class="text-body">
-				<div class="form-make-body col-md-7">
-				<div>
-						<h1>마이페이지</h1>
-						<label>이메일</label>
-	    				<div th:text="${userDetails.getUsername()}"></div>
-						<div class="signup-image-upload"></div>
-						<img class="image-upload" th:if="${members.getProfileUrl() != null}" th:src="@{'/images/members/' + ${members.profileUrl.substring(members.profileUrl.lastIndexOf('/') + 1)}}" alt="Profile Image">
-						<img th:if="${members.getProfileUrl() == null}" src="/images/default-profile-image.png" alt="Default Profile Image">
-						<label>닉네임</label>
-						<div th:text="${userDetails.getNickname()}"></div>
-					</div>
-					<div>
-						<div>
-							좋아요 누른 펀딩글
-						    <h2>Liked Fundings</h2>
-						    <ul>
-						        <div th:each="funding : ${likedFundings}">
-						            <span th:text="${funding.title}"></span>
-						            <p>목표 금액: <span th:text="${funding.goalAmount}"></span></p>
-									<p>진행률: <span th:text="${funding != null ? funding.percent : ''}"></span></p>
-						            <!-- <span th:text="${funding.content}"></span> -->
-						            <img th:src="@{/images/fundings/{filename}(filename=${funding.imageUrl})}" alt="Funding Image">
-						        </div>
-						    </ul>
+				<div class="form-make-body content-wrapper">
+					<h1>마이페이지</h1>
+					<div class="mypage-form">
+						<div class="mypage-profileUrl">
+							<img class="mypage-image-upload"th:src="${profileUrl}"
+								alt="Profile Image">
 						</div>
-						<div>
-							<h2>내가 참여한 펀딩글</h2>
-						    <li th:each="funding : ${participatedFundings}">
-		                        <div>
-		                            <h3 th:text="${funding.title}"></h3>
-		                            <p>목표 금액: <span th:text="${funding.goalAmount}"></span></p>
-									<p>진행률: <span th:text="${funding != null ? funding.percent : ''}"></span></p>
-									<img th:src="@{/images/fundings/{filename}(filename=${funding.imageUrl})}" alt="Funding Image">
-		                        </div>
-                    		</li>
-						</div>
-						<div>
-							내가 만든 펀딩글
-						    <h2>Created Fundings</h2>
-						    <ul>
-						        <div th:each="funding : ${createdFundings}">
-						            <span th:text="${funding.title}"></span>
-									<p>목표 금액: <span th:text="${funding.goalAmount}"></span></p>
-									<p>진행률: <span th:text="${funding != null ? funding.percent : ''}"></span></p>
-									<img th:src="@{/images/fundings/{filename}(filename=${funding.imageUrl})}" alt="Funding Image">
+						<div class="mypage-nick-counting">
+							<div class="mypage-nick" th:text="${userDetails.getNickname()} + 님"></div>
+							<div class="mypage-counting">
+								<div>
+									<p th:text="${participatedCount}"></p>
+									<p>참여</p>
 								</div>
-							</ul>
+								<div>
+									<p th:text="${createdCount}"></p>
+									<p>개설</p>
+								</div>
+								<div>
+									<p th:text="${likedCount}"></p>
+									<p>좋아요</p>
+								</div>
+							</div>
+						</div>
+						<div class="mypage-profileUrl-edit">
+							<button class="btn btn-primary">프로필 편집</button>
 						</div>
 					</div>
-				</div>
+					<nav class="">
+						<ul class="tab_wrap">
+							<li class="tab" data-target="content_one">참여한</li>
+							<li class="tab" data-target="content_two">개설한</li>
+							<li class="tab" data-target="content_three">좋아요</li>
+						</ul>
+
+						<div class="content_wrap">
+							<div id="content_one" class="content con_active">
+								<div class="mypage-section-container">
+									<div th:each="funding : ${participatedFundings}" class="mypage-content-container">
+										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="funding-item">
+		  									<div th:text="${funding.title}" class="mypage-funding-title"></div>
+		 									<div class="mypage-funding-details">
+												<span th:text="'목표 금액 : ' + ${funding.goalAmount} + '원'"></span><br>
+												<span th:text="'펀딩 금액 : ' + ${funding.collectedAmount} + '원'"></span><br>
+											</div>
+											<div class="mypage-funding-images">
+												<img th:src="@{/images/fundings/{filename}(filename=${funding.imageUrl})}" class="active">
+											</div>
+											<div class="mypage-funding-progress">
+												<div th:style="'width:' + ${funding.percent} + '%'"	class="funding-progress-bar"></div>
+												<div th:text="${funding.percent} + '%'"	class="funding-progress-text"></div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div id="content_two" class="content">
+								<div class="mypage-section-container">
+									<div th:each="funding : ${createdFundings}" class="mypage-content-container">
+										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="funding-item">
+		  									<div th:text="${funding.title}" class="mypage-funding-title"></div>
+		 									<div class="mypage-funding-details">
+												<span th:text="'목표 금액 : ' + ${funding.goalAmount} + '원'"></span><br>
+												<span th:text="'펀딩 금액 : ' + ${funding.collectedAmount} + '원'"></span><br>
+											</div>
+											<div class="mypage-funding-images">
+												<img th:src="@{/images/fundings/{filename}(filename=${funding.imageUrl})}" class="active">
+											</div>
+											<div class="mypage-funding-progress">
+												<div th:style="'width:' + ${funding.percent} + '%'"	class="funding-progress-bar"></div>
+												<div th:text="${funding.percent} + '%'"	class="funding-progress-text"></div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+							<div id="content_three" class="content">
+								<div class="mypage-section-container">
+									<div th:each="funding : ${likedFundings}" class="mypage-content-container">
+										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="funding-item">
+	  										<div th:text="${funding.title}" class="mypage-funding-title"></div>
+	 										<div class="mypage-funding-details">
+												<span th:text="'목표 금액 : ' + ${funding.goalAmount} + '원'"></span><br>
+												<span th:text="'펀딩 금액 : ' + ${funding.collectedAmount} + '원'"></span><br>
+											</div>
+											<div class="mypage-funding-images">
+												<img th:src="@{/images/fundings/{filename}(filename=${funding.imageUrl})}" class="active">
+											</div>
+											<div class="mypage-funding-progress">
+												<div th:style="'width:' + ${funding.percent} + '%'"	class="mypage-funding-progress-bar"></div>
+												<div th:text="${funding.percent} + '%'"	class="funding-progress-text"></div>
+											</div>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</nav>
 			</div>
 		</div>
 	</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

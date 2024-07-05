@@ -19,4 +19,10 @@ public interface MyPageMapper {
     List<FundingsDTO> findCreatedFundingsByUserId(@Param("userId") Long userId);
 
     List<FundingsDTO> findLikedFundingsByUserId(@Param("userId") Long userId);
+
+	int countParticipatedFundingsByUserId(Long userId);
+
+	int countCreatedFundingsByUserId(Long userId);
+
+	int countLikedFundingsByUserId(Long userId);
 }

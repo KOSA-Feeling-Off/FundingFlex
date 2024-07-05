@@ -28,16 +28,25 @@ public class MyPageController {
     	long userId = userDetails.getUserId();
     	
     	MyPageDTO members = myPageService.findMemberInfoByUserId(userId);
-    	if(members != null) {
-    		model.addAttribute("members", members);
-    		
-    		// Handle profile URL if null
-            String profileUrl = members.getImageUrl() != null ? members.getImageUrl() : "/images/default-profile-image.png";
-            model.addAttribute("profileUrl", profileUrl);
-    	} else {
+        if (members != null) {
+            model.addAttribute("members", members);
+            
+            // 프로필 이미지 URL 처리
+            if (members.getProfileUrl() != null && !members.getProfileUrl().isEmpty()) {
+                // DB에서 가져온 URL을 변환
+                String webPath = members.getProfileUrl().replace("src/main/resources/static", "");
+                members.setProfileUrl(webPath);
+               System.out.println(webPath);
+               
+            } else {
+                // 기본 이미지 설정
+                members.setProfileUrl("/images/default-profile-image.png");
+            }
+            model.addAttribute("profileUrl", members.getProfileUrl());
+        } else {
             log.error("User with userId {} not found", userId);
             return "error";
-    	}
+        }
         model.addAttribute("userDetails", userDetails);
         
         // 좋아요 누른 펀딩글 조회
@@ -51,6 +60,15 @@ public class MyPageController {
         // 내가 만든 펀딩글 조회
         List<FundingsDTO> createdFundings = myPageService.findCreatedFundingsByUserId(userId);
         model.addAttribute("createdFundings", createdFundings);
+        
+        int likedCount = myPageService.countLikedFundingsByUserId(userId);
+        model.addAttribute("likedCount", likedCount);
+        
+        int participatedCount = myPageService.countParticipatedFundingsByUserId(userId);
+        model.addAttribute("participatedCount", participatedCount);
+        
+        int createdCount = myPageService.countCreatedFundingsByUserId(userId);
+        model.addAttribute("createdCount", createdCount);
         
         model.addAttribute("userDetails", userDetails);
         return "pages/mypage";

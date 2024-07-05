@@ -1,174 +1,340 @@
 /* 전체 컨테이너 */
 .container-body {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
+	max-width: 1400px;
+	margin: 0 auto;
+	padding: 20px;
 }
 
 /* 프로필 섹션 */
 .profile-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-bottom: 40px;
 }
 
 .profile-info {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 .profile-img img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-right: 20px;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	margin-right: 20px;
 }
 
 .profile-details h2 {
-    margin: 0;
-    font-size: 24px;
+	margin: 0;
+	font-size: 24px;
 }
 
 .profile-details p {
-    margin: 5px 0;
+	margin: 5px 0;
 }
 
 .edit-profile-btn {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #3382E9;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+	margin-top: 10px;
+	padding: 10px 20px;
+	background-color: #3382E9;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
 }
 
 .edit-profile-btn:hover {
-    background-color: #0b5ed7;
+	background-color: #0b5ed7;
 }
 
 /* 탭 섹션 */
 .tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
 }
 
 .tablink {
-    background-color: #f1f1f1;
-    color: black;
-    padding: 14px 20px;
-    margin: 0 5px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
+	background-color: #f1f1f1;
+	color: black;
+	padding: 14px 20px;
+	margin: 0 5px;
+	border: none;
+	cursor: pointer;
+	transition: background-color 0.3s;
 }
 
 .tablink:hover {
-    background-color: #ddd;
+	background-color: #ddd;
 }
 
 .tablink.active {
-    background-color: #ccc;
+	background-color: #ccc;
 }
 
 /* 탭 콘텐츠 섹션 */
 .tabcontent {
-    display: none;
-    padding: 20px;
-    border-top: none;
+	display: none;
+	padding: 20px;
+	border-top: none;
 }
 
 /* 펀딩 아이템 */
 .funding-item {
-    position: relative;
-    background-color: #fff;
-    border: 1px solid #BFEFFF;
-    border-radius: 8px;
-    padding: 10px;
-    width: calc(25% - 20px);
-    box-sizing: border-box;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    margin-bottom: 20px;
+	position: relative;
+	background-color: #fff;
+	border: 1px solid #BFEFFF;
+	border-radius: 8px;
+	padding: 10px;
+	width: 258px;
+	box-sizing: border-box;
+	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
+	margin-bottom: 20px;
 }
 
 .like-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    color: #ddd;
-    cursor: pointer;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	font-size: 24px;
+	color: #ddd;
+	cursor: pointer;
 }
 
 .like-button.liked {
-    color: #ff0000;
+	color: #ff0000;
 }
 
 .funding-item:hover {
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .funding-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 10px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 10px;
+	height: 27px;
 }
 
 .funding-details {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: 10px;
+	font-size: 14px;
+	color: #555;
+	margin-bottom: 10px;
 }
 
 .funding-images {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    height: 150px;
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 8px;
+	margin-bottom: 10px;
+	height: 150px;
 }
 
 .funding-images img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: none;
 }
 
 .funding-images img.active {
-    display: block;
+	display: block;
 }
 
 .funding-progress {
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 10px;
-    position: relative;
-    height: 20px;
+	background-color: #e0e0e0;
+	border-radius: 4px;
+	overflow: hidden;
+	margin-bottom: 10px;
+	position: relative;
+	height: 20px;
 }
 
 .funding-progress-bar {
-    height: 100%;
-    background-color: #28a745;
-    width: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
+	height: 100%;
+	background-color: #28a745;
+	width: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 .funding-progress-text {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    line-height: 20px;
-    font-size: 12px;
-    color: #fff;
-    z-index: 1;
+	position: absolute;
+	width: 100%;
+	text-align: center;
+	line-height: 20px;
+	font-size: 12px;
+	color: #fff;
+	z-index: 1;
 }
+
+/* mypage-css */
+.tab {
+    list-style-type: none;
+    text-align: center;
+}
+
+.mypage-form {
+	display: flex;
+	width: 100%;
+	height: 200px;
+	align-items: center;
+}
+
+.mypage-counting {
+	display: flex;
+}
+
+.mypage-profileUrl {
+	margin-left: 100px;
+}
+
+.mypage-nick-counting {
+	width: 30%;
+	margin: 0 0 0 50px;
+}
+
+.mypage-nick {
+	font-size: 20px;
+	margin: 0 0 30px 40px;
+}
+
+.mypage-counting {
+	align-items: center;
+}
+
+.mypage-counting p {
+	align-items: center;
+	margin: 0 0 0 30px;
+	height: 50px;
+	align-content: center;
+	text-align: center;
+}
+.mypage-profileUrl-edit{
+	width: 35%;
+	margin: 0 0 0 100px;
+	
+}
+
+.mypage-profileUrl-edit button{
+	width: 80%;
+	height: 40px;
+}
+.tab_wrap { 
+	display: flex; 
+}
+.tab_wrap .tab { 
+	background: #efefef; 
+	padding: 1rem; 
+	width: 10rem; 
+}
+.tab_wrap .tab:hover { 
+	font-weight: bold; 
+	cursor: pointer; 
+}
+.tab.active { 
+	background: #000; 
+	color: #fff; 
+	font-weight: bold; 
+}
+
+.content_wrap .content { 
+	width: 100%; 
+	/* line-height: 10rem; */ 
+	background: #f9f9f9;  
+	display: none; 
+}
+.content_wrap .content.con_active {
+	display: block;
+	margin: 0 0 0 32px;
+	width: auto;
+}
+.mypage-section-container {
+	display: flex !important;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 40px;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: stretch; /* 모든 항목을 컨테이너의 높이에 맞춤 */
+}
+.mypage-content-container {
+	flex: 0 0 25%; /* 한 줄에 4개의 아이템 */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start; /* Change from space-between to flex-start */
+    margin-top:20px;
+    /* width: 258px; */
+    height: 327px; /* 높이 설정 */
+}
+.mypage-content-container a {
+	display: block; /* a 태그를 블록 요소로 만들어 전체 크기를 채울 수 있게 함 */
+  	height: 100%; /* 부모의 높이를 상속 받음 */
+  	color: inherit; /* 링크의 색상을 상속 받음 */
+  	text-decoration: none; /* 밑줄 제거 */
+}
+.mypage-funding-title{
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 30px;
+	height: 27px;
+}
+.mypage-funding-details{
+	font-size: 14px;
+	color: #555;
+	margin-bottom: 10px;
+}
+.mypage-funding-images{
+	position: relative;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 8px;
+	margin-bottom: 10px;
+	height: 150px;
+}
+.mypage-funding-progress{
+	background-color: #e0e0e0;
+	border-radius: 4px;
+	overflow: hidden;
+	margin-bottom: 10px;
+	position: relative;
+	height: 20px;
+}
+.mypage-funding-progress-bar{
+	height: 100%;
+	background-color: #28a745;
+	width: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+.mypage-content-container img {
+  width: 100%; /* 컨테이너의 너비에 맞게 조절 */
+  height: 100%; /* 높이는 자동으로 설정하여 비율 유지 */
+  object-fit: contain; /* 컨테이너 안에 이미지를 비율을 유지하면서 적합하게 조절 */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -30,4 +30,17 @@ public class MyPageService {
     public List<FundingsDTO> findLikedFundingsByUserId(Long userId) {
         return myPageMapper.findLikedFundingsByUserId(userId);
     }
+    
+    public int countParticipatedFundingsByUserId(Long userId) {
+        return myPageMapper.countParticipatedFundingsByUserId(userId);
+    }
+
+    public int countCreatedFundingsByUserId(Long userId) {
+        return myPageMapper.countCreatedFundingsByUserId(userId);
+    }
+
+    public int countLikedFundingsByUserId(Long userId) {
+        return myPageMapper.countLikedFundingsByUserId(userId);
+    }
+    
 }
