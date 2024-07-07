@@ -45,13 +45,15 @@ public class SseEmitterService {
     public void sendNotification(Long userId, Notification notification) {
         Map<String, SseEmitter> emitters = userEmitters.get(userId);
         if (emitters != null) {
-            for (SseEmitter emitter : emitters.values()) {
+            for (String emitterId : emitters.keySet()) {
+                SseEmitter emitter = emitters.get(emitterId);
                 try {
                     String json = new ObjectMapper().writeValueAsString(notification);
                     emitter.send(SseEmitter.event().name("notification").data(json));
                 } catch (IOException e) {
-                    log.error("Error sending notification to emitter: {}", e.getMessage());
-                    emitter.completeWithError(e);
+                    log.error("Error sending notification to emitter {}: {}", emitterId, e.getMessage());
+                    emitter.completeWithError(e); // 비동기 완료 처리
+                    removeEmitter(userId, emitterId); // 추가: 예외 발생 시 emitter 제거
                 }
             }
         } else {

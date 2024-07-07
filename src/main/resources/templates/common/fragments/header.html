@@ -5,39 +5,59 @@
       document.addEventListener('DOMContentLoaded', async (event) => {
          const userId = document.getElementById('userId').value;
 
-         // 초기 알림 가져오기
-         const notifications = await fetch(`/api/notifications/list`)
-                 .then(response => response.json())
-                 .then(data => data)
-                 .catch(error => console.error('Error fetching notifications:', error));
+         try {
+            // 초기 알림 가져오기
+            const response = await fetch(`/api/notifications/list`);
+            if (!response.ok) {
+               throw new Error('Network response was not ok');
+            }
 
-         notifications.forEach(notification => addNotification(notification));
+            // 응답이 비어 있는지 확인
+            const text = await response.text();
+            if (!text) {
+               console.warn('Empty response received from the server.');
+               updateNotificationIcon(false);
+               return; // 빈 응답일 경우 함수를 종료하여 이후 코드가 실행되지 않도록 함
+            }
 
-         // 초기 알림 아이콘 상태 설정
-         const hasUnread = notifications.some(notification => notification.isRead === 'N');
-         updateNotificationIcon(hasUnread);
+            // JSON 파싱
+            const notifications = JSON.parse(text);
 
-         const eventSource = new EventSource('/api/notifications');
+            if (notifications && Array.isArray(notifications) && notifications.length > 0) {
+               notifications.forEach(notification => addNotification(notification));
 
-         eventSource.addEventListener('notification', function(event) {
-            const notification = JSON.parse(event.data);
-            addNotification(notification);
-            updateNotificationIcon(true);
-         });
+               // 초기 알림 아이콘 상태 설정
+               const hasUnread = notifications.some(notification => notification.isRead === 'N');
+               updateNotificationIcon(hasUnread);
+            } else {
+               console.log('No notifications found.');
+               updateNotificationIcon(false); // 알림이 없으면 아이콘을 업데이트하지 않음
+            }
 
-         eventSource.onerror = function(event) {
-            console.error("EventSource failed:", event);
-         };
+            const eventSource = new EventSource('/api/notifications');
+
+            eventSource.addEventListener('notification', function(event) {
+               const notification = JSON.parse(event.data);
+               addNotification(notification);
+               updateNotificationIcon(true);
+            });
+
+            eventSource.onerror = function(event) {
+               console.error("EventSource failed:", event);
+            };
+         } catch (error) {
+            console.error('Error fetching notifications:', error);
+         }
 
          function addNotification(notification) {
             const notificationList = document.querySelector('.notification-list');
             const newNotification = document.createElement('li');
             newNotification.innerHTML = `
-               <div>
-                  <span style="font-size: 10px;">${notification.message}</span>
-                  <input type="hidden" value="${notification.fcId}" />
-                  <input type="hidden" value="${notification.userId}" />
-               </div>
+                <div>
+                    <span style="font-size: 10px;">${notification.message}</span>
+                    <input type="hidden" value="${notification.fcId}" />
+                    <input type="hidden" value="${notification.userId}" />
+                </div>
             `;
 
             // 가장 위에 새로운 알림 추가
@@ -64,11 +84,26 @@
             notificationList.style.display = notificationList.style.display === 'block' ? 'none' : 'block';
          });
 
-         // 알림 버튼 hover 시 has-unread 클래스 제거
+         // 알림 버튼 hover 시 has-unread 클래스 제거 및 알림 상태 업데이트
          const notificationIcon = document.querySelector('.ui-icon-notice');
-         notificationIcon.addEventListener('mouseover', () => {
+         notificationIcon.addEventListener('mouseover', async () => {
             if (notificationIcon.classList.contains('has-unread')) {
                notificationIcon.classList.remove('has-unread');
+               // 알림 상태 업데이트 API 호출
+               try {
+                  console.log(userId);
+
+                  const response = await fetch(`/api/notifications`, {
+                     method: 'PUT'
+                  });
+
+                  if (!response.ok) {
+                     throw new Error('Network response was not ok');
+                  }
+                  console.log('Notification status updated successfully.');
+               } catch (error) {
+                  console.error('Error updating notification status:', error);
+               }
             }
          });
       });

@@ -25,4 +25,12 @@
        FETCH FIRST 5 ROWS ONLY
 	</select>
 
+
+	<!-- 읽음 업데이트 -->
+	<update id="updateNotificationReadStatus" parameterType="map">
+		UPDATE notification
+		   SET is_read = 'Y', read_at = CURRENT_TIMESTAMP
+		 WHERE user_id = #{userId}
+	</update>
+
 </mapper>
