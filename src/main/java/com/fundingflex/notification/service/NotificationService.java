@@ -50,4 +50,10 @@ public class NotificationService {
             throw e;
         }
     }
+
+    
+    // 읽음 상태 업데이트
+    public void updateNotificationReadStatus(Long userId) {
+        notificationMapper.updateNotificationReadStatus(userId);
+    }
 }
