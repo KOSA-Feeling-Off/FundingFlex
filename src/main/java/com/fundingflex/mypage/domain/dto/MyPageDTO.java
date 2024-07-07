@@ -21,4 +21,5 @@ public class MyPageDTO {
     private int participatedCount;   // 참여한 펀딩 수
     private int createdCount;        // 개설한 펀딩 수
     private int likedCount;          // 좋아요 누른 펀딩 수
+    private int joinId;				 // funding_join pk값
 }

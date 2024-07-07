@@ -247,6 +247,7 @@
 .content_wrap .content { 
 	width: 100%; 
 	/* line-height: 10rem; */ 
+	height: auto;
 	background: #f9f9f9;  
 	display: none; 
 }
@@ -270,17 +271,44 @@
 	flex: 0 0 25%; /* 한 줄에 4개의 아이템 */
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
     justify-content: flex-start; /* Change from space-between to flex-start */
     margin-top:20px;
-    /* width: 258px; */
     height: 327px; /* 높이 설정 */
+}
+.mypage-participated-content-container {
+	flex: 0 0 25%; /* 한 줄에 4개의 아이템 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start; /* Change from space-between to flex-start */
+    margin-top:20px;
+    height: 371px; /* 높이 설정 */
+}
+.mypage-funding-item{
+	position: relative;
+	background-color: #fff;
+	border: 1px solid #BFEFFF;
+	border-radius: 8px;
+	padding: 10px;
+	width: 258px;
+	box-sizing: border-box;
+	cursor: pointer;
+	text-decoration: none;
+	color: inherit;
 }
 .mypage-content-container a {
 	display: block; /* a 태그를 블록 요소로 만들어 전체 크기를 채울 수 있게 함 */
   	height: 100%; /* 부모의 높이를 상속 받음 */
   	color: inherit; /* 링크의 색상을 상속 받음 */
   	text-decoration: none; /* 밑줄 제거 */
+}
+
+.mypage-cancel-btn{
+	align-self: center;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	justify-content: center;
+	margin: 5px 0 0 30%;
 }
 .mypage-funding-title{
 	font-size: 18px;
@@ -301,6 +329,11 @@
 	border-radius: 8px;
 	margin-bottom: 10px;
 	height: 150px;
+}
+.mypage-funding-images img {
+    width: 100%;  /* 컨테이너의 너비에 맞게 조절 */
+    height: 100%; /* 높이는 자동으로 설정하여 비율 유지 */
+    object-fit: cover; /* 컨테이너 안에 이미지를 비율을 유지하면서 적합하게 조절 */
 }
 .mypage-funding-progress{
 	background-color: #e0e0e0;
@@ -328,17 +361,3 @@
     height: 150px;
     width: 150px;     /* 높이를 auto로 설정하여 이미지의 원본 비율을 유지합니다. */
 } 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

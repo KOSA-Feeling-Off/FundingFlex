@@ -17,6 +17,7 @@
 		    f.title AS title,
 		    f.category_id AS categoryId,
 		    f.goal_amount AS goalAmount,
+		    fj.funding_join_id AS joinId,
 		    (SELECT SUM(fj.funding_amount) FROM funding_joins fj WHERE fj.fundings_id = f.fundings_id AND fj.is_deleted = 'N') AS collectedAmount,
 		    CASE 
         WHEN f.goal_amount > 0 THEN
@@ -110,6 +111,13 @@
         SELECT COUNT(*)
         FROM likes
         WHERE user_id = #{userId}
+    </select>
+    
+   	<!-- 취소하기 버튼에 적용할 funding_joins의 pk값 -->
+    <select id="findFundingJoinIdByUserId" resultType="int" parameterType="long">
+    	SELECT FUNDING_JOIN_ID
+    	FROM FUNDING_JOINS
+    	WHERE user_id = #{userId}
     </select>
 
 

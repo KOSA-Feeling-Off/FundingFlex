@@ -48,8 +48,8 @@
 						<div class="content_wrap">
 							<div id="content_one" class="content con_active">
 								<div class="mypage-section-container">
-									<div th:each="funding : ${participatedFundings}" class="mypage-content-container">
-										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="funding-item">
+									<div th:each="funding : ${participatedFundings}" class="mypage-participated-content-container">
+										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="mypage-funding-item">
 		  									<div th:text="${funding.title}" class="mypage-funding-title"></div>
 		 									<div class="mypage-funding-details">
 												<span th:text="'목표 금액 : ' + ${funding.goalAmount} + '원'"></span><br>
@@ -62,14 +62,17 @@
 												<div th:style="'width:' + ${funding.percent} + '%'"	class="funding-progress-bar"></div>
 												<div th:text="${funding.percent} + '%'"	class="funding-progress-text"></div>
 											</div>
+											<button class="btn btn-primary mypage-cancel-btn" 
+											th:onclick="|window.open('@{/pay/cancel/{joinId}(joinId=${funding.joinId})}', 'ChatWindow', 'width=400,height=580')|">취소하기</button>
 										</a>
+										
 									</div>
 								</div>
 							</div>
-							<div id="content_two" class="content">
+							<div id="content_two" class="content" >
 								<div class="mypage-section-container">
 									<div th:each="funding : ${createdFundings}" class="mypage-content-container">
-										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="funding-item">
+										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="mypage-funding-item">
 		  									<div th:text="${funding.title}" class="mypage-funding-title"></div>
 		 									<div class="mypage-funding-details">
 												<span th:text="'목표 금액 : ' + ${funding.goalAmount} + '원'"></span><br>
@@ -89,7 +92,7 @@
 							<div id="content_three" class="content">
 								<div class="mypage-section-container">
 									<div th:each="funding : ${likedFundings}" class="mypage-content-container">
-										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="funding-item">
+										<a th:href="@{/api/fundings/{id}/details/{detailId}(id=${funding.categoryId}, detailId=${funding.fundingsId})}" class="mypage-funding-item">
 	  										<div th:text="${funding.title}" class="mypage-funding-title"></div>
 	 										<div class="mypage-funding-details">
 												<span th:text="'목표 금액 : ' + ${funding.goalAmount} + '원'"></span><br>
