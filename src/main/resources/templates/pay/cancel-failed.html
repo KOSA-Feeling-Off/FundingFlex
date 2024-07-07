@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>펀딩 취소</title>
+    <style>
+        #main-message {
+            font-size: 25px;  /* 글씨 크기를 조절할 수 있는 부분 */
+            font-weight: bold;
+        }
+        #countdown {
+            font-size: 15px;  /* 카운트다운 글씨 크기 조절 */
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let countdown = 3;
+
+        function updateCountdown() {
+            document.getElementById('countdown').innerText = countdown + "초 후 창이 사라집니다.";
+            countdown--;
+
+            if (countdown < 0) {
+                closeWindowAndRefreshParent();
+            }
+        }
+
+        function closeWindowAndRefreshParent() {
+            // 현재 창 닫기
+            window.close();
+        }
+
+        function showFinalMessage() {
+            document.getElementById('main-message').innerText = "펀딩을 취소할 수 없습니다.\n(사유: 완료된 펀딩입니다.)";
+            document.getElementById('countdown').style.display = 'block';
+            updateCountdown();
+            setInterval(updateCountdown, 1000);  // 1초마다 카운트다운 업데이트
+        }
+
+        window.onload = function() {
+            showFinalMessage();  // 페이지 로드 시 바로 최종 메시지 표시
+        };
+
+        window.onunload = function() {
+            // 창이 닫힐 때 부모 창을 새로고침
+            if (window.opener != null && !window.opener.closed) {
+                window.opener.location.reload();
+            }
+        };
+    </script>
+
+    <div id="main-message"></div>
+    <div id="countdown" style="display: none;"></div>
+</body>
+</html>

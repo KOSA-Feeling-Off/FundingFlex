@@ -118,14 +118,20 @@ public class PaymentService {
 	}
 
 	public PayCancelDTO createPayCancelDTO(Long joinId) {
-		PayCancelDTO payCancelDTO = new PayCancelDTO();
+		PayCancelDTO payCancelDTO = payMapper.getFundingIdAndFundingAmountByJoinId(joinId);
 		payCancelDTO.setFundingJoinsId(joinId);
-		
+		System.out.println("강훈" + payCancelDTO);
 		return payCancelDTO;
 	}
 
 	public void cancelPay(PayCancelDTO payCancelDTO)  {
 		payMapper.updateFundingJoinsIsDeleted(payCancelDTO.getFundingJoinsId());
 		payMapper.updatePaymentsIsDeleted(payCancelDTO.getFundingJoinsId());
+		payMapper.updateFundingConditionsCollectedAmount(payCancelDTO.getFundingsId(),payCancelDTO.getAmount());
 	}
+
+	public Long getPercentByFundingsId(Long fundingsId) {
+		return payMapper.getPercentByFundingsId(fundingsId);
+	}
+
 }

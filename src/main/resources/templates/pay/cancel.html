@@ -4,43 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Payment Result</title>
-    <script>
-        let countdown = 3;
+<script>
+    let countdown = 3;
 
-        function updateCountdown() {
-            document.getElementById('countdown').innerText = countdown + "초 후 창이 사라집니다.";
-            countdown--;
+    function updateCountdown() {
+        document.getElementById('countdown').innerText = countdown + "초 후 창이 사라집니다.";
+        countdown--;
 
-            if (countdown < 0) {
-                closeWindowAndRefreshParent();
-            }
+        if (countdown < 0) {
+            closeWindowAndRefreshParent();
         }
+    }
 
-        function closeWindowAndRefreshParent() {
-            // 현재 창 닫기
-            window.close();
+    function closeWindowAndRefreshParent() {
+        // 현재 창 닫기
+        window.close();
+    }
+
+    function showFinalMessage() {
+        document.getElementById('main-message').innerText = "펀딩이 취소되었습니다.";
+        document.getElementById('countdown').style.display = 'block';
+        updateCountdown();
+        setInterval(updateCountdown, 1000);  // 1초마다 카운트다운 업데이트
+    }
+
+    window.onload = function() {
+        document.getElementById('main-message').innerText = "펀딩 취소 요청 중...";
+        document.getElementById('countdown').style.display = 'none';
+        setTimeout(showFinalMessage, 1000);  // 1초 후 최종 메시지 표시
+    };
+
+    window.onunload = function() {
+        // 창이 닫힐 때 부모 창을 새로고침
+        if (window.opener != null && !window.opener.closed) {
+            window.opener.location.reload();
         }
+    };
+</script>
 
-        function showFinalMessage() {
-            document.getElementById('main-message').innerText = "펀딩이 취소되었습니다.";
-            document.getElementById('countdown').style.display = 'block';
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        }
-
-        window.onload = function() {
-            document.getElementById('main-message').innerText = "펀딩 취소 요청 중 입니다...";
-            document.getElementById('countdown').style.display = 'none';
-            setTimeout(showFinalMessage, 1000);
-        };
-
-        window.onunload = function() {
-            // 창이 닫힐 때 부모 창을 새로고침
-            if (window.opener != null && !window.opener.closed) {
-                window.opener.location.reload();
-            }
-        };
-    </script>
 </head>
 <body>
     <h1 id="main-message" class="my-qa-main-title"></h1>

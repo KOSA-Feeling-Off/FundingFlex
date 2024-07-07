@@ -12,4 +12,6 @@ public class PayCancelDTO {
 	String paymentId;
 	Long amount; //취소 금액
 	String reason; //취소 사유
+	Long fundingsId;
+	Long percent;
 }

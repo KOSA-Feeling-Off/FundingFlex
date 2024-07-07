@@ -63,7 +63,7 @@
 												<div th:text="${funding.percent} + '%'"	class="funding-progress-text"></div>
 											</div>
 											<button class="btn btn-primary mypage-cancel-btn" 
-											th:onclick="|window.open('@{/pay/cancel/{joinId}(joinId=${funding.joinId})}', 'ChatWindow', 'width=400,height=580')|">취소하기</button>
+											th:onclick="|window.open('@{/pay/cancel/{joinId}(joinId=${funding.joinId})}', 'ChatWindow', 'width=400,height=300')|">취소하기</button>
 										</a>
 										
 									</div>

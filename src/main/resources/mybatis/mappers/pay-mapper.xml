@@ -20,16 +20,45 @@
 		WHERE funding_join_id = #{fundingJoinId}
 	</select>
 
+
+	<select id="getFundingIdAndFundingAmountByJoinId"
+		resultType="com.fundingflex.pay.domain.dto.PayCancelDTO">
+		SELECT
+        		FUNDING_AMOUNT AS amount,
+        		FUNDINGS_ID AS fundingsId
+		FROM funding_joins
+		WHERE funding_join_id = #{fundingJoinId}
+	</select>
+
+
     <update id="updatePaymentsIsDeleted" parameterType="Long">
         UPDATE payments
-        SET is_deleted = 'Y'
+        SET is_deleted = 'Y',
+        	PAY_TIME = CURRENT_TIMESTAMP
         WHERE funding_join_id = #{fundingJoinId}
     </update>
     
     <update id="updateFundingJoinsIsDeleted" parameterType="Long">
         UPDATE funding_joins
-        SET is_deleted = 'Y'
+        SET is_deleted = 'Y',
+        	updated_at = CURRENT_TIMESTAMP
         WHERE funding_join_id = #{fundingJoinId}
     </update>
+    
+    <update id="updateFundingConditionsCollectedAmount">
+    UPDATE Funding_Conditions
+    SET 
+        PERCENT = (COLLECTED_AMOUNT - #{amount}) / GOAL_AMOUNT * 100,
+        COLLECTED_AMOUNT = COLLECTED_AMOUNT - #{amount}
+    WHERE 
+        FUNDINGS_ID = #{fundingsId}
+	</update>
+
+	<select id="getPercentByFundingsId"
+		resultType="Long">
+		SELECT percent
+		FROM Funding_Conditions
+		WHERE FUNDINGS_ID = #{fundingsId}
+	</select>
 
 </mapper>

@@ -150,8 +150,15 @@ public class PayController {
     
     @GetMapping("/cancel/{joinid}")
     public String cancelPay(@PathVariable("joinid") Long joinId) {
-		paymentService.cancelPay(paymentService.createPayCancelDTO(joinId));
-		return "pay/cancel";
+    	PayCancelDTO payCancelDTO = paymentService.createPayCancelDTO(joinId);
+    	payCancelDTO.setPercent(paymentService.getPercentByFundingsId(payCancelDTO.getFundingsId()));
+    	if(payCancelDTO.getPercent().equals(100L) || payCancelDTO.getPercent() > 100L) {
+    		return "pay/cancel-failed";
+    	}
+    	else {
+    		paymentService.cancelPay(payCancelDTO);
+    		return "pay/cancel";
+    	}
     }
 
 //    @GetMapping("/edit/{joinid}")
